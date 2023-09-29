@@ -1,7 +1,7 @@
 package li.cil.oc.api.internal;
 
 import li.cil.oc.api.driver.DriverItem;
-import net.minecraft.util.Direction;
+import net.minecraft.core.Direction;
 
 /**
  * This interface is implemented by the computer case and robot tile entities

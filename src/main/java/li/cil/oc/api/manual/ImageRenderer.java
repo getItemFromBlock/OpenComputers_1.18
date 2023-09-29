@@ -1,6 +1,6 @@
 package li.cil.oc.api.manual;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 
 /**
  * This allows implementing custom image renderers.
@@ -46,5 +46,5 @@ public interface ImageRenderer {
      * @param mouseX the X position of the mouse relative to the element.
      * @param mouseY the Y position of the mouse relative to the element.
      */
-    void render(MatrixStack stack, int mouseX, int mouseY);
+    void render(PoseStack stack, int mouseX, int mouseY);
 }

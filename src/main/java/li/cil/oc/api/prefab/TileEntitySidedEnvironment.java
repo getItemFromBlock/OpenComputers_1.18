@@ -3,12 +3,12 @@ package li.cil.oc.api.prefab;
 import li.cil.oc.api.Network;
 import li.cil.oc.api.network.Node;
 import li.cil.oc.api.network.SidedEnvironment;
-import net.minecraft.block.BlockState;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.ITickableTileEntity;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.Direction;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.block.entity.TickableBlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.core.Direction;
 
 /**
  * TileEntities can implement the {@link li.cil.oc.api.network.SidedEnvironment}
@@ -21,7 +21,7 @@ import net.minecraft.util.Direction;
  * network as an index structure to find other nodes connected to them.
  */
 @SuppressWarnings("UnusedDeclaration")
-public abstract class TileEntitySidedEnvironment extends TileEntity implements SidedEnvironment, ITickableTileEntity {
+public abstract class TileEntitySidedEnvironment extends BlockEntity implements SidedEnvironment, TickableBlockEntity {
     // See constructor.
     protected Node[] nodes = new Node[6];
 
@@ -62,7 +62,7 @@ public abstract class TileEntitySidedEnvironment extends TileEntity implements S
      *       .create(), ...);
      * </pre>
      */
-    protected TileEntitySidedEnvironment(TileEntityType<?> type, final Node... nodes) {
+    protected TileEntitySidedEnvironment(BlockEntityType<?> type, final Node... nodes) {
         super(type);
         System.arraycopy(nodes, 0, this.nodes, 0, Math.min(nodes.length, this.nodes.length));
     }
@@ -119,7 +119,7 @@ public abstract class TileEntitySidedEnvironment extends TileEntity implements S
     // ----------------------------------------------------------------------- //
 
     @Override
-    public void load(final BlockState state, final CompoundNBT nbt) {
+    public void load(final BlockState state, final CompoundTag nbt) {
         super.load(state, nbt);
         int index = 0;
         for (Node node : nodes) {
@@ -139,13 +139,13 @@ public abstract class TileEntitySidedEnvironment extends TileEntity implements S
     }
 
     @Override
-    public CompoundNBT save(CompoundNBT nbt) {
+    public CompoundTag save(CompoundTag nbt) {
         super.save(nbt);
         int index = 0;
         for (Node node : nodes) {
             // See load() regarding host check.
             if (node != null && node.host() == this) {
-                final CompoundNBT nodeNbt = new CompoundNBT();
+                final CompoundTag nodeNbt = new CompoundTag();
                 node.saveData(nodeNbt);
                 nbt.put("oc:node" + index, nodeNbt);
             }

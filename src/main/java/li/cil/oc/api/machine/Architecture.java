@@ -1,7 +1,7 @@
 package li.cil.oc.api.machine;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
 
 import java.lang.annotation.*;
 
@@ -140,7 +140,7 @@ public interface Architecture {
      *
      * @param nbt the tag compound to save to.
      */
-    void loadData(CompoundNBT nbt);
+    void loadData(CompoundTag nbt);
 
     /**
      * Saves the architecture for later restoration, e.g. across games or chunk
@@ -151,7 +151,7 @@ public interface Architecture {
      *
      * @param nbt the tag compound to save to.
      */
-    void saveData(CompoundNBT nbt);
+    void saveData(CompoundTag nbt);
 
     /**
      * Architectures can be annotated with this to provide a nice display name.
