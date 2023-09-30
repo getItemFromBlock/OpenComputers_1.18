@@ -1,21 +1,18 @@
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 import java.io.ByteArrayOutputStream
 import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 plugins {
     scala
     `maven-publish`
-    id("com.github.johnrengelman.shadow") version "6.1.0"
     id("com.matthewprenger.cursegradle") version "1.4.0"
     id("com.modrinth.minotaur") version "2.2.0"
-    id("net.minecraftforge.gradle") version "5.1.64"
+    id("net.minecraftforge.gradle") version "5.1.+"
 }
 
-java {
-    toolchain.languageVersion.set(JavaLanguageVersion.of(17))
-}
+java { toolchain.languageVersion.set(JavaLanguageVersion.of(17)) }
 
 val minecraft_version: String by project
 val forge_version: String by project
@@ -36,12 +33,12 @@ val curse_project_id: String by project
 val modrinth_project_id: String by project
 
 version = mod_version
+
 if (version.toString().endsWith("-snapshot")) {
     version = version.toString() + "-" + LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"))
 }
 
 group = mod_group
-//application.mainClass.set(project.property("mod.group") as String)
 
 fun getGitRef(): String {
     return try {
@@ -56,62 +53,9 @@ fun getGitRef(): String {
     }
 }
 
-
 version = version.toString() + "+" + getGitRef()
 
 version = "MC${minecraft_version}-${project.version}"
-
-minecraft {
-
-    mappings("official", minecraft_version)
-
-    runs {
-        create("client") {
-            workingDirectory(project.file("run"))
-
-            property("forge.logging.markers", "SCAN,REGISTRIES,REGISTRYDUMP")
-            property("forge.logging.console.level", "info")
-
-            property("mixin.env.remapRefMap", "true")
-            property("mixin.env.refMapRemappingFile", "${projectDir}/build/createSrgToMcp/output.srg")
-
-            mods {
-                create("opencomputers") {
-                    source(sourceSets.main.get())
-                }
-            }
-        }
-
-        create("server") {
-            workingDirectory(project.file("run"))
-
-            property("forge.logging.markers", "SCAN,REGISTRIES,REGISTRYDUMP")
-            property("forge.logging.console.level", "info")
-
-            property("mixin.env.remapRefMap", "true")
-            property("mixin.env.refMapRemappingFile", "${projectDir}/build/createSrgToMcp/output.srg")
-
-            mods {
-                create("opencomputers") {
-                    source(sourceSets.main.get())
-                }
-            }
-        }
-    }
-}
-
-/* Do not pull this in on IDEA, as it changes the compiler"s source path, making navigating to errors harder */
-//if (!System.getProperty("idea.active")) {
-//    compileScala {
-//        source = replaceSourceTokensScala.outputs
-//    }
-//}
-
-//compileScala {
-//    configure(scalaCompileOptions.forkOptions) {
-//        memoryMaximumSize = "1g"
-//    }
-//}
 
 repositories {
     maven {
@@ -128,27 +72,21 @@ repositories {
     }
     ivy {
         name = "asie dependency mirror"
-        artifactPattern("https://asie.pl/javadeps/[module]-revision.[ext]")
+        artifactPattern("https://asie.pl/javadeps/[module]-[revision](-[classifier]).[ext]")
         content {
             includeModule("", "OC-LuaJ")
             includeModule("", "OC-JNLua")
             includeModule("", "OC-JNLua-Natives")
         }
-        metadataSources {
-            artifact()
-        }
+        metadataSources { artifact() }
     }
     maven {
         url = uri("https://cursemaven.com")
-        content {
-            includeGroup("curse.maven")
-        }
+        content { includeGroup("curse.maven") }
     }
     maven {
         url = uri("https://modmaven.dev")
-        content {
-            includeGroup("mezz.jei")
-        }
+        content { includeGroup("mezz.jei") }
     }
     maven {
         url = uri("https://chickenbones.net/maven/")
@@ -164,21 +102,60 @@ repositories {
             includeGroup("mekanism")
         }
     }
-    maven {
-        url = uri("https://proxy-maven.covers1624.net/")
-        content {
-            includeModule("net.minecraftforge", "Scorge")
-        }
-    }
     mavenCentral()
 }
 
-//configurations {
-//    create("embedded")
-//    getByName("compileOnly").extendsFrom(getByName("provided"))
-//    getByName("implementation").extendsFrom(getByName("embedded"))
-//}
+minecraft {
+    mappings("official", minecraft_version)
 
+    runs {
+        create("client") {
+            workingDirectory(project.file("run"))
+
+            property("forge.logging.markers", "SCAN,REGISTRIES,REGISTRYDUMP")
+            property("forge.logging.console.level", "info")
+
+            property("mixin.env.remapRefMap", "true")
+            property("mixin.env.refMapRemappingFile", "${projectDir}/build/createSrgToMcp/output.srg")
+
+            mods { create("opencomputers") { source(sourceSets.main.get()) } }
+        }
+
+        create("server") {
+            workingDirectory(project.file("run"))
+
+            property("forge.logging.markers", "SCAN,REGISTRIES,REGISTRYDUMP")
+            property("forge.logging.console.level", "info")
+
+            property("mixin.env.remapRefMap", "true")
+            property("mixin.env.refMapRemappingFile", "${projectDir}/build/createSrgToMcp/output.srg")
+
+            mods { create("opencomputers") { source(sourceSets.main.get()) } }
+        }
+    }
+}
+
+/* Do not pull this in on IDEA, as it changes the compiler"s source path, making navigating to errors harder *//*
+if (System.getProperty("idea.active") == null) {
+    tasks.withType<ScalaCompile> {
+        source = replaceSourceTokensScala.outputs
+    }
+}
+*/
+
+// compileScala {
+//    configure(scalaCompileOptions.forkOptions) {
+//        memoryMaximumSize = "1g"
+//    }
+// }
+
+
+configurations {
+    create("embedded")
+    create("provided")
+    getByName("compileOnly").extendsFrom(getByName("provided"))
+    getByName("implementation").extendsFrom(getByName("embedded"))
+}
 
 dependencies {
     val jeiSlug = "jei-${minecraft_version}"
@@ -186,36 +163,32 @@ dependencies {
 
     // required for tests but cannot use implementation as that would clash with scorge at runtime
     compileOnly("org.scala-lang:scala-library:2.13.4")
-    shadow("com.typesafe:config:1.2.1")
+    "embedded"("com.typesafe:config:1.2.1")
 
     compileOnly(fg.deobf("li.cil.tis3d:tis3d-1.18-forge:${tis3d_version}"))
-    //compileOnly(fg.deobf("curse.maven:hwyla-${project.property("hwyla.projectId")}:${project.property("hwyla.fileId")}"))
-    //https://www.curseforge.com/minecraft/mc-mods/wthit-forge/files
-    compileOnly("org.squiddev:cc-tweaked-${minecraft_version}:${cct_version}")
-    compileOnly("curse.maven:cofh-core-69162:4759875") /* CoFHCore */
-    compileOnly("curse.maven:thermal-foundation-222880:4759960") /* Thermal Foundation */
+    // compileOnly(fg.deobf("curse.maven:hwyla-${project.property("hwyla.projectId")}:${project.property("hwyla.fileId")}"))
+    // https://www.curseforge.com/minecraft/mc-mods/wthit-forge/files
+    compileOnly(fg.deobf("org.squiddev:cc-tweaked-${minecraft_version}:${cct_version}"))
+    compileOnly(fg.deobf("curse.maven:cofh-core-69162:4759875")) /* CoFHCore */
+    compileOnly(fg.deobf("curse.maven:thermal-foundation-222880:4759960")) /* Thermal Foundation */
 
-    runtimeOnly("curse.maven:modernfix-790626:4728410")
+    runtimeOnly(fg.deobf("curse.maven:modernfix-790626:4728410"))
 
-    compileOnly("appeng:appliedenergistics2:${ae2_version}:api")
+    "provided"(fg.deobf("appeng:appliedenergistics2:${ae2_version}:api"))
+    "provided"(fg.deobf("mekanism:Mekanism:${mekanism_version}:api"))
+    "provided"(fg.deobf("codechicken:CBMultipart:${cbmultipart_version}:universal"))
+    "provided"(fg.deobf("codechicken:ChickenASM:${casm_version}"))
+    "provided"(fg.deobf("codechicken:CodeChickenLib:${ccl_version}:universal"))
+    "provided"(fg.deobf("codechicken:EnderStorage:${enderstorage_version}:universal"))
+    "provided"(fg.deobf("mezz.jei:${jeiSlug}:${jei_version}"))
 
-    compileOnly(fg.deobf("mekanism:Mekanism:${mekanism_version}:api"))
+    // compileOnly(fg.deobf("mrtjp:ProjectRed:${project.property("projred.version")}:core"))
 
-    compileOnly(fg.deobf("codechicken:CBMultipart:${cbmultipart_version}:universal"))
+    // compileOnly(fg.deobf("mrtjp:ProjectRed:${project.property("projred.version")}:integration"))
 
-    compileOnly(fg.deobf("codechicken:ChickenASM:${casm_version}"))
-    compileOnly(fg.deobf("codechicken:CodeChickenLib:${ccl_version}:universal"))
-    compileOnly(fg.deobf("codechicken:EnderStorage:${enderstorage_version}:universal"))
-
-    compileOnly(fg.deobf("mezz.jei:${jeiSlug}:${jei_version}"))
-
-    //compileOnly(fg.deobf("mrtjp:ProjectRed:${project.property("projred.version")}:core"))
-
-    //compileOnly(fg.deobf("mrtjp:ProjectRed:${project.property("projred.version")}:integration"))
-
-    shadow(mapOf("name" to "OC-LuaJ", "version" to "20220907.1", "ext" to "jar"))
-    shadow(mapOf("name" to "OC-JNLua", "version" to "20230530.0", "ext" to "jar"))
-    shadow(mapOf("name" to "OC-JNLua-Natives", "version" to "20220928.1", "ext" to "jar"))
+    "embedded"(mapOf("name" to "OC-LuaJ", "version" to "20220907.1", "ext" to "jar"))
+    "embedded"(mapOf("name" to "OC-JNLua", "version" to "20230530.0", "ext" to "jar"))
+    "embedded"(mapOf("name" to "OC-JNLua-Natives", "version" to "20220928.1", "ext" to "jar"))
 
     testImplementation("org.scala-lang:scala-library:2.13.4")
     testImplementation("junit:junit:4.13")
@@ -224,63 +197,61 @@ dependencies {
     testImplementation("org.scalatest:scalatest_2.13:3.2.6")
     testImplementation("org.scalatestplus:junit-4-13_2.13:3.2.6.+")
     testImplementation("org.scalatestplus:mockito-3-4_2.13:3.2.6.+")
-
 }
 
 tasks {
     register<Sync>("replaceSourceTokensScala") {
         from(sourceSets.main.get().scala.srcDirs)
         into("$buildDir/srcReplaced/scala")
-        expand("VERSION" to mod_version, //TODO FIXME
+        expand("VERSION" to mod_version, // TODO FIXME
                 "MCVERSION" to minecraft_version)
     }
 
     named<Copy>("processResources") {
-        //val reducedScorgeVer = project.property("scorge.version").toString().replace(Regex("(\\d+\\.\\d+)(\\.\\d+)"), "\$1")
+        // val reducedScorgeVer =
+        // project.property("scorge.version").toString().replace(Regex("(\\d+\\.\\d+)(\\.\\d+)"),
+        // "\$1")
 
         inputs.property("version", mod_version)
         inputs.property("mcversion", minecraft_version)
-        //inputs.property("sversion", reducedScorgeVer)
+        // inputs.property("sversion", reducedScorgeVer)
         duplicatesStrategy = DuplicatesStrategy.EXCLUDE
         filesMatching(listOf("META-INF/mods.toml")) {
-            expand("version" to mod_version, "mcversion" to minecraft_version/*, "sversion" to reducedScorgeVer */)
+            expand("version" to mod_version, //TODO FIXME
+                    "mcversion" to minecraft_version /*, "sversion" to reducedScorgeVer */)
         }
     }
 
     named<Jar>("jar") {
-        //val reducedScorgeVer = project.property("scorge.version").toString().replace(Regex("(\\d+\\.\\d+)(\\.\\d+)"), "\$1")
+        doFirst {
+            configurations["embedded"].forEach { dep ->
+                from(project.zipTree(dep)) {
+                    exclude("*", "META-INF", "META-INF/**")
+                }
+            }
+        }
+
+        // val reducedScorgeVer =
+        // project.property("scorge.version").toString().replace(Regex("(\\d+\\.\\d+)(\\.\\d+)"),
+        // "\$1")
 
         inputs.property("version", mod_version)
         inputs.property("mcversion", minecraft_version)
-        //inputs.property("sversion", reducedScorgeVer)
+        // inputs.property("sversion", reducedScorgeVer)
         duplicatesStrategy = DuplicatesStrategy.EXCLUDE
         filesMatching(listOf("META-INF/mods.toml")) {
-            expand("version" to mod_version, "mcversion" to minecraft_version/*, "sversion" to reducedScorgeVer*/)
+            expand("version" to mod_version, //TODO FIXME
+                    "mcversion" to minecraft_version /*, "sversion" to reducedScorgeVer*/)
         }
 
-//        configurations["embedded"].forEach { dep ->
-//            from(project.zipTree(dep)) {
-//                exclude("*", "META-INF", "META-INF/**")
-//            }
-//        }
         manifest {
-            attributes(
-                    mapOf(
-                            "Specification-Title" to "opencomputers",
-                            "Specification-Vendor" to "li.cil.oc",
-                            "Specification-Version" to "1",
-                            "Implementation-Title" to project.name,
-                            "Implementation-Version" to version,
-                            "Implementation-Vendor" to mod_group,
-                            "Implementation-Timestamp" to SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").format(Date())
-                    )
-            )
+            attributes(mapOf("Specification-Title" to "opencomputers", "Specification-Vendor" to "li.cil.oc", "Specification-Version" to "1", "Implementation-Title" to project.name, "Implementation-Version" to version, "Implementation-Vendor" to mod_group, "Implementation-Timestamp" to SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").format(Date())))
         }
     }
 
-//    named<Javadoc>("javadoc") {
-//        include("li/cil/oc/api/**")
-//    }
+    //    named<Javadoc>("javadoc") {
+    //        include("li/cil/oc/api/**")
+    //    }
 
     register<Jar>("apiJar") {
         from(sourceSets.main.get().allSource)
@@ -289,19 +260,19 @@ tasks {
         include("li/cil/oc/api/**")
     }
 
-//    register<Jar>("javadocJar") {
-//        dependsOn(tasks.named<Javadoc>("javadoc"))
-//        from(tasks.named<Javadoc>("javadoc").get().destinationDir)
-//        classifier = "javadoc"
-//    }
+    //    register<Jar>("javadocJar") {
+    //        dependsOn(tasks.named<Javadoc>("javadoc"))
+    //        from(tasks.named<Javadoc>("javadoc").get().destinationDir)
+    //        classifier = "javadoc"
+    //    }
 }
 
 artifacts {
     archives(tasks.named("apiJar"))
-//    archives(tasks.named("javadocJar"))
+    //    archives(tasks.named("javadocJar"))
 }
 
-//publishing {
+// publishing {
 //    publications {
 //        create<MavenPublication>("mavenJava") {
 //            groupId = project.group.toString()
@@ -322,9 +293,9 @@ artifacts {
 //            }
 //        }
 //    }
-//}
+// }
 
-//curseforge {
+// curseforge {
 //    apiKey = System.getenv("CURSEFORGE_API_KEY") ?: ""
 //
 //    project(closureOf<com.matthewprenger.cursegradle.CurseProject> {
@@ -336,13 +307,14 @@ artifacts {
 //        gameVersionStrings.add("Java 17")
 //        gameVersionStrings.add("Forge")
 //
-//        mainArtifact(tasks.named<Jar>("jar").get().archiveFile.get().asFile, closureOf<com.matthewprenger.cursegradle.CurseArtifact> {
+//        mainArtifact(tasks.named<Jar>("jar").get().archiveFile.get().asFile,
+// closureOf<com.matthewprenger.cursegradle.CurseArtifact> {
 //            displayName = "Your Project Name ${project.version}"
 //        })
 //    })
-//}
+// }
 
-//modrinth {
+// modrinth {
 //    token.set(System.getenv("MODRINTH_API_KEY") ?: "")
 //    projectId.set(project.property("modrinth.project.id").toString())
 //    versionName.set("${project.rootProject.name}-${project.version}")
@@ -352,4 +324,4 @@ artifacts {
 //    gameVersions.add(project.property("minecraft.version").toString())
 //    loaders.add("forge")
 //    uploadFile.set(tasks.named<Jar>("jar").get().archiveFile.get().asFile)
-//}
+// }
