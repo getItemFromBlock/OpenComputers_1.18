@@ -17,12 +17,30 @@ java {
     toolchain.languageVersion.set(JavaLanguageVersion.of(17))
 }
 
-version = project.property("mod.version") as String
+val minecraft_version: String by project
+val forge_version: String by project
+val scorge_version: String by project
+val mod_name: String by project
+val mod_group: String by project
+val mod_version: String by project
+val ae2_version: String by project
+val cct_version: String by project
+val jei_version: String by project
+val mekanism_version: String by project
+val tis3d_version: String by project
+val ccl_version: String by project
+val cbmultipart_version: String by project
+val casm_version: String by project
+val enderstorage_version: String by project
+val curse_project_id: String by project
+val modrinth_project_id: String by project
+
+version = mod_version
 if (version.toString().endsWith("-snapshot")) {
     version = version.toString() + "-" + LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"))
 }
 
-group = project.properties["mod.group"] as String
+group = mod_group
 //application.mainClass.set(project.property("mod.group") as String)
 
 fun getGitRef(): String {
@@ -41,13 +59,11 @@ fun getGitRef(): String {
 
 version = version.toString() + "+" + getGitRef()
 
-version = "MC${project.property("minecraft.version")}-${project.version}"
+version = "MC${minecraft_version}-${project.version}"
 
-val mappingsChannel = project.provider { project.properties["minecraft.mappings_channel"] as String }
-val mappingsVersion = project.provider { project.properties["minecraft.mappings_version"] as String }
 minecraft {
 
-    mappings(mappingsChannel.get(), mappingsVersion.get())
+    mappings("official", minecraft_version)
 
     runs {
         create("client") {
@@ -165,37 +181,37 @@ repositories {
 
 
 dependencies {
-    val jeiSlug = "jei-${project.property("minecraft.version")}"
-    minecraft("net.minecraftforge:forge:${project.property("minecraft.version")}-${project.property("forge.version")}")
+    val jeiSlug = "jei-${minecraft_version}"
+    minecraft("net.minecraftforge:forge:${minecraft_version}-${forge_version}")
 
     // required for tests but cannot use implementation as that would clash with scorge at runtime
     compileOnly("org.scala-lang:scala-library:2.13.4")
-    implementation("net.minecraftforge:Scorge:${project.property("scorge.version")}")
     shadow("com.typesafe:config:1.2.1")
 
-    compileOnly(fg.deobf("li.cil.tis3d:tis3d-1.18.2-forge:${project.property("tis3d.version")}"))
-    compileOnly(fg.deobf("curse.maven:hwyla-${project.property("hwyla.projectId")}:${project.property("hwyla.fileId")}"))
-    compileOnly(fg.deobf("org.squiddev:cc-tweaked-${project.property("minecraft.version")}:${project.property("cct.version")}"))
-    compileOnly(fg.deobf("curse.maven:cofh-core-69162:4022663")) /* CoFHCore */
-    compileOnly(fg.deobf("curse.maven:thermal-foundation-222880:4022666")) /* Thermal Foundation */
+    compileOnly(fg.deobf("li.cil.tis3d:tis3d-1.18-forge:${tis3d_version}"))
+    //compileOnly(fg.deobf("curse.maven:hwyla-${project.property("hwyla.projectId")}:${project.property("hwyla.fileId")}"))
+    //https://www.curseforge.com/minecraft/mc-mods/wthit-forge/files
+    compileOnly("org.squiddev:cc-tweaked-${minecraft_version}:${cct_version}")
+    compileOnly("curse.maven:cofh-core-69162:4759875") /* CoFHCore */
+    compileOnly("curse.maven:thermal-foundation-222880:4759960") /* Thermal Foundation */
 
     runtimeOnly("curse.maven:modernfix-790626:4728410")
 
-    compileOnly(fg.deobf("appeng:appliedenergistics2:${project.property("ae2.version")}:api"))
+    compileOnly("appeng:appliedenergistics2:${ae2_version}:api")
 
-    compileOnly(fg.deobf("mekanism:Mekanism:${project.property("mekanism.version")}:api"))
+    compileOnly(fg.deobf("mekanism:Mekanism:${mekanism_version}:api"))
 
-    compileOnly(fg.deobf("codechicken:CBMultipart:${project.property("cbmultipart.version")}:universal"))
+    compileOnly(fg.deobf("codechicken:CBMultipart:${cbmultipart_version}:universal"))
 
-    compileOnly(fg.deobf("codechicken:ChickenASM:${project.property("casm.version")}"))
-    compileOnly(fg.deobf("codechicken:CodeChickenLib:${project.property("ccl.version")}:universal"))
-    compileOnly(fg.deobf("codechicken:EnderStorage:${project.property("enderstorage.version")}:universal"))
+    compileOnly(fg.deobf("codechicken:ChickenASM:${casm_version}"))
+    compileOnly(fg.deobf("codechicken:CodeChickenLib:${ccl_version}:universal"))
+    compileOnly(fg.deobf("codechicken:EnderStorage:${enderstorage_version}:universal"))
 
-    compileOnly(fg.deobf("mezz.jei:${jeiSlug}:${project.property("jei.version")}"))
+    compileOnly(fg.deobf("mezz.jei:${jeiSlug}:${jei_version}"))
 
-    compileOnly(fg.deobf("mrtjp:ProjectRed:${project.property("projred.version")}:core"))
+    //compileOnly(fg.deobf("mrtjp:ProjectRed:${project.property("projred.version")}:core"))
 
-    compileOnly(fg.deobf("mrtjp:ProjectRed:${project.property("projred.version")}:integration"))
+    //compileOnly(fg.deobf("mrtjp:ProjectRed:${project.property("projred.version")}:integration"))
 
     shadow(mapOf("name" to "OC-LuaJ", "version" to "20220907.1", "ext" to "jar"))
     shadow(mapOf("name" to "OC-JNLua", "version" to "20230530.0", "ext" to "jar"))
@@ -215,31 +231,31 @@ tasks {
     register<Sync>("replaceSourceTokensScala") {
         from(sourceSets.main.get().scala.srcDirs)
         into("$buildDir/srcReplaced/scala")
-        expand("VERSION" to project.property("mod.version"),
-                "MCVERSION" to project.property("minecraft.version"))
+        expand("VERSION" to mod_version, //TODO FIXME
+                "MCVERSION" to minecraft_version)
     }
 
     named<Copy>("processResources") {
-        val reducedScorgeVer = project.property("scorge.version").toString().replace(Regex("(\\d+\\.\\d+)(\\.\\d+)"), "\$1")
+        //val reducedScorgeVer = project.property("scorge.version").toString().replace(Regex("(\\d+\\.\\d+)(\\.\\d+)"), "\$1")
 
-        inputs.property("version", "${project.property("mod.version")}")
-        inputs.property("mcversion", project.property("minecraft.version"))
-        inputs.property("sversion", reducedScorgeVer)
+        inputs.property("version", mod_version)
+        inputs.property("mcversion", minecraft_version)
+        //inputs.property("sversion", reducedScorgeVer)
         duplicatesStrategy = DuplicatesStrategy.EXCLUDE
         filesMatching(listOf("META-INF/mods.toml")) {
-            expand("version" to "${project.property("mod.version")}", "mcversion" to project.property("minecraft.version"), "sversion" to reducedScorgeVer)
+            expand("version" to mod_version, "mcversion" to minecraft_version/*, "sversion" to reducedScorgeVer */)
         }
     }
 
     named<Jar>("jar") {
-        val reducedScorgeVer = project.property("scorge.version").toString().replace(Regex("(\\d+\\.\\d+)(\\.\\d+)"), "\$1")
+        //val reducedScorgeVer = project.property("scorge.version").toString().replace(Regex("(\\d+\\.\\d+)(\\.\\d+)"), "\$1")
 
-        inputs.property("version", "${project.property("mod.version")}")
-        inputs.property("mcversion", project.property("minecraft.version"))
-        inputs.property("sversion", reducedScorgeVer)
+        inputs.property("version", mod_version)
+        inputs.property("mcversion", minecraft_version)
+        //inputs.property("sversion", reducedScorgeVer)
         duplicatesStrategy = DuplicatesStrategy.EXCLUDE
         filesMatching(listOf("META-INF/mods.toml")) {
-            expand("version" to "${project.property("mod.version")}", "mcversion" to project.property("minecraft.version"), "sversion" to reducedScorgeVer)
+            expand("version" to mod_version, "mcversion" to minecraft_version/*, "sversion" to reducedScorgeVer*/)
         }
 
 //        configurations["embedded"].forEach { dep ->
@@ -255,7 +271,7 @@ tasks {
                             "Specification-Version" to "1",
                             "Implementation-Title" to project.name,
                             "Implementation-Version" to version,
-                            "Implementation-Vendor" to project.property("mod.group"),
+                            "Implementation-Vendor" to mod_group,
                             "Implementation-Timestamp" to SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").format(Date())
                     )
             )
