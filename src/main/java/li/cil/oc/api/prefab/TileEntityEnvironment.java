@@ -5,6 +5,7 @@ import li.cil.oc.api.network.Environment;
 import li.cil.oc.api.network.Message;
 import li.cil.oc.api.network.Node;
 import li.cil.oc.api.network.Visibility;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -61,8 +62,8 @@ public abstract class TileEntityEnvironment extends BlockEntity implements Envir
 
     // ----------------------------------------------------------------------- //
 
-    public TileEntityEnvironment(BlockEntityType<?> type) {
-        super(type);
+    public TileEntityEnvironment(BlockEntityType<?> type, BlockPos pos, BlockState state) {
+        super(type, pos, state);
     }
 
     @Override
@@ -124,8 +125,8 @@ public abstract class TileEntityEnvironment extends BlockEntity implements Envir
     // ----------------------------------------------------------------------- //
 
     @Override
-    public void load(final BlockState state, final CompoundTag nbt) {
-        super.load(state, nbt);
+    public void load(final CompoundTag nbt) {
+        super.load( nbt);
         // The host check may be superfluous for you. It's just there to allow
         // some special cases, where getNode() returns some node managed by
         // some other instance (for example when you have multiple internal

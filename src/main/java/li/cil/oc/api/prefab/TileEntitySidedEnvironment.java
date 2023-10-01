@@ -120,8 +120,8 @@ public abstract class TileEntitySidedEnvironment extends BlockEntity implements 
     // ----------------------------------------------------------------------- //
 
     @Override
-    public void load(final BlockState state, final CompoundTag nbt) {
-        super.load(state, nbt);
+    public void load(final CompoundTag nbt) {
+        super.load(nbt);
         int index = 0;
         for (Node node : nodes) {
             // The host check may be superfluous for you. It's just there to allow
