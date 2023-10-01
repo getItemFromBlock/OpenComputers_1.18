@@ -3,12 +3,10 @@ package li.cil.oc.api.event;
 import com.mojang.blaze3d.vertex.PoseStack;
 import li.cil.oc.api.component.RackMountable;
 import li.cil.oc.api.internal.Rack;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.Direction;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.eventbus.api.Cancelable;
 import net.minecraftforge.eventbus.api.Event;
 

@@ -16,7 +16,8 @@ java { toolchain.languageVersion.set(JavaLanguageVersion.of(17)) }
 
 val minecraft_version: String by project
 val forge_version: String by project
-val scorge_version: String by project
+val scala_version: String by project
+val cats_version: String by project
 val mod_name: String by project
 val mod_group: String by project
 val mod_version: String by project
@@ -31,6 +32,7 @@ val casm_version: String by project
 val enderstorage_version: String by project
 val curse_project_id: String by project
 val modrinth_project_id: String by project
+
 
 version = mod_version
 
@@ -58,6 +60,16 @@ version = version.toString() + "+" + getGitRef()
 version = "MC${minecraft_version}-${project.version}"
 
 repositories {
+    maven {
+        name = "Azure-SLP"
+        url = uri("https://pkgs.dev.azure.com/Kotori316/minecraft/_packaging/mods/maven/v1")
+        content {
+            includeModule("com.kotori316", "ScalableCatsForce".toLowerCase())
+            includeModule("org.typelevel", "cats-core_2.13")
+            includeModule("org.typelevel", "cats-kernel_2.13")
+            includeModule("org.typelevel", "cats-free_2.13")
+        }
+    }
     maven {
         name = "MightyPirates"
         url = uri("https://maven.cil.li/")
@@ -161,8 +173,15 @@ dependencies {
     val jeiSlug = "jei-${minecraft_version}"
     minecraft("net.minecraftforge:forge:${minecraft_version}-${forge_version}")
 
+    // https://mvnrepository.com/artifact/org.scala-lang/scala-library
+    compileOnly("org.scala-lang:scala-library:$scala_version")
+    // A library of functional programming in Scala
+    compileOnly("org.typelevel:cats-core_2.13:$cats_version")
+
+    runtimeOnly("com.kotori316:ScalableCatsForce".toLowerCase() + ":2.13.8-build-4:with-library") {
+        isTransitive = false
+    }
     // required for tests but cannot use implementation as that would clash with scorge at runtime
-    compileOnly("org.scala-lang:scala-library:2.13.4")
     "embedded"("com.typesafe:config:1.2.1")
 
     compileOnly(fg.deobf("li.cil.tis3d:tis3d-1.18-forge:${tis3d_version}"))

@@ -1,39 +1,39 @@
 package li.cil.oc.common.container;
 
 import li.cil.oc.OpenComputers;
-import net.minecraft.item.ItemStack;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.inventory.Inventory;
-import net.minecraft.inventory.container.ContainerType;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.inventory.MenuType;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.common.extensions.IForgeContainerType;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.network.IContainerFactory;
-import net.minecraftforge.fml.network.NetworkHooks;
+import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.ObjectHolder;
 
 @ObjectHolder("opencomputers")
 public final class ContainerTypes {
-    public static final ContainerType<Adapter> ADAPTER = null;
-    public static final ContainerType<Assembler> ASSEMBLER = null;
-    public static final ContainerType<Case> CASE = null;
-    public static final ContainerType<Charger> CHARGER = null;
-    public static final ContainerType<Database> DATABASE = null;
-    public static final ContainerType<Disassembler> DISASSEMBLER = null;
-    public static final ContainerType<DiskDrive> DISK_DRIVE = null;
-    public static final ContainerType<Drone> DRONE = null;
-    public static final ContainerType<Printer> PRINTER = null;
-    public static final ContainerType<Rack> RACK = null;
-    public static final ContainerType<Raid> RAID = null;
-    public static final ContainerType<Relay> RELAY = null;
-    public static final ContainerType<Robot> ROBOT = null;
-    public static final ContainerType<Server> SERVER = null;
-    public static final ContainerType<Tablet> TABLET = null;
+    public static final MenuType<Adapter> ADAPTER = null;
+    public static final MenuType<Assembler> ASSEMBLER = null;
+    public static final MenuType<Case> CASE = null;
+    public static final MenuType<Charger> CHARGER = null;
+    public static final MenuType<Database> DATABASE = null;
+    public static final MenuType<Disassembler> DISASSEMBLER = null;
+    public static final MenuType<DiskDrive> DISK_DRIVE = null;
+    public static final MenuType<Drone> DRONE = null;
+    public static final MenuType<Printer> PRINTER = null;
+    public static final MenuType<Rack> RACK = null;
+    public static final MenuType<Raid> RAID = null;
+    public static final MenuType<Relay> RELAY = null;
+    public static final MenuType<Robot> ROBOT = null;
+    public static final MenuType<Server> SERVER = null;
+    public static final MenuType<Tablet> TABLET = null;
 
     @SubscribeEvent
-    public static void registerContainers(RegistryEvent.Register<ContainerType<?>> e) {
+    public static void registerContainers(RegistryEvent.Register<MenuType<?>> e) {
         register(e.getRegistry(), "adapter", (id, plr, buff) -> new Adapter(ADAPTER, id, plr, new Inventory(1)));
         register(e.getRegistry(), "assembler", (id, plr, buff) -> new Assembler(ASSEMBLER, id, plr, new Inventory(22)));
         register(e.getRegistry(), "case", (id, plr, buff) -> {
@@ -78,32 +78,32 @@ public final class ContainerTypes {
         });
     }
 
-    private static void register(IForgeRegistry<ContainerType<?>> registry, String name, IContainerFactory<?> factory) {
-        ContainerType<?> type = IForgeContainerType.create(factory);
+    private static void register(IForgeRegistry<MenuType<?>> registry, String name, IContainerFactory<?> factory) {
+        MenuType<?> type = IForgeContainerType.create(factory);
         type.setRegistryName(new ResourceLocation(OpenComputers.ID(), name));
         registry.register(type);
     }
 
-    public static void openAdapterGui(ServerPlayerEntity player, li.cil.oc.common.tileentity.Adapter adapter) {
+    public static void openAdapterGui(ServerPlayer player, li.cil.oc.common.tileentity.Adapter adapter) {
         NetworkHooks.openGui(player, adapter);
     }
 
-    public static void openAssemblerGui(ServerPlayerEntity player, li.cil.oc.common.tileentity.Assembler assembler) {
+    public static void openAssemblerGui(ServerPlayer player, li.cil.oc.common.tileentity.Assembler assembler) {
         NetworkHooks.openGui(player, assembler);
     }
 
-    public static void openCaseGui(ServerPlayerEntity player, li.cil.oc.common.tileentity.Case computer) {
+    public static void openCaseGui(ServerPlayer player, li.cil.oc.common.tileentity.Case computer) {
         NetworkHooks.openGui(player, computer, buff -> {
             buff.writeVarInt(computer.getContainerSize());
             buff.writeVarInt(computer.tier());
         });
     }
 
-    public static void openChargerGui(ServerPlayerEntity player, li.cil.oc.common.tileentity.Charger charger) {
+    public static void openChargerGui(ServerPlayer player, li.cil.oc.common.tileentity.Charger charger) {
         NetworkHooks.openGui(player, charger);
     }
 
-    public static void openDatabaseGui(ServerPlayerEntity player, li.cil.oc.common.inventory.DatabaseInventory database) {
+    public static void openDatabaseGui(ServerPlayer player, li.cil.oc.common.inventory.DatabaseInventory database) {
         NetworkHooks.openGui(player, database, buff -> {
             buff.writeItem(database.container());
             buff.writeVarInt(database.getContainerSize());
@@ -111,51 +111,51 @@ public final class ContainerTypes {
         });
     }
 
-    public static void openDisassemblerGui(ServerPlayerEntity player, li.cil.oc.common.tileentity.Disassembler disassembler) {
+    public static void openDisassemblerGui(ServerPlayer player, li.cil.oc.common.tileentity.Disassembler disassembler) {
         NetworkHooks.openGui(player, disassembler);
     }
 
-    public static void openDiskDriveGui(ServerPlayerEntity player, li.cil.oc.common.tileentity.DiskDrive diskDrive) {
+    public static void openDiskDriveGui(ServerPlayer player, li.cil.oc.common.tileentity.DiskDrive diskDrive) {
         NetworkHooks.openGui(player, diskDrive);
     }
 
-    public static void openDiskDriveGui(ServerPlayerEntity player, li.cil.oc.server.component.DiskDriveMountable diskDrive) {
+    public static void openDiskDriveGui(ServerPlayer player, li.cil.oc.server.component.DiskDriveMountable diskDrive) {
         NetworkHooks.openGui(player, diskDrive);
     }
 
-    public static void openDiskDriveGui(ServerPlayerEntity player, li.cil.oc.common.inventory.DiskDriveMountableInventory diskDrive) {
+    public static void openDiskDriveGui(ServerPlayer player, li.cil.oc.common.inventory.DiskDriveMountableInventory diskDrive) {
         NetworkHooks.openGui(player, diskDrive);
     }
 
-    public static void openDroneGui(ServerPlayerEntity player, li.cil.oc.common.entity.Drone drone) {
+    public static void openDroneGui(ServerPlayer player, li.cil.oc.common.entity.Drone drone) {
         NetworkHooks.openGui(player, drone.containerProvider(), buff -> {
             buff.writeVarInt(drone.mainInventory().getContainerSize());
         });
     }
 
-    public static void openPrinterGui(ServerPlayerEntity player, li.cil.oc.common.tileentity.Printer printer) {
+    public static void openPrinterGui(ServerPlayer player, li.cil.oc.common.tileentity.Printer printer) {
         NetworkHooks.openGui(player, printer);
     }
 
-    public static void openRackGui(ServerPlayerEntity player, li.cil.oc.common.tileentity.Rack rack) {
+    public static void openRackGui(ServerPlayer player, li.cil.oc.common.tileentity.Rack rack) {
         NetworkHooks.openGui(player, rack);
     }
 
-    public static void openRaidGui(ServerPlayerEntity player, li.cil.oc.common.tileentity.Raid raid) {
+    public static void openRaidGui(ServerPlayer player, li.cil.oc.common.tileentity.Raid raid) {
         NetworkHooks.openGui(player, raid);
     }
 
-    public static void openRelayGui(ServerPlayerEntity player, li.cil.oc.common.tileentity.Relay relay) {
+    public static void openRelayGui(ServerPlayer player, li.cil.oc.common.tileentity.Relay relay) {
         NetworkHooks.openGui(player, relay);
     }
 
-    public static void openRobotGui(ServerPlayerEntity player, li.cil.oc.common.tileentity.Robot robot) {
+    public static void openRobotGui(ServerPlayer player, li.cil.oc.common.tileentity.Robot robot) {
         NetworkHooks.openGui(player, robot, buff -> {
             RobotInfo$.MODULE$.writeRobotInfo(buff, new RobotInfo(robot));
         });
     }
 
-    public static void openServerGui(ServerPlayerEntity player, li.cil.oc.common.inventory.ServerInventory server, int rackSlot) {
+    public static void openServerGui(ServerPlayer player, li.cil.oc.common.inventory.ServerInventory server, int rackSlot) {
         NetworkHooks.openGui(player, server, buff -> {
             buff.writeItem(server.container());
             buff.writeVarInt(server.getContainerSize());
@@ -164,7 +164,7 @@ public final class ContainerTypes {
         });
     }
 
-    public static void openTabletGui(ServerPlayerEntity player, li.cil.oc.common.item.TabletWrapper tablet) {
+    public static void openTabletGui(ServerPlayer player, li.cil.oc.common.item.TabletWrapper tablet) {
         NetworkHooks.openGui(player, tablet, buff -> {
             buff.writeItem(tablet.stack());
             buff.writeVarInt(tablet.getContainerSize());

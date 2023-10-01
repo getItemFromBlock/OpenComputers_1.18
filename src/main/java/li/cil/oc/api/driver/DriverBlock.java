@@ -4,13 +4,14 @@ import li.cil.oc.api.network.ManagedEnvironment;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 
 /**
  * Interface for side-aware block component drivers.
  * <br>
  * This driver type is used for components that are blocks, i.e. that can be
  * placed in the world, but cannot be modified to or don't want to have their
- * {@link net.minecraft.tileentity.TileEntity} implement one of the interfaces
+ * {@link BlockEntity} implement one of the interfaces
  * for environments ({@link li.cil.oc.api.network.Environment} or
  * {@link li.cil.oc.api.network.SidedEnvironment}).
  * <br>

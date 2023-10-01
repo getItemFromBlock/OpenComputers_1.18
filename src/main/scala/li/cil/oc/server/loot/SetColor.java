@@ -8,24 +8,24 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 import li.cil.oc.util.ItemColorizer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.loot.LootContext;
-import net.minecraft.loot.LootFunction;
-import net.minecraft.loot.LootFunctionType;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.functions.LootItemFunction;
+import net.minecraft.world.level.storage.loot.functions.LootItemFunctionType;
 import net.minecraft.loot.functions.ILootFunction;
-import net.minecraft.loot.conditions.ILootCondition;
-import net.minecraft.util.JSONUtils;
+import net.minecraft.world.level.storage.loot.predicates.LootItemConditions;
+import net.minecraft.util.GsonHelper;
 
-public final class SetColor extends LootFunction {
+public final class SetColor extends LootItemFunction {
     private OptionalInt color;
 
-    private SetColor(ILootCondition[] conditions, OptionalInt color) {
+    private SetColor(LootItemConditions[] conditions, OptionalInt color) {
         super(conditions);
         this.color = color;
     }
 
     @Override
-    public LootFunctionType getType() {
+    public LootItemFunctionType getType() {
         return LootFunctions.SET_COLOR;
     }
 
@@ -39,7 +39,7 @@ public final class SetColor extends LootFunction {
         return stack;
     }
 
-    public static class Builder extends LootFunction.Builder<Builder> {
+    public static class Builder extends LootItemFunction.Builder<Builder> {
         private OptionalInt color = OptionalInt.empty();
 
         @Override
@@ -68,7 +68,7 @@ public final class SetColor extends LootFunction {
         return new Builder();
     }
 
-    public static class Serializer extends LootFunction.Serializer<SetColor> {
+    public static class Serializer extends LootItemFunction.Serializer<SetColor> {
         @Override
         public void serialize(JsonObject dst, SetColor src, JsonSerializationContext ctx) {
             super.serialize(dst, src, ctx);
@@ -76,9 +76,9 @@ public final class SetColor extends LootFunction {
         }
 
         @Override
-        public SetColor deserialize(JsonObject src, JsonDeserializationContext ctx, ILootCondition[] conditions) {
+        public SetColor deserialize(JsonObject src, JsonDeserializationContext ctx, LootItemConditions[] conditions) {
             if (src.has("color")) {
-                int color = JSONUtils.getAsInt(src, "color");
+                int color = GsonHelper.getAsInt(src, "color");
                 if (color < 0 || color > 0xFFFFFF) throw new JsonParseException("Invalid RGB color: " + color);
                 return new SetColor(conditions, OptionalInt.of(color));
             }

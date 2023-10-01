@@ -3,9 +3,10 @@ package li.cil.oc.api.prefab;
 import li.cil.oc.api.Network;
 import li.cil.oc.api.network.Node;
 import li.cil.oc.api.network.SidedEnvironment;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.level.block.entity.TickableBlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.core.Direction;
@@ -21,7 +22,7 @@ import net.minecraft.core.Direction;
  * network as an index structure to find other nodes connected to them.
  */
 @SuppressWarnings("UnusedDeclaration")
-public abstract class TileEntitySidedEnvironment extends BlockEntity implements SidedEnvironment, TickableBlockEntity {
+public abstract class TileEntitySidedEnvironment extends BlockEntity implements SidedEnvironment, BlockEntityTicker {
     // See constructor.
     protected Node[] nodes = new Node[6];
 
@@ -62,8 +63,8 @@ public abstract class TileEntitySidedEnvironment extends BlockEntity implements 
      *       .create(), ...);
      * </pre>
      */
-    protected TileEntitySidedEnvironment(BlockEntityType<?> type, final Node... nodes) {
-        super(type);
+    protected TileEntitySidedEnvironment(BlockEntityType<?> type, BlockPos position, BlockState state, final Node... nodes) {
+        super(type, position, state);
         System.arraycopy(nodes, 0, this.nodes, 0, Math.min(nodes.length, this.nodes.length));
     }
 

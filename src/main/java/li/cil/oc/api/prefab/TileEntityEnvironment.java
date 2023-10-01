@@ -60,7 +60,7 @@ public abstract class TileEntityEnvironment extends BlockEntity implements Envir
     protected Node node;
 
     // ----------------------------------------------------------------------- //
-    
+
     public TileEntityEnvironment(BlockEntityType<?> type) {
         super(type);
     }

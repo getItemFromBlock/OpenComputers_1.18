@@ -1,5 +1,7 @@
 package li.cil.oc.api.network;
 
+import net.minecraft.world.level.block.entity.BlockEntity;
+
 /**
  * Interface for interacting with networks.
  * <br>
@@ -75,8 +77,8 @@ public interface Network {
      * Removes a node from the network.
      * <br>
      * This should be called by nodes when they are destroyed (e.g. in
-     * {@link net.minecraft.tileentity.TileEntity#setRemoved()}) or unloaded
-     * (e.g. in {@link net.minecraft.tileentity.TileEntity#onChunkUnloaded()}).
+     * {@link BlockEntity#setRemoved()}) or unloaded
+     * (e.g. in {@link BlockEntity#onChunkUnloaded()}).
      * Removing the node can lead to one or more new networks if it was the a
      * bridge node, i.e. the only node connecting the resulting networks.
      *

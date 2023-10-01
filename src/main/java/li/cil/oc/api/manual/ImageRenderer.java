@@ -42,7 +42,7 @@ public interface ImageRenderer {
      * (getWidth,getHeight,*), i.e. translation and scaling are taken care
      * of for you.
      *
-     * @param stack the render transformation for this image
+     * @param stack  the render transformation for this image
      * @param mouseX the X position of the mouse relative to the element.
      * @param mouseY the Y position of the mouse relative to the element.
      */

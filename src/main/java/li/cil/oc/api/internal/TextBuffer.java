@@ -577,8 +577,8 @@ public interface TextBuffer extends ManagedEnvironment, Persistable {
      * server side this will trigger a message that will be picked up by
      * keyboards, which will then cause a signal in attached machines.
      *
-     * @param codePoint     the code point being typed.
-     * @param player        the player that typed the code point. Pass <tt>null</tt> on the client side.
+     * @param codePoint the code point being typed.
+     * @param player    the player that typed the code point. Pass <tt>null</tt> on the client side.
      */
     void textInput(int codePoint, Player player);
 
