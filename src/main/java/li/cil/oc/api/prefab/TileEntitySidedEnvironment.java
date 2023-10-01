@@ -140,8 +140,8 @@ public abstract class TileEntitySidedEnvironment extends BlockEntity implements 
     }
 
     @Override
-    public CompoundTag save(CompoundTag nbt) {
-        super.save(nbt);
+    public void saveAdditional(CompoundTag nbt) {
+        super.saveAdditional(nbt);
         int index = 0;
         for (Node node : nodes) {
             // See load() regarding host check.
@@ -152,6 +152,5 @@ public abstract class TileEntitySidedEnvironment extends BlockEntity implements 
             }
             ++index;
         }
-        return nbt;
     }
 }

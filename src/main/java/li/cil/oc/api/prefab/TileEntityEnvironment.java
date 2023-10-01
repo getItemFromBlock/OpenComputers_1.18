@@ -126,7 +126,7 @@ public abstract class TileEntityEnvironment extends BlockEntity implements Envir
 
     @Override
     public void load(final CompoundTag nbt) {
-        super.load( nbt);
+        super.load(nbt);
         // The host check may be superfluous for you. It's just there to allow
         // some special cases, where getNode() returns some node managed by
         // some other instance (for example when you have multiple internal
@@ -141,14 +141,13 @@ public abstract class TileEntityEnvironment extends BlockEntity implements Envir
     }
 
     @Override
-    public CompoundTag save(final CompoundTag nbt) {
-        super.save(nbt);
+    public void saveAdditional(final CompoundTag nbt) {
+        super.saveAdditional(nbt);
         // See load() regarding host check.
         if (node != null && node.host() == this) {
             final CompoundTag nodeNbt = new CompoundTag();
             node.saveData(nodeNbt);
             nbt.put(TAG_NODE, nodeNbt);
         }
-        return nbt;
     }
 }
