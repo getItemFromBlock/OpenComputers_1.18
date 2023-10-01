@@ -26,7 +26,8 @@ public class TextureTabIconRenderer implements TabIconRenderer {
     @Override
     @OnlyIn(Dist.CLIENT)
     public void render(PoseStack stack) {
-        Minecraft.getInstance().getTextureManager().bind(location);
+	// XXX: rendering GUI elements can't be that important, right?
+	/*Minecraft.getInstance().getTextureManager().bind(location);
         final Tesselator t = Tesselator.getInstance();
         final BufferBuilder r = t.getBuilder();
         r.begin(GL11.GL_QUADS, DefaultVertexFormat.POSITION_TEX);
@@ -34,6 +35,6 @@ public class TextureTabIconRenderer implements TabIconRenderer {
         r.vertex(stack.last().pose(), 16, 16, 0).uv(1, 1).endVertex();
         r.vertex(stack.last().pose(), 16, 0, 0).uv(1, 0).endVertex();
         r.vertex(stack.last().pose(), 0, 0, 0).uv(0, 0).endVertex();
-        t.end();
+        t.end();*/
     }
 }
