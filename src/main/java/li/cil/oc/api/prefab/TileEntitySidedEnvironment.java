@@ -9,6 +9,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.Level;
 import net.minecraft.core.Direction;
 
 /**
@@ -81,19 +82,18 @@ public abstract class TileEntitySidedEnvironment extends BlockEntity implements 
     }
 
     // ----------------------------------------------------------------------- //
-
-    @Override
-    public void tick() {
+    public <T extends TileEntitySidedEnvironment> void serverTick
+        (final Level level, final BlockPos pos, final BlockState state, final T tile) {
         // On the first update, try to add our node to nearby networks. We do
         // this in the update logic, not in clearRemoved() because we need to access
         // neighboring tile entities, which isn't possible in clearRemoved().
         // We could alternatively check node != null && node.network() == null,
         // but this has somewhat better performance, and makes it clearer.
-        if (!addedToNetwork) {
-            addedToNetwork = true;
+        if (!tile.addedToNetwork) {
+            tile.addedToNetwork = true;
             // Note that joinOrCreateNetwork will try to connect each of our
             // sided nodes to their respective neighbor (sided) node.
-            Network.joinOrCreateNetwork(this);
+            Network.joinOrCreateNetwork(tile);
         }
     }
 
