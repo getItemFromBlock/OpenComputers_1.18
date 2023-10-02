@@ -23,6 +23,8 @@ public class ItemStackTabIconRenderer implements TabIconRenderer {
     @OnlyIn(Dist.CLIENT)
     @Override
     public void render(PoseStack matrix) {
+	// XXX: rendering GUI elements can't be that important, right?
+	/*
         // Translate manually because ItemRenderer generally can't take a MatrixStack.
         RenderSystem.pushMatrix();
         RenderSystem.multMatrix(matrix.last().pose());
@@ -30,5 +32,6 @@ public class ItemStackTabIconRenderer implements TabIconRenderer {
         RenderSystem.glMultiTexCoord2f(GL13.GL_TEXTURE1, 240, 240);
         Minecraft.getInstance().getItemRenderer().renderAndDecorateItem(stack, 0, 0);
         RenderSystem.popMatrix();
+	*/
     }
 }
