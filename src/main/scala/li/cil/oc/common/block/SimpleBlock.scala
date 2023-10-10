@@ -14,7 +14,7 @@ import li.cil.oc.util.Tooltip
 import net.minecraft.block.AbstractBlock.Properties
 import net.minecraft.block.BlockState
 import net.minecraft.block.BlockRenderType
-import net.minecraft.block.ContainerBlock
+import net.minecraft.world.level.block.BaseEntityBlock
 import net.minecraft.block.material.Material
 import net.minecraft.client.util.ITooltipFlag
 import net.minecraft.entity.Entity
@@ -42,7 +42,7 @@ import net.minecraftforge.common.ToolType
 
 import scala.collection.convert.ImplicitConversionsToScala._
 
-abstract class SimpleBlock(props: Properties) extends ContainerBlock(props) {
+abstract class SimpleBlock(props: Properties) extends BaseEntityBlock(props) {
   @Deprecated
   private var unlocalizedName = super.getDescriptionId()
 

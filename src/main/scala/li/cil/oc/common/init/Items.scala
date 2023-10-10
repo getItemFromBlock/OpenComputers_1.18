@@ -26,10 +26,10 @@ import net.minecraft.item.BlockItem
 import net.minecraft.item.DyeColor
 import net.minecraft.item.Item
 import net.minecraft.item.Item.Properties
-import net.minecraft.item.ItemGroup
-import net.minecraft.item.ItemStack
+import net.minecraft.world.item.CreativeModeTab
+import net.minecraft.world.item.ItemStack
 import net.minecraft.item.Rarity
-import net.minecraft.util.NonNullList
+import net.minecraft.core.NonNullList
 import net.minecraft.util.ResourceLocation
 import net.minecraftforge.common.ToolType
 import net.minecraftforge.registries.GameData

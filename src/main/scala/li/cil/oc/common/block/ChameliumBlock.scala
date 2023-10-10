@@ -6,10 +6,11 @@ import net.minecraft.block.Block
 import net.minecraft.block.BlockState
 import net.minecraft.block.AbstractBlock.Properties
 import net.minecraft.item.BlockItemUseContext
-import net.minecraft.item.DyeColor
+import net.minecraft.world.item.DyeColor
+import net.minecraft.world.item.Item
+import net.minecraft.world.item.ItemStack
 import net.minecraft.item.ItemGroup
-import net.minecraft.item.ItemStack
-import net.minecraft.state.EnumProperty
+import net.minecraft.world.level.block.state.properties.EnumProperty
 import net.minecraft.state.StateContainer
 import net.minecraft.util.NonNullList
 import net.minecraft.util.math.BlockPos
