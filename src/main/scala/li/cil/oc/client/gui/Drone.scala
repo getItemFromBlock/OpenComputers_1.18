@@ -16,13 +16,13 @@ import net.minecraft.client.gui.widget.button.Button
 import net.minecraft.client.renderer.Tessellator
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats
 import net.minecraft.entity.player.PlayerInventory
-import net.minecraft.util.text.ITextComponent
+import net.minecraft.network.chat.Component
 import org.lwjgl.opengl.GL11
 
 import scala.collection.JavaConverters.asJavaCollection
 import scala.collection.convert.ImplicitConversionsToJava._
 
-class Drone(state: container.Drone, playerInventory: PlayerInventory, name: ITextComponent)
+class Drone(state: container.Drone, playerInventory: PlayerInventory, name: Component)
   extends DynamicGuiContainer(state, playerInventory, name)
   with traits.DisplayBuffer {
 

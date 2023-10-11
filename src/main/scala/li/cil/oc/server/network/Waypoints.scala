@@ -5,7 +5,7 @@ import li.cil.oc.common.tileentity.Waypoint
 import li.cil.oc.util.BlockPosition
 import li.cil.oc.util.RTree
 import net.minecraft.util.RegistryKey
-import net.minecraft.world.World
+import net.minecraft.world.level.Level
 import net.minecraftforge.event.world.ChunkEvent
 import net.minecraftforge.event.world.WorldEvent
 import net.minecraftforge.eventbus.api.SubscribeEvent

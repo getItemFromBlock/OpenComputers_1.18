@@ -24,9 +24,9 @@ import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats
 import net.minecraft.item.Items
 import net.minecraft.item.BlockItem
-import net.minecraft.item.ItemStack
-import net.minecraft.util.Direction
-import net.minecraft.util.math.vector.Vector3d
+import net.minecraft.world.item.ItemStack
+import net.minecraft.core.Direction
+import com.mojang.math.Vector3d
 import net.minecraft.util.math.vector.Vector3f
 import net.minecraft.util.math.vector.Matrix3f
 import net.minecraft.util.text.TextFormatting

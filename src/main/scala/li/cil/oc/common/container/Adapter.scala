@@ -5,7 +5,7 @@ import li.cil.oc.common.Slot
 import li.cil.oc.common.Tier
 import li.cil.oc.common.tileentity
 import net.minecraft.entity.player.PlayerInventory
-import net.minecraft.item.ItemStack
+import net.minecraft.world.item.ItemStack
 import net.minecraft.inventory.IInventory
 import net.minecraft.inventory.container.ContainerType
 

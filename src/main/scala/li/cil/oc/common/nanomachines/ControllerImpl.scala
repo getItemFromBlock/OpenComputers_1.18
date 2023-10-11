@@ -21,15 +21,15 @@ import li.cil.oc.util.BlockPosition
 import li.cil.oc.util.ExtendedNBT._
 import li.cil.oc.util.InventoryUtils
 import li.cil.oc.util.PlayerUtils
-import net.minecraft.entity.player.PlayerEntity
+import net.minecraft.world.entity.player.Player
 import net.minecraft.entity.player.ServerPlayerEntity
-import net.minecraft.nbt.CompoundNBT
+import net.minecraft.nbt.CompoundTag
 import net.minecraft.particles.ParticleTypes
 import net.minecraft.potion.Effect
 import net.minecraft.potion.Effects
 import net.minecraft.potion.EffectInstance
-import net.minecraft.util.ResourceLocation
-import net.minecraft.world.World
+import net.minecraft.resources.ResourceLocation
+import net.minecraft.world.level.Level
 
 import scala.collection.convert.ImplicitConversionsToJava._
 import scala.collection.convert.ImplicitConversionsToScala._
@@ -57,7 +57,7 @@ class ControllerImpl(val player: PlayerEntity) extends Controller with WirelessE
   var activeBehaviorsDirty = true
   var hasSentConfiguration = false
 
-  override def world: World = player.level
+  override def world: Level = player.level
 
   override def x: Int = BlockPosition(player).x
 
@@ -341,14 +341,14 @@ class ControllerImpl(val player: PlayerEntity) extends Controller with WirelessE
 
   // ----------------------------------------------------------------------- //
 
-  def saveData(nbt: CompoundNBT): Unit = configuration.synchronized {
+  def saveData(nbt: CompoundTag): Unit = configuration.synchronized {
     nbt.putString("uuid", uuid)
     nbt.putInt("port", responsePort)
     nbt.putDouble("energy", storedEnergy)
     nbt.setNewCompoundTag("configuration", configuration.saveData)
   }
 
-  def loadData(nbt: CompoundNBT): Unit = configuration.synchronized {
+  def loadData(nbt: CompoundTag): Unit = configuration.synchronized {
     uuid = nbt.getString("uuid")
     responsePort = nbt.getInt("port")
     storedEnergy = nbt.getDouble("energy")

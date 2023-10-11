@@ -7,26 +7,26 @@ import li.cil.oc.OpenComputers
 import li.cil.oc.api
 import li.cil.oc.util.InventoryUtils
 import li.cil.oc.util.ItemUtils
-import net.minecraft.entity.player.PlayerEntity
-import net.minecraft.item.Item
-import net.minecraft.item.Item.Properties
-import net.minecraft.item.ItemGroup
-import net.minecraft.item.ItemStack
+import net.minecraft.world.entity.player.Player
+import net.minecraft.world.item.Item
+import net.minecraft.world.item.Item.Properties
+import net.minecraft.world.item.CreativeModeTab
+import net.minecraft.world.item.ItemStack
 import net.minecraft.item.crafting.RecipeManager
-import net.minecraft.util.ActionResult
-import net.minecraft.util.ActionResultType
-import net.minecraft.util.NonNullList
+import net.minecraft.world.InteractionResultHolder
+import net.minecraft.world.InteractionResult
+import net.minecraft.core.NonNullList
 import net.minecraft.util.SoundCategory
 import net.minecraft.util.SoundEvents
-import net.minecraft.world.World
+import net.minecraft.world.level.Level
 import net.minecraftforge.common.extensions.IForgeItem
 
 import scala.collection.mutable
 
 class Present(props: Properties) extends Item(props) with IForgeItem with traits.SimpleItem {
-  override def fillItemCategory(tab: ItemGroup, list: NonNullList[ItemStack]) {}
+  override def fillItemCategory(tab: CreativeModeTab, list: NonNullList[ItemStack]) {}
 
-  override def use(stack: ItemStack, world: World, player: PlayerEntity): ActionResult[ItemStack] = {
+  override def use(stack: ItemStack, world: Level, player: Player): InteractionResultHolder[ItemStack] = {
     if (stack.getCount > 0) {
       stack.shrink(1)
       if (!world.isClientSide) {
@@ -36,7 +36,7 @@ class Present(props: Properties) extends Item(props) with IForgeItem with traits
         InventoryUtils.addToPlayerInventory(present, player)
       }
     }
-    new ActionResult(ActionResultType.sidedSuccess(world.isClientSide), stack)
+    new InteractionResultHolder(InteractionResult.sidedSuccess(world.isClientSide), stack)
   }
 }
 

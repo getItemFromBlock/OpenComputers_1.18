@@ -7,7 +7,7 @@ import net.minecraft.client.renderer.LightTexture
 import net.minecraft.client.renderer.entity.model.EntityModel
 import net.minecraft.client.renderer.model.ModelRenderer
 import net.minecraft.client.renderer.texture.OverlayTexture
-import net.minecraft.util.math.vector.Vector3d
+import com.mojang.math.Vector3d
 import net.minecraft.util.math.vector.Vector3f
 
 final class ModelQuadcopter extends EntityModel[Drone] {

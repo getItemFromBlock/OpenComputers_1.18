@@ -31,32 +31,32 @@ import li.cil.oc.util.BlockPosition
 import li.cil.oc.util.ExtendedNBT._
 import li.cil.oc.util.ExtendedWorld._
 import li.cil.oc.util.InventoryUtils
-import net.minecraft.block.BlockState
+import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.block.material.Material
-import net.minecraft.entity.Entity
+import net.minecraft.world.entity.Entity
 import net.minecraft.entity.EntitySize
 import net.minecraft.entity.EntityType
 import net.minecraft.entity.MoverType
 import net.minecraft.entity.Pose
 import net.minecraft.entity.item.ItemEntity
-import net.minecraft.entity.player.PlayerEntity
+import net.minecraft.world.entity.player.Player
 import net.minecraft.entity.player.PlayerInventory
 import net.minecraft.entity.player.ServerPlayerEntity
-import net.minecraft.inventory.container.INamedContainerProvider
-import net.minecraft.item.ItemStack
-import net.minecraft.nbt.CompoundNBT
+import net.minecraft.world.level.block.entity.BaseContainerBlockEntity
+import net.minecraft.world.item.ItemStack
+import net.minecraft.nbt.CompoundTag
 import net.minecraft.network.datasync.DataParameter
 import net.minecraft.network.datasync.DataSerializers
 import net.minecraft.network.datasync.EntityDataManager
 import net.minecraft.tags.FluidTags
-import net.minecraft.util.ActionResultType
-import net.minecraft.util.Direction
-import net.minecraft.util.Hand
-import net.minecraft.util.math.BlockPos
-import net.minecraft.util.math.vector.Vector3d
-import net.minecraft.util.text.ITextComponent
-import net.minecraft.util.text.StringTextComponent
-import net.minecraft.world.World
+import net.minecraft.world.InteractionResult
+import net.minecraft.core.Direction
+import net.minecraft.world.InteractionHand
+import net.minecraft.core.BlockPos
+import com.mojang.math.Vector3d
+import net.minecraft.network.chat.Component
+import net.minecraft.network.chat.TextComponent
+import net.minecraft.world.level.Level
 import net.minecraft.world.server.ServerWorld
 import net.minecraftforge.api.distmarker.Dist
 import net.minecraftforge.api.distmarker.OnlyIn
@@ -492,15 +492,15 @@ class Drone(selfType: EntityType[Drone], world: World) extends Entity(selfType, 
   }
 
   // Not implemented in Drone itself because spectators would open this via vanilla PlayerEntity.openMenu (without extra data).
-  val containerProvider = new INamedContainerProvider {
-    override def getDisplayName = StringTextComponent.EMPTY
+  val containerProvider = new BaseContainerBlockEntity {
+    override def getDisplayName = TextComponent.EMPTY
 
     override def createMenu(id: Int, playerInventory: PlayerInventory, player: PlayerEntity) =
       new container.Drone(ContainerTypes.DRONE, id, playerInventory, mainInventory, mainInventory.getContainerSize)
   }
 
-  override def interact(player: PlayerEntity, hand: Hand): ActionResultType = {
-    if (!isAlive) return ActionResultType.PASS
+  override def interact(player: PlayerEntity, hand: Hand): InteractionResult = {
+    if (!isAlive) return InteractionResult.PASS
     if (player.isCrouching) {
       if (Wrench.isWrench(player.getItemInHand(Hand.MAIN_HAND))) {
         if(!world.isClientSide) {
@@ -515,7 +515,7 @@ class Drone(selfType: EntityType[Drone], world: World) extends Entity(selfType, 
       case srvPlr: ServerPlayerEntity if !world.isClientSide => ContainerTypes.openDroneGui(srvPlr, this)
       case _ =>
     }
-    ActionResultType.sidedSuccess(world.isClientSide)
+    InteractionResult.sidedSuccess(world.isClientSide)
   }
 
   // No step sounds. Except on that one day.
@@ -585,11 +585,11 @@ class Drone(selfType: EntityType[Drone], world: World) extends Entity(selfType, 
     }
   }
 
-  override def getName: ITextComponent = Localization.localizeLater("entity.oc.Drone.name")
+  override def getName: Component = Localization.localizeLater("entity.oc.Drone.name")
 
   override protected def getAddEntityPacket = NetworkHooks.getEntitySpawningPacket(this)
 
-  override protected def readAdditionalSaveData(nbt: CompoundNBT) {
+  override protected def readAdditionalSaveData(nbt: CompoundTag) {
     info.loadData(nbt.getCompound("info"))
     inventorySize = computeInventorySize()
     if (!world.isClientSide) {
@@ -616,7 +616,7 @@ class Drone(selfType: EntityType[Drone], world: World) extends Entity(selfType, 
     }
   }
 
-  override protected def addAdditionalSaveData(nbt: CompoundNBT) {
+  override protected def addAdditionalSaveData(nbt: CompoundTag) {
     if (world.isClientSide) return
     components.saveComponents()
     info.storedEnergy = globalBuffer.toInt

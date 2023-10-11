@@ -15,15 +15,15 @@ import li.cil.oc.util.ExtendedNBT._
 import li.cil.oc.util.StackOption.SomeStack
 import mcp.mobius.waila.api._
 import net.minecraft.entity.player.ServerPlayerEntity
-import net.minecraft.item.ItemStack
-import net.minecraft.nbt.CompoundNBT
+import net.minecraft.world.item.ItemStack
+import net.minecraft.nbt.CompoundTag
 import net.minecraft.nbt.StringNBT
-import net.minecraft.tileentity.TileEntity
-import net.minecraft.util.Direction
-import net.minecraft.util.ResourceLocation
-import net.minecraft.util.text.ITextComponent
-import net.minecraft.util.text.StringTextComponent
-import net.minecraft.world.World
+import net.minecraft.world.level.block.entity.BlockEntity
+import net.minecraft.core.Direction
+import net.minecraft.resources.ResourceLocation
+import net.minecraft.network.chat.Component
+import net.minecraft.network.chat.TextComponent
+import net.minecraft.world.level.Level
 import net.minecraftforge.common.util.Constants.NBT
 
 @WailaPlugin
@@ -31,7 +31,7 @@ class BlockDataProvider extends IWailaPlugin {
   def register(registrar: IRegistrar) = BlockDataProvider.register(registrar)
 }
 
-object BlockDataProvider extends IServerDataProvider[TileEntity] with IComponentProvider {
+object BlockDataProvider extends IServerDataProvider[BlockEntity] with IComponentProvider {
   val ConfigAddress = new ResourceLocation(OpenComputers.ID, "oc.address")
   val ConfigEnergy = new ResourceLocation(OpenComputers.ID, "oc.energy")
   val ConfigComponentName = new ResourceLocation(OpenComputers.ID, "oc.componentname")
@@ -47,8 +47,8 @@ object BlockDataProvider extends IServerDataProvider[TileEntity] with IComponent
     registrar.addConfig(ConfigComponentName, true)
   }
 
-  override def appendServerData(tag: CompoundNBT, player: ServerPlayerEntity, world: World, tileEntity: TileEntity): Unit = {
-    def writeNode(node: Node, tag: CompoundNBT) = {
+  override def appendServerData(tag: CompoundTag, player: ServerPlayerEntity, world: Level, tileEntity: BlockEntity): Unit = {
+    def writeNode(node: Node, tag: CompoundTag) = {
       if (node != null && node.reachability != Visibility.None && !tileEntity.isInstanceOf[NotAnalyzable]) {
         if (node.address != null) {
           tag.putString("address", node.address)
@@ -72,7 +72,7 @@ object BlockDataProvider extends IServerDataProvider[TileEntity] with IComponent
       case te: li.cil.oc.api.network.SidedEnvironment =>
         tag.setNewTagList("nodes", Direction.values.
           map(te.sidedNode).
-          map(writeNode(_, new CompoundNBT())))
+          map(writeNode(_, new CompoundTag())))
       case te: li.cil.oc.api.network.Environment =>
         writeNode(te.node, tag)
       case _ =>
@@ -81,7 +81,7 @@ object BlockDataProvider extends IServerDataProvider[TileEntity] with IComponent
     // Override sided info (show info on all sides).
     def ignoreSidedness(node: Node): Unit = {
       tag.remove("nodes")
-      val nodeTag = writeNode(node, new CompoundNBT())
+      val nodeTag = writeNode(node, new CompoundTag())
       tag.setNewTagList("nodes", Direction.values.map(_ => nodeTag))
     }
 
@@ -120,7 +120,7 @@ object BlockDataProvider extends IServerDataProvider[TileEntity] with IComponent
     }
   }
 
-  override def appendBody(tooltip: util.List[ITextComponent], accessor: IDataAccessor, config: IPluginConfig): Unit = {
+  override def appendBody(tooltip: util.List[Component], accessor: IDataAccessor, config: IPluginConfig): Unit = {
     val tag = accessor.getServerData
     if (tag == null || tag.isEmpty) return
 
@@ -136,10 +136,10 @@ object BlockDataProvider extends IServerDataProvider[TileEntity] with IComponent
         if (tag.contains("progress")) {
           val progress = tag.getDouble("progress")
           val timeRemaining = formatTime(tag.getInt("timeRemaining"))
-          tooltip.add(new StringTextComponent(Localization.Assembler.Progress(progress, timeRemaining)))
+          tooltip.add(new TextComponent(Localization.Assembler.Progress(progress, timeRemaining)))
           if (tag.contains("output")) {
             val output = tag.getString("output")
-            tooltip.add(new StringTextComponent("Building: " + Localization.localizeImmediately(output)))
+            tooltip.add(new TextComponent("Building: " + Localization.localizeImmediately(output)))
           }
         }
       case _: tileentity.Charger =>
@@ -159,7 +159,7 @@ object BlockDataProvider extends IServerDataProvider[TileEntity] with IComponent
       case _ =>
     }
 
-    def readNode(tag: CompoundNBT) = {
+    def readNode(tag: CompoundTag) = {
       if (config.get(ConfigAddress) && tag.contains("address")) {
         val address = tag.getString("address")
         if (address.nonEmpty) {

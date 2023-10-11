@@ -19,13 +19,13 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats
 import net.minecraft.entity.player.PlayerInventory
 import net.minecraft.inventory.container.Container
 import net.minecraft.inventory.container.Slot
-import net.minecraft.util.text.ITextComponent
+import net.minecraft.network.chat.Component
 import org.lwjgl.opengl.GL11
 
 import scala.collection.convert.ImplicitConversionsToJava._
 import scala.collection.convert.ImplicitConversionsToScala._
 
-abstract class DynamicGuiContainer[C <: Container](container: C, inv: PlayerInventory, title: ITextComponent)
+abstract class DynamicGuiContainer[C <: Container](container: C, inv: PlayerInventory, title: Component)
   extends CustomGuiContainer(container, inv, title) {
 
   protected var hoveredStackNEI: StackOption = EmptyStack

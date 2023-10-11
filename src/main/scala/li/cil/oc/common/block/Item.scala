@@ -12,18 +12,18 @@ import li.cil.oc.common.tileentity
 import li.cil.oc.util.Color
 import li.cil.oc.util.ItemColorizer
 import li.cil.oc.util.Rarity
-import net.minecraft.block.Block
-import net.minecraft.block.BlockState
+import net.minecraft.world.level.block.Block
+import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.item // Rarity
 import net.minecraft.item.BlockItem
 import net.minecraft.item.BlockItemUseContext
-import net.minecraft.item.DyeColor
-import net.minecraft.item.Item.Properties
-import net.minecraft.item.ItemStack
-import net.minecraft.util.Direction
+import net.minecraft.world.item.DyeColor
+import net.minecraft.world.item.Item.Properties
+import net.minecraft.world.item.ItemStack
+import net.minecraft.core.Direction
 import net.minecraft.util.math.BlockRayTraceResult
-import net.minecraft.util.text.ITextComponent
-import net.minecraft.util.text.StringTextComponent
+import net.minecraft.network.chat.Component
+import net.minecraft.network.chat.TextComponent
 
 class Item(value: Block, props: Properties) extends BlockItem(value, props) {
   override def getRarity(stack: ItemStack): item.Rarity = getBlock match {
@@ -38,10 +38,10 @@ class Item(value: Block, props: Properties) extends BlockItem(value, props) {
     case _ => super.getRarity(stack)
   }
 
-  override def getName(stack: ItemStack): ITextComponent = {
+  override def getName(stack: ItemStack): Component = {
     if (api.Items.get(stack) == api.Items.get(Constants.BlockName.Print)) {
       val data = new PrintData(stack)
-      data.label.map(new StringTextComponent(_)).getOrElse(super.getName(stack))
+      data.label.map(new TextComponent(_)).getOrElse(super.getName(stack))
     }
     else super.getName(stack)
   }

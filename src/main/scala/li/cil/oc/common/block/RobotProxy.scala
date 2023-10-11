@@ -16,26 +16,26 @@ import li.cil.oc.util.BlockPosition
 import li.cil.oc.util.InventoryUtils
 import li.cil.oc.util.Tooltip
 import net.minecraft.block.AbstractBlock.Properties
-import net.minecraft.block.BlockState
+import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.client.util.ITooltipFlag
-import net.minecraft.entity.LivingEntity
-import net.minecraft.entity.player.PlayerEntity
+import net.minecraft.world.entity.LivingEntity
+import net.minecraft.world.entity.player.Player
 import net.minecraft.entity.player.ServerPlayerEntity
 import net.minecraft.fluid.FluidState
-import net.minecraft.item.ItemStack
+import net.minecraft.world.item.ItemStack
 import net.minecraft.loot.LootContext
 import net.minecraft.loot.LootParameters
-import net.minecraft.util.Direction
-import net.minecraft.util.Hand
-import net.minecraft.util.math.BlockPos
+import net.minecraft.core.Direction
+import net.minecraft.world.InteractionHand
+import net.minecraft.core.BlockPos
 import net.minecraft.util.math.RayTraceResult
 import net.minecraft.util.math.shapes.ISelectionContext
 import net.minecraft.util.math.shapes.VoxelShape
 import net.minecraft.util.math.shapes.VoxelShapes
-import net.minecraft.util.text.ITextComponent
-import net.minecraft.util.text.StringTextComponent
-import net.minecraft.world.IBlockReader
-import net.minecraft.world.World
+import net.minecraft.network.chat.Component
+import net.minecraft.network.chat.TextComponent
+import net.minecraft.world.level.BlockGetter
+import net.minecraft.world.level.Level
 
 import scala.collection.convert.ImplicitConversionsToScala._
 
@@ -50,13 +50,13 @@ class RobotProxy(props: Properties) extends RedstoneAware(props) with traits.Sta
 
   // ----------------------------------------------------------------------- //
 
-  override def getPickBlock(state: BlockState, target: RayTraceResult, world: IBlockReader, pos: BlockPos, player: PlayerEntity): ItemStack =
+  override def getPickBlock(state: BlockState, target: RayTraceResult, world: BlockGetter, pos: BlockPos, player: PlayerEntity): ItemStack =
     world.getBlockEntity(pos) match {
       case proxy: tileentity.RobotProxy => proxy.robot.info.copyItemStack()
       case _ => ItemStack.EMPTY
     }
 
-  override def getShape(state: BlockState, world: IBlockReader, pos: BlockPos, ctx: ISelectionContext): VoxelShape = {
+  override def getShape(state: BlockState, world: BlockGetter, pos: BlockPos, ctx: ISelectionContext): VoxelShape = {
     world.getBlockEntity(pos) match {
       case proxy: tileentity.RobotProxy =>
         val robot = proxy.robot
@@ -74,41 +74,41 @@ class RobotProxy(props: Properties) extends RedstoneAware(props) with traits.Sta
 
   // ----------------------------------------------------------------------- //
 
-  override protected def tooltipHead(stack: ItemStack, world: IBlockReader, tooltip: util.List[ITextComponent], advanced: ITooltipFlag) {
+  override protected def tooltipHead(stack: ItemStack, world: BlockGetter, tooltip: util.List[Component], advanced: ITooltipFlag) {
     super.tooltipHead(stack, world, tooltip, advanced)
     addLines(stack, tooltip)
   }
 
-  override protected def tooltipBody(stack: ItemStack, world: IBlockReader, tooltip: util.List[ITextComponent], advanced: ITooltipFlag) {
+  override protected def tooltipBody(stack: ItemStack, world: BlockGetter, tooltip: util.List[Component], advanced: ITooltipFlag) {
     for (curr <- Tooltip.get("robot")) {
-      tooltip.add(new StringTextComponent(curr).setStyle(Tooltip.DefaultStyle))
+      tooltip.add(new TextComponent(curr).setStyle(Tooltip.DefaultStyle))
     }
   }
 
-  override protected def tooltipTail(stack: ItemStack, world: IBlockReader, tooltip: util.List[ITextComponent], flag: ITooltipFlag) {
+  override protected def tooltipTail(stack: ItemStack, world: BlockGetter, tooltip: util.List[Component], flag: ITooltipFlag) {
     super.tooltipTail(stack, world, tooltip, flag)
     if (KeyBindings.showExtendedTooltips) {
       val info = new RobotData(stack)
       val components = info.containers ++ info.components
       if (components.length > 0) {
         for (curr <- Tooltip.get("server.Components")) {
-          tooltip.add(new StringTextComponent(curr).setStyle(Tooltip.DefaultStyle))
+          tooltip.add(new TextComponent(curr).setStyle(Tooltip.DefaultStyle))
         }
         for (component <- components if !component.isEmpty) {
-          tooltip.add(new StringTextComponent("- " + component.getHoverName.getString).setStyle(Tooltip.DefaultStyle))
+          tooltip.add(new TextComponent("- " + component.getHoverName.getString).setStyle(Tooltip.DefaultStyle))
         }
       }
     }
   }
 
-  private def addLines(stack: ItemStack, tooltip: util.List[ITextComponent]) {
+  private def addLines(stack: ItemStack, tooltip: util.List[Component]) {
     if (stack.hasTag) {
       if (stack.getTag.contains(Settings.namespace + "xp")) {
         val xp = stack.getTag.getDouble(Settings.namespace + "xp")
         val level = Math.min((Math.pow(xp - Settings.get.baseXpToLevel, 1 / Settings.get.exponentialXpGrowth) / Settings.get.constantXpGrowth).toInt, 30)
         if (level > 0) {
           for (curr <- Tooltip.get(getDescriptionId + "_level", level)) {
-            tooltip.add(new StringTextComponent(curr).setStyle(Tooltip.DefaultStyle))
+            tooltip.add(new TextComponent(curr).setStyle(Tooltip.DefaultStyle))
           }
         }
       }
@@ -116,7 +116,7 @@ class RobotProxy(props: Properties) extends RedstoneAware(props) with traits.Sta
         val energy = stack.getTag.getInt(Settings.namespace + "storedEnergy")
         if (energy > 0) {
           for (curr <- Tooltip.get(getDescriptionId + "_storedenergy", energy)) {
-            tooltip.add(new StringTextComponent(curr).setStyle(Tooltip.DefaultStyle))
+            tooltip.add(new TextComponent(curr).setStyle(Tooltip.DefaultStyle))
           }
         }
       }
@@ -125,7 +125,7 @@ class RobotProxy(props: Properties) extends RedstoneAware(props) with traits.Sta
 
   // ----------------------------------------------------------------------- //
 
-  override def newBlockEntity(world: IBlockReader): tileentity.RobotProxy = {
+  override def newBlockEntity(world: BlockGetter): tileentity.RobotProxy = {
     moving.get match {
       case Some(robot) => new tileentity.RobotProxy(tileentity.TileEntityTypes.ROBOT, robot)
       case _ => new tileentity.RobotProxy(tileentity.TileEntityTypes.ROBOT)
@@ -176,7 +176,7 @@ class RobotProxy(props: Properties) extends RedstoneAware(props) with traits.Sta
 
   // ----------------------------------------------------------------------- //
 
-  override def localOnBlockActivated(world: World, pos: BlockPos, player: PlayerEntity, hand: Hand, heldItem: ItemStack, side: Direction, hitX: Float, hitY: Float, hitZ: Float): Boolean = {
+  override def localOnBlockActivated(world: Level, pos: BlockPos, player: PlayerEntity, hand: Hand, heldItem: ItemStack, side: Direction, hitX: Float, hitY: Float, hitZ: Float): Boolean = {
     if (!player.isCrouching) {
       if (!world.isClientSide) {
         // We only send slot changes to nearby players, so if there was no slot
@@ -205,7 +205,7 @@ class RobotProxy(props: Properties) extends RedstoneAware(props) with traits.Sta
     else false
   }
 
-  override def setPlacedBy(world: World, pos: BlockPos, state: BlockState, entity: LivingEntity, stack: ItemStack) {
+  override def setPlacedBy(world: Level, pos: BlockPos, state: BlockState, entity: LivingEntity, stack: ItemStack) {
     super.setPlacedBy(world, pos, state, entity, stack)
     if (!world.isClientSide) ((entity, world.getBlockEntity(pos)) match {
       case (player: agent.Player, proxy: tileentity.RobotProxy) =>
@@ -224,7 +224,7 @@ class RobotProxy(props: Properties) extends RedstoneAware(props) with traits.Sta
     }
   }
 
-  override def removedByPlayer(state: BlockState, world: World, pos: BlockPos, player: PlayerEntity, willHarvest: Boolean, fluid: FluidState): Boolean = {
+  override def removedByPlayer(state: BlockState, world: Level, pos: BlockPos, player: PlayerEntity, willHarvest: Boolean, fluid: FluidState): Boolean = {
     world.getBlockEntity(pos) match {
       case proxy: tileentity.RobotProxy =>
         val robot = proxy.robot

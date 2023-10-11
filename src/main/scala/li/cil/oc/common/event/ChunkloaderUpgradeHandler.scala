@@ -7,7 +7,7 @@ import li.cil.oc.api.event.RobotMoveEvent
 import li.cil.oc.server.component.UpgradeChunkloader
 import li.cil.oc.util.BlockPosition
 import net.minecraft.util.math.ChunkPos
-import net.minecraft.world.World
+import net.minecraft.world.level.Level
 import net.minecraft.world.ForcedChunksSaveData
 import net.minecraft.world.server.ServerWorld
 import net.minecraftforge.common.world.ForgeChunkManager
@@ -15,7 +15,7 @@ import net.minecraftforge.common.world.ForgeChunkManager.LoadingValidationCallba
 import net.minecraftforge.common.world.ForgeChunkManager.TicketHelper
 import net.minecraftforge.event.world.WorldEvent
 import net.minecraftforge.eventbus.api.SubscribeEvent
-import net.minecraft.entity.Entity
+import net.minecraft.world.entity.Entity
 
 import scala.collection.convert.ImplicitConversionsToScala._
 import scala.collection.immutable

@@ -8,9 +8,9 @@ import li.cil.oc.common.container
 import li.cil.oc.common.container.ComponentSlot
 import li.cil.oc.util.RenderState
 import net.minecraft.entity.player.PlayerInventory
-import net.minecraft.util.text.ITextComponent
+import net.minecraft.network.chat.Component
 
-class Printer(state: container.Printer, playerInventory: PlayerInventory, name: ITextComponent)
+class Printer(state: container.Printer, playerInventory: PlayerInventory, name: Component)
   extends DynamicGuiContainer(state, playerInventory, name) {
 
   imageWidth = 176

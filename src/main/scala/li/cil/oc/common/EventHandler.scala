@@ -36,13 +36,13 @@ import li.cil.oc.server.{PacketSender => ServerPacketSender}
 import li.cil.oc.util.ExtendedWorld._
 import li.cil.oc.util.StackOption._
 import li.cil.oc.util._
-import net.minecraft.entity.player.PlayerEntity
+import net.minecraft.world.entity.player.Player
 import net.minecraft.entity.player.ServerPlayerEntity
 import net.minecraft.util.SoundEvents
-import net.minecraft.item.ItemStack
-import net.minecraft.tileentity.TileEntity
+import net.minecraft.world.item.ItemStack
+import net.minecraft.world.level.block.entity.BlockEntity
 import net.minecraft.util.SoundCategory
-import net.minecraft.util.Util
+import net.minecraft.Util
 import net.minecraft.world.chunk.Chunk
 import net.minecraft.world.server.ChunkHolder
 import net.minecraft.world.server.ChunkManager
@@ -94,7 +94,7 @@ object EventHandler {
 
   def unscheduleClose(machine: Machine): Unit = machines -= machine
 
-  def scheduleServer(tileEntity: TileEntity) {
+  def scheduleServer(tileEntity: BlockEntity) {
     if (SideTracker.isServer) pendingServer.synchronized {
       pendingServer += (() => Network.joinOrCreateNetwork(tileEntity))
     }
@@ -155,9 +155,9 @@ object EventHandler {
   }
 
   @SubscribeEvent
-  def onAttachCapabilities(event: AttachCapabilitiesEvent[TileEntity]): Unit = {
+  def onAttachCapabilities(event: AttachCapabilitiesEvent[BlockEntity]): Unit = {
     event.getObject match {
-      case tileEntity: TileEntity with Environment => {
+      case tileEntity: BlockEntity with Environment => {
         val provider = new CapabilityEnvironment.Provider(tileEntity)
         event.addCapability(CapabilityEnvironment.ProviderEnvironment, provider)
         event.addListener(new Runnable {
@@ -168,14 +168,14 @@ object EventHandler {
     }
 
     event.getObject match {
-      case tileEntity: TileEntity with Environment with SidedComponent => {
+      case tileEntity: BlockEntity with Environment with SidedComponent => {
         val provider = new CapabilitySidedComponent.Provider(tileEntity)
         event.addCapability(CapabilitySidedComponent.SidedComponent, provider)
         event.addListener(new Runnable {
           override def run = provider.invalidate
         })
       }
-      case tileEntity: TileEntity with SidedEnvironment => {
+      case tileEntity: BlockEntity with SidedEnvironment => {
         val provider = new CapabilitySidedEnvironment.Provider(tileEntity)
         event.addCapability(CapabilitySidedEnvironment.ProviderSidedEnvironment, provider)
         event.addListener(new Runnable {
@@ -186,7 +186,7 @@ object EventHandler {
     }
 
     event.getObject match {
-      case tileEntity: TileEntity with Colored => {
+      case tileEntity: BlockEntity with Colored => {
         val provider = new CapabilityColored.Provider(tileEntity)
         event.addCapability(CapabilityColored.ProviderColored, provider)
         event.addListener(new Runnable {

@@ -6,8 +6,8 @@ import li.cil.oc.common.entity
 import net.minecraft.entity.player.PlayerInventory
 import net.minecraft.inventory.IInventory
 import net.minecraft.inventory.container.ContainerType
-import net.minecraft.item.ItemStack
-import net.minecraft.nbt.CompoundNBT
+import net.minecraft.world.item.ItemStack
+import net.minecraft.nbt.CompoundTag
 import net.minecraft.util.IntReferenceHolder
 import net.minecraftforge.api.distmarker.Dist
 import net.minecraftforge.api.distmarker.OnlyIn
@@ -84,7 +84,7 @@ class Drone(selfType: ContainerType[_ <: Drone], id: Int, playerInventory: Playe
 
   def statusText = synchronizedData.getString("statusText")
 
-  override protected def detectCustomDataChanges(nbt: CompoundNBT): Unit = {
+  override protected def detectCustomDataChanges(nbt: CompoundTag): Unit = {
     droneInv match {
       case droneInv: entity.DroneInventory => synchronizedData.putString("statusText", droneInv.drone.statusText)
       case _ =>

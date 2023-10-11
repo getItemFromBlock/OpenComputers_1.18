@@ -17,15 +17,15 @@ import li.cil.oc.common.Slot
 import li.cil.oc.common.container
 import li.cil.oc.common.container.ContainerTypes
 import li.cil.oc.server.{PacketSender => ServerPacketSender}
-import net.minecraft.entity.player.Player
+import net.minecraft.world.entity.player.Player
 import net.minecraft.entity.player.PlayerInventory
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity
 import net.minecraft.world.item.ItemStack
-import net.minecraft.nbt.CompoundNBT
+import net.minecraft.nbt.CompoundTag
 import net.minecraft.nbt.ListNBT
 import net.minecraft.world.level.block.entity.BlockEntity
 import net.minecraft.world.level.block.entity.BlockEntityType
-import net.minecraft.util.Direction
+import net.minecraft.core.Direction
 import net.minecraft.util.SoundCategory
 import net.minecraft.util.SoundEvents
 import net.minecraftforge.common.util.Constants.NBT
@@ -119,7 +119,7 @@ class Adapter(selfType: BlockEntityType[_ <: Adapter]) extends BlockEntity(selfT
                     if (environment.canUpdate) {
                       updatingBlocks += environment
                     }
-                    blocksData(d.ordinal()) = Some(new BlockData(environment.getClass.getName, new CompoundNBT()))
+                    blocksData(d.ordinal()) = Some(new BlockData(environment.getClass.getName, new CompoundTag()))
                     node.connect(environment.node)
                   }
                 } // else: the more things change, the more they stay the same.
@@ -139,7 +139,7 @@ class Adapter(selfType: BlockEntityType[_ <: Adapter]) extends BlockEntity(selfT
                       environment.loadData(data.data)
                     case _ =>
                   }
-                  blocksData(d.ordinal()) = Some(new BlockData(environment.getClass.getName, new CompoundNBT()))
+                  blocksData(d.ordinal()) = Some(new BlockData(environment.getClass.getName, new CompoundTag()))
                   node.connect(environment.node)
                 }
             }
@@ -202,7 +202,7 @@ class Adapter(selfType: BlockEntityType[_ <: Adapter]) extends BlockEntity(selfT
   private final val BlockNameTag = "name"
   private final val BlockDataTag = "data"
 
-  override def loadForServer(nbt: CompoundNBT) {
+  override def loadForServer(nbt: CompoundTag) {
     super.loadForServer(nbt)
 
     val blocksNbt = nbt.getList(BlocksTag, NBT.TAG_COMPOUND)
@@ -217,12 +217,12 @@ class Adapter(selfType: BlockEntityType[_ <: Adapter]) extends BlockEntity(selfT
       }
   }
 
-  override def saveForServer(nbt: CompoundNBT) {
+  override def saveForServer(nbt: CompoundTag) {
     super.saveForServer(nbt)
 
     val blocksNbt = new ListNBT()
     for (i <- blocks.indices) {
-      val blockNbt = new CompoundNBT()
+      val blockNbt = new CompoundTag()
       blocksData(i) match {
         case Some(data) =>
           blocks(i) match {
@@ -240,6 +240,6 @@ class Adapter(selfType: BlockEntityType[_ <: Adapter]) extends BlockEntity(selfT
 
   // ----------------------------------------------------------------------- //
 
-  private class BlockData(val name: String, val data: CompoundNBT)
+  private class BlockData(val name: String, val data: CompoundTag)
 
 }

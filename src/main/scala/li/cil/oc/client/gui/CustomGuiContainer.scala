@@ -13,10 +13,10 @@ import net.minecraft.client.renderer.RenderHelper
 import net.minecraft.client.renderer.Tessellator
 import net.minecraft.entity.player.PlayerInventory
 import net.minecraft.inventory.container.Container
-import net.minecraft.util.text.ITextComponent
+import net.minecraft.network.chat.Component
 import net.minecraft.util.text.ITextProperties
 import net.minecraft.util.text.LanguageMap
-import net.minecraft.util.text.StringTextComponent
+import net.minecraft.network.chat.TextComponent
 
 import scala.collection.convert.ImplicitConversionsToScala._
 
@@ -24,7 +24,7 @@ import scala.collection.convert.ImplicitConversionsToScala._
 // transformations that break things! Such fun. Many annoyed. And yes, this
 // is a common issue, have a look at EnderIO and Enchanting Plus. They have
 // to work around this, too.
-abstract class CustomGuiContainer[C <: Container](val inventoryContainer: C, inv: PlayerInventory, title: ITextComponent)
+abstract class CustomGuiContainer[C <: Container](val inventoryContainer: C, inv: PlayerInventory, title: Component)
   extends ContainerScreen(inventoryContainer, inv, title) with WidgetContainer {
 
   override def windowX = leftPos
@@ -46,9 +46,9 @@ abstract class CustomGuiContainer[C <: Container](val inventoryContainer: C, inv
     pointX >= rectX - 1 && pointX < rectX + rectWidth + 1 && pointY >= rectY - 1 && pointY < rectY + rectHeight + 1
 
   protected def copiedDrawHoveringText(stack: MatrixStack, lines: util.List[String], x: Int, y: Int, font: FontRenderer): Unit = {
-    val text = new util.ArrayList[StringTextComponent]()
+    val text = new util.ArrayList[TextComponent]()
     for (line <- lines) {
-      text.add(new StringTextComponent(line))
+      text.add(new TextComponent(line))
     }
     copiedDrawHoveringText0(stack, text, x, y, font)
   }

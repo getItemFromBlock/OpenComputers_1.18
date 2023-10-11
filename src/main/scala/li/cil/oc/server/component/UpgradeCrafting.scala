@@ -16,7 +16,7 @@ import li.cil.oc.api.network._
 import li.cil.oc.api.prefab.AbstractManagedEnvironment
 import li.cil.oc.util.InventoryUtils
 import net.minecraft.item.crafting.IRecipeType
-import net.minecraft.entity.player.PlayerEntity
+import net.minecraft.world.entity.player.Player
 import net.minecraft.inventory
 import net.minecraft.inventory.{CraftResultInventory, IInventory}
 import net.minecraft.inventory.container.Container
@@ -45,7 +45,7 @@ class UpgradeCrafting(val host: EnvironmentHost with internal.Robot) extends Abs
   }
 
   private object CraftingInventory extends inventory.CraftingInventory(new Container(null, 0) {
-    override def stillValid(player: PlayerEntity) = true
+    override def stillValid(player: Player) = true
   }, 3, 3) {
     def craft(wantedCount: Int): Seq[_] = {
       val player = host.player

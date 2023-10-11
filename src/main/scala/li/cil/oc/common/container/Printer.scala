@@ -5,11 +5,11 @@ import li.cil.oc.common.Tier
 import li.cil.oc.common.item.data.PrintData
 import li.cil.oc.common.tileentity
 import net.minecraft.entity.player.PlayerInventory
-import net.minecraft.item.ItemStack
+import net.minecraft.world.item.ItemStack
 import net.minecraft.inventory.IInventory
 import net.minecraft.inventory.container.ContainerType
 import net.minecraft.inventory.container.{Slot => BaseSlot}
-import net.minecraft.nbt.CompoundNBT
+import net.minecraft.nbt.CompoundTag
 
 class Printer(selfType: ContainerType[_ <: Printer], id: Int, playerInventory: PlayerInventory, val printer: IInventory)
   extends Player(selfType, id, playerInventory, printer) {
@@ -45,7 +45,7 @@ class Printer(selfType: ContainerType[_ <: Printer], id: Int, playerInventory: P
 
   def amountInk = synchronizedData.getInt("amountInk")
 
-  override protected def detectCustomDataChanges(nbt: CompoundNBT): Unit = {
+  override protected def detectCustomDataChanges(nbt: CompoundTag): Unit = {
     printer match {
       case te: tileentity.Printer => {
         synchronizedData.putDouble("progress", if (te.isPrinting) te.progress / 100.0 else 0)

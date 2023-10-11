@@ -6,10 +6,10 @@ import li.cil.oc.util.{BlockInventorySource, BlockPosition, EntityInventorySourc
 import li.cil.oc.util.ExtendedBlock._
 import li.cil.oc.util.ExtendedWorld._
 import net.minecraft.block.FlowingFluidBlock
-import net.minecraft.entity.Entity
-import net.minecraft.entity.LivingEntity
+import net.minecraft.world.entity.Entity
+import net.minecraft.world.entity.LivingEntity
 import net.minecraft.entity.item.minecart.MinecartEntity
-import net.minecraft.entity.player.PlayerEntity
+import net.minecraft.world.entity.player.Player
 import net.minecraft.util.{ActionResult, Direction, Hand}
 import net.minecraft.util.math.AxisAlignedBB
 import net.minecraft.util.math.BlockRayTraceResult
@@ -31,7 +31,7 @@ trait WorldAware {
 
   def world = position.world.get
 
-  def fakePlayer: PlayerEntity = {
+  def fakePlayer: Player = {
     val player = FakePlayerFactory.get(world.asInstanceOf[ServerWorld], Settings.get.fakePlayerProfile)
     player.setPos(position.x + 0.5, position.y + 0.5, position.z + 0.5)
     player

@@ -13,18 +13,18 @@ import li.cil.oc.common.tileentity
 import li.cil.oc.util.Color
 import li.cil.oc.util.ExtendedAABB
 import li.cil.oc.util.ExtendedAABB._
-import net.minecraft.block.BlockState
+import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.client.world.ClientWorld
 import net.minecraft.client.renderer.model.BakedQuad
 import net.minecraft.client.renderer.model.IBakedModel
 import net.minecraft.client.renderer.model.ItemOverrideList
 import net.minecraft.client.renderer.texture.MissingTextureSprite
 import net.minecraft.client.renderer.texture.TextureAtlasSprite
-import net.minecraft.entity.LivingEntity
-import net.minecraft.item.DyeColor
-import net.minecraft.item.ItemStack
-import net.minecraft.util.Direction
-import net.minecraft.util.ResourceLocation
+import net.minecraft.world.entity.LivingEntity
+import net.minecraft.world.item.DyeColor
+import net.minecraft.world.item.ItemStack
+import net.minecraft.core.Direction
+import net.minecraft.resources.ResourceLocation
 import net.minecraftforge.client.model.data.IModelData
 
 import scala.collection.JavaConverters.bufferAsJavaList

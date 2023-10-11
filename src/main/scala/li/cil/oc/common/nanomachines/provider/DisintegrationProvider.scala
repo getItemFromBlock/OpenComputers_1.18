@@ -8,15 +8,15 @@ import li.cil.oc.util.BlockPosition
 import li.cil.oc.util.ExtendedWorld._
 import li.cil.oc.util.StackOption
 import li.cil.oc.util.StackOption._
-import net.minecraft.block.Block
-import net.minecraft.block.BlockState
-import net.minecraft.entity.player.PlayerEntity
+import net.minecraft.world.level.block.Block
+import net.minecraft.world.level.block.state.BlockState
+import net.minecraft.world.entity.player.Player
 import net.minecraft.entity.player.ServerPlayerEntity
-import net.minecraft.item.ItemStack
-import net.minecraft.nbt.CompoundNBT
-import net.minecraft.util.Direction
-import net.minecraft.util.Hand
-import net.minecraft.world.World
+import net.minecraft.world.item.ItemStack
+import net.minecraft.nbt.CompoundTag
+import net.minecraft.core.Direction
+import net.minecraft.world.InteractionHand
+import net.minecraft.world.level.Level
 import net.minecraft.world.storage.IServerWorldInfo
 import net.minecraftforge.common.MinecraftForge
 import net.minecraftforge.common.util.FakePlayer
@@ -28,7 +28,7 @@ import scala.collection.mutable
 object DisintegrationProvider extends ScalaProvider("c4e7e3c2-8069-4fbb-b08e-74b1bddcdfe7") {
   override def createScalaBehaviors(player: PlayerEntity) = Iterable(new DisintegrationBehavior(player))
 
-  override def readBehaviorFromNBT(player: PlayerEntity, nbt: CompoundNBT) = new DisintegrationBehavior(player)
+  override def readBehaviorFromNBT(player: PlayerEntity, nbt: CompoundTag) = new DisintegrationBehavior(player)
 
   class DisintegrationBehavior(p: PlayerEntity) extends AbstractBehavior(p) {
     var breakingMap = mutable.Map.empty[BlockPosition, SlowBreakInfo]

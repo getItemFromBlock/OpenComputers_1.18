@@ -8,10 +8,10 @@ import li.cil.oc.server.component
 import li.cil.oc.util.BlockPosition
 import li.cil.oc.util.RotationHelper
 import li.cil.oc.{Constants, Settings, api}
-import net.minecraft.item.ItemStack
-import net.minecraft.util.Direction
+import net.minecraft.world.item.ItemStack
+import net.minecraft.core.Direction
 import net.minecraft.util.RegistryKey
-import net.minecraft.util.ResourceLocation
+import net.minecraft.resources.ResourceLocation
 import net.minecraft.util.registry.Registry
 import net.minecraft.world.server.ServerWorld
 import net.minecraftforge.fml.server.ServerLifecycleHooks

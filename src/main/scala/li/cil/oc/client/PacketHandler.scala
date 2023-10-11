@@ -203,7 +203,7 @@ object PacketHandler extends CommonPacketHandler {
   def onFileSystemActivity(p: PacketParser): AnyVal = {
     val sound = p.readUTF()
     val data = NbtIo.read(p)
-    if (p.readBoolean()) p.readBlockEntity[net.minecraft.tileentity.TileEntity]() match {
+    if (p.readBoolean()) p.readBlockEntity[net.minecraft.world.level.block.entity.BlockEntity]() match {
       case Some(t) =>
         MinecraftForge.EVENT_BUS.post(new FileSystemAccessEvent.Client(sound, t, data))
       case _ => // Invalid packet.

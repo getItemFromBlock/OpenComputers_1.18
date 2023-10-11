@@ -6,21 +6,21 @@ import li.cil.oc.common.container.ContainerTypes
 import li.cil.oc.common.block.property.PropertyRotatable
 import li.cil.oc.common.tileentity
 import net.minecraft.block.AbstractBlock.Properties
-import net.minecraft.block.Block
-import net.minecraft.block.BlockState
-import net.minecraft.entity.player.PlayerEntity
+import net.minecraft.world.level.block.Block
+import net.minecraft.world.level.block.state.BlockState
+import net.minecraft.world.entity.player.Player
 import net.minecraft.entity.player.ServerPlayerEntity
-import net.minecraft.item.ItemStack
+import net.minecraft.world.item.ItemStack
 import net.minecraft.state.StateContainer
-import net.minecraft.util.Direction
+import net.minecraft.core.Direction
 import net.minecraft.util.Direction.Axis
-import net.minecraft.util.Hand
-import net.minecraft.util.math.BlockPos
+import net.minecraft.world.InteractionHand
+import net.minecraft.core.BlockPos
 import net.minecraft.util.math.RayTraceResult
 import net.minecraft.util.math.RayTraceResult
-import net.minecraft.util.math.vector.Vector3d
-import net.minecraft.world.IBlockReader
-import net.minecraft.world.World
+import com.mojang.math.Vector3d
+import net.minecraft.world.level.BlockGetter
+import net.minecraft.world.level.Level
 
 class Rack(props: Properties) extends RedstoneAware(props) with traits.PowerAcceptor with traits.StateAware with traits.GUI {
   protected override def createBlockStateDefinition(builder: StateContainer.Builder[Block, BlockState]) =
@@ -30,16 +30,16 @@ class Rack(props: Properties) extends RedstoneAware(props) with traits.PowerAcce
 
   override def energyThroughput = Settings.get.serverRackRate
 
-  override def openGui(player: ServerPlayerEntity, world: World, pos: BlockPos): Unit = world.getBlockEntity(pos) match {
+  override def openGui(player: ServerPlayerEntity, world: Level, pos: BlockPos): Unit = world.getBlockEntity(pos) match {
     case te: tileentity.Rack => ContainerTypes.openRackGui(player, te)
     case _ =>
   }
 
-  override def newBlockEntity(world: IBlockReader) = new tileentity.Rack(tileentity.TileEntityTypes.RACK)
+  override def newBlockEntity(world: BlockGetter) = new tileentity.Rack(tileentity.TileEntityTypes.RACK)
 
   // ----------------------------------------------------------------------- //
 
-  override def localOnBlockActivated(world: World, pos: BlockPos, player: PlayerEntity, hand: Hand, heldItem: ItemStack, side: Direction, hitX: Float, hitY: Float, hitZ: Float): Boolean = {
+  override def localOnBlockActivated(world: Level, pos: BlockPos, player: PlayerEntity, hand: Hand, heldItem: ItemStack, side: Direction, hitX: Float, hitY: Float, hitZ: Float): Boolean = {
     world.getBlockEntity(pos) match {
       case rack: tileentity.Rack => rack.slotAt(side, hitX, hitY, hitZ) match {
         case Some(slot) =>

@@ -19,20 +19,20 @@ import li.cil.oc.common.item.traits.FileSystemLike
 import li.cil.oc.common.tileentity._
 import li.cil.oc.common.tileentity.traits.Computer
 import li.cil.oc.common.{PacketHandler => CommonPacketHandler}
-import net.minecraft.entity.player.PlayerEntity
+import net.minecraft.world.entity.player.Player
 import net.minecraft.entity.player.ServerPlayerEntity
-import net.minecraft.nbt.CompoundNBT
-import net.minecraft.util.Hand
+import net.minecraft.nbt.CompoundTag
+import net.minecraft.world.InteractionHand
 import net.minecraft.util.RegistryKey
-import net.minecraft.util.ResourceLocation
-import net.minecraft.util.Util
+import net.minecraft.resources.ResourceLocation
+import net.minecraft.Util
 import net.minecraft.util.registry.Registry
-import net.minecraft.world.World
+import net.minecraft.world.level.Level
 import net.minecraftforge.eventbus.api.SubscribeEvent
 import net.minecraftforge.fml.server.ServerLifecycleHooks
 
 object PacketHandler extends CommonPacketHandler {
-  override protected def world(player: PlayerEntity, dimension: ResourceLocation): Option[World] =
+  override protected def world(player: PlayerEntity, dimension: ResourceLocation): Option[Level] =
     Option(ServerLifecycleHooks.getCurrentServer.getLevel(RegistryKey.create(Registry.DIMENSION_REGISTRY, dimension)))
 
   override def dispatch(p: PacketParser) {
@@ -332,7 +332,7 @@ object PacketHandler extends CommonPacketHandler {
               case screen: Screen if !screen.isOrigin => false
               case _ => true
             }) {
-              val nbt = new CompoundNBT()
+              val nbt = new CompoundTag()
               buffer.data.saveData(nbt)
               nbt.putInt("maxWidth", buffer.getMaximumWidth)
               nbt.putInt("maxHeight", buffer.getMaximumHeight)

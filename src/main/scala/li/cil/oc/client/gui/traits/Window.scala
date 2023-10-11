@@ -6,7 +6,7 @@ import com.mojang.blaze3d.matrix.MatrixStack
 import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.AbstractGui
 import net.minecraft.client.gui.screens.Screen
-import net.minecraft.util.ResourceLocation
+import net.minecraft.resources.ResourceLocation
 
 trait Window extends Screen {
   var leftPos = 0

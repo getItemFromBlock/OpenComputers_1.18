@@ -17,11 +17,11 @@ import li.cil.oc.util.ExtendedNBT._
 import li.cil.oc.util.SideTracker
 import net.minecraft.block.Blocks
 import net.minecraft.inventory.CraftingInventory
-import net.minecraft.item.DyeColor
+import net.minecraft.world.item.DyeColor
 import net.minecraft.item.Items
-import net.minecraft.item.ItemStack
+import net.minecraft.world.item.ItemStack
 import net.minecraft.item.crafting.IRecipe
-import net.minecraft.nbt.CompoundNBT
+import net.minecraft.nbt.CompoundTag
 import net.minecraft.nbt.StringNBT
 import net.minecraft.tags.ItemTags
 
@@ -188,7 +188,7 @@ object ExtendedRecipe {
       recipe.getIngredients.size == 2) breakable {
       for (stack <- getItems(inventory)) {
         if (api.Items.get(stack) == eeprom && stack.hasTag) {
-          val copy = stack.getTag.copy.asInstanceOf[CompoundNBT]
+          val copy = stack.getTag.copy.asInstanceOf[CompoundTag]
           // Erase node address, just in case.
           copy.getCompound(Settings.namespace + "data").getCompound("node").remove("address")
           craftedStack.setTag(copy)

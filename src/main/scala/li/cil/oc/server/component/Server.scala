@@ -29,13 +29,13 @@ import li.cil.oc.common.item
 import li.cil.oc.server.network.Connector
 import li.cil.oc.util.BlockPosition
 import li.cil.oc.util.ExtendedNBT._
-import net.minecraft.entity.player.PlayerEntity
+import net.minecraft.world.entity.player.Player
 import net.minecraft.entity.player.ServerPlayerEntity
-import net.minecraft.item.ItemStack
-import net.minecraft.nbt.CompoundNBT
-import net.minecraft.util.Direction
-import net.minecraft.util.Hand
-import net.minecraft.world.World
+import net.minecraft.world.item.ItemStack
+import net.minecraft.nbt.CompoundTag
+import net.minecraft.core.Direction
+import net.minecraft.world.InteractionHand
+import net.minecraft.world.level.Level
 import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.common.capabilities.ICapabilityProvider
 import net.minecraftforge.common.util.LazyOptional
@@ -82,14 +82,14 @@ class Server(val rack: api.internal.Rack, val slot: Int) extends Environment wit
 
   private final val MachineTag = "machine"
 
-  override def loadData(nbt: CompoundNBT) {
+  override def loadData(nbt: CompoundTag) {
     super.loadData(nbt)
     if (!rack.world.isClientSide) {
       machine.loadData(nbt.getCompound(MachineTag))
     }
   }
 
-  override def saveData(nbt: CompoundNBT) {
+  override def saveData(nbt: CompoundTag) {
     super.saveData(nbt)
     if (!rack.world.isClientSide) {
       nbt.setNewCompoundTag(MachineTag, machine.saveData)
@@ -118,7 +118,7 @@ class Server(val rack: api.internal.Rack, val slot: Int) extends Environment wit
 
   override def zPosition: Double = rack.zPosition
 
-  override def world: World = rack.world
+  override def world: Level = rack.world
 
   override def markChanged(): Unit = rack.markChanged()
 
@@ -164,8 +164,8 @@ class Server(val rack: api.internal.Rack, val slot: Int) extends Environment wit
   // ----------------------------------------------------------------------- //
   // RackMountable
 
-  override def getData: CompoundNBT = {
-    val nbt = new CompoundNBT()
+  override def getData: CompoundTag = {
+    val nbt = new CompoundTag()
     nbt.putBoolean("isRunning", wasRunning)
     nbt.putBoolean("hasErrored", hadErrored)
     nbt.putLong("lastFileSystemAccess", lastFileSystemAccess)

@@ -4,11 +4,11 @@ import java.util.Random
 
 import li.cil.oc.common.tileentity
 import net.minecraft.block.AbstractBlock.Properties
-import net.minecraft.block.Block
-import net.minecraft.block.BlockState
-import net.minecraft.util.math.BlockPos
-import net.minecraft.world.IBlockReader
-import net.minecraft.world.World
+import net.minecraft.world.level.block.Block
+import net.minecraft.world.level.block.state.BlockState
+import net.minecraft.core.BlockPos
+import net.minecraft.world.level.BlockGetter
+import net.minecraft.world.level.Level
 import net.minecraft.world.server.ServerWorld
 
 class Capacitor(props: Properties) extends SimpleBlock(props) {
@@ -17,7 +17,7 @@ class Capacitor(props: Properties) extends SimpleBlock(props) {
 
   // ----------------------------------------------------------------------- //
 
-  override def newBlockEntity(world: IBlockReader) = new tileentity.Capacitor(tileentity.TileEntityTypes.CAPACITOR)
+  override def newBlockEntity(world: BlockGetter) = new tileentity.Capacitor(tileentity.TileEntityTypes.CAPACITOR)
 
   // ----------------------------------------------------------------------- //
 

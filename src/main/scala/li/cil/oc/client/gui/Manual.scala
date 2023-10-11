@@ -15,13 +15,13 @@ import net.minecraft.client.gui.widget.button.Button
 import net.minecraft.client.util.InputMappings
 import net.minecraft.client.settings.KeyBinding
 import net.minecraft.util.text.ITextProperties
-import net.minecraft.util.text.StringTextComponent
+import net.minecraft.network.chat.TextComponent
 import org.lwjgl.glfw.GLFW
 
 import scala.collection.JavaConverters.{asJavaIterable, seqAsJavaList}
 import scala.collection.convert.ImplicitConversionsToScala._
 
-class Manual extends Screen(StringTextComponent.EMPTY) with traits.Window {
+class Manual extends Screen(TextComponent.EMPTY) with traits.Window {
   final val documentMaxWidth = 230
   final val documentMaxHeight = 176
   final val scrollPosX = 244
@@ -121,7 +121,7 @@ class Manual extends Screen(StringTextComponent.EMPTY) with traits.Window {
 
     currentSegment = Document.render(stack, document, leftPos + 8, topPos + 8, documentMaxWidth, documentMaxHeight, offset, font, mouseX, mouseY)
     def localizeAndWrap(text: String): java.util.List[_ <: ITextProperties] = {
-      val lines = Localization.localizeImmediately(text).linesIterator.map(new StringTextComponent(_))
+      val lines = Localization.localizeImmediately(text).linesIterator.map(new TextComponent(_))
       seqAsJavaList(lines.toSeq)
     }
 
@@ -142,7 +142,7 @@ class Manual extends Screen(StringTextComponent.EMPTY) with traits.Window {
     }
 
     if (canScroll && (isCoordinateOverScrollBar(mouseX - leftPos, mouseY - topPos) || isScrolling)) {
-      val lines = seqAsJavaList(Seq(new StringTextComponent(s"${100 * offset / maxOffset}%")))
+      val lines = seqAsJavaList(Seq(new TextComponent(s"${100 * offset / maxOffset}%")))
       renderWrappedToolTip(stack, lines, leftPos + scrollPosX + scrollWidth, scrollButton.y + scrollButton.getHeight + 1, font)
     }
   }

@@ -4,12 +4,12 @@ import java.util
 import java.util.Collections
 
 import li.cil.oc.client.Textures
-import net.minecraft.block.BlockState
+import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.model._
 import net.minecraft.client.renderer.texture.TextureAtlasSprite
-import net.minecraft.util.Direction
-import net.minecraft.util.math.vector.Vector3d
+import net.minecraft.core.Direction
+import com.mojang.math.Vector3d
 import net.minecraft.util.math.vector.Vector3f
 
 trait SmartBlockModelBase extends IBakedModel {

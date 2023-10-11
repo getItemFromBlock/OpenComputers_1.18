@@ -9,7 +9,7 @@ import li.cil.oc.util.ExtendedNBT._
 import li.cil.oc.util.ItemUtils
 import net.minecraft.enchantment.EnchantmentHelper
 import net.minecraft.item
-import net.minecraft.item.Item
+import net.minecraft.world.item.Item
 import net.minecraft.nbt.{CompoundNBT, ListNBT, StringNBT}
 import net.minecraft.tags.ItemTags
 import net.minecraftforge.common.util.Constants.NBT

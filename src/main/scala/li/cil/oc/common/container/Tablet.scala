@@ -2,11 +2,11 @@ package li.cil.oc.common.container
 
 import li.cil.oc.common.item.TabletWrapper
 import li.cil.oc.integration.opencomputers.DriverScreen
-import net.minecraft.entity.player.PlayerEntity
+import net.minecraft.world.entity.player.Player
 import net.minecraft.entity.player.PlayerInventory
 import net.minecraft.inventory.IInventory
 import net.minecraft.inventory.container.ContainerType
-import net.minecraft.item.ItemStack
+import net.minecraft.world.item.ItemStack
 
 class Tablet(selfType: ContainerType[_ <: Tablet], id: Int, playerInventory: PlayerInventory, val stack: ItemStack, tablet: IInventory, slot1: String, tier1: Int)
   extends Player(selfType, id, playerInventory, tablet) {
@@ -22,5 +22,5 @@ class Tablet(selfType: ContainerType[_ <: Tablet], id: Int, playerInventory: Pla
 
   addPlayerInventorySlots(8, 84)
 
-  override def stillValid(player: PlayerEntity) = player == playerInventory.player
+  override def stillValid(player: Player) = player == playerInventory.player
 }

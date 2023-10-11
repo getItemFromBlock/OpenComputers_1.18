@@ -8,8 +8,8 @@ import li.cil.oc.{Constants, Settings, api}
 import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer._
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats
-import net.minecraft.util.Direction
-import net.minecraft.util.Hand
+import net.minecraft.core.Direction
+import net.minecraft.world.InteractionHand
 import net.minecraft.util.math.shapes.ISelectionContext
 import net.minecraftforge.client.event.DrawHighlightEvent
 import net.minecraftforge.eventbus.api.SubscribeEvent

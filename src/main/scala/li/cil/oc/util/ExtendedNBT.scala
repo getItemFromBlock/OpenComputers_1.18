@@ -1,9 +1,9 @@
 package li.cil.oc.util
 
 import com.google.common.base.Charsets
-import net.minecraft.item.ItemStack
+import net.minecraft.world.item.ItemStack
 import net.minecraft.nbt._
-import net.minecraft.util.Direction
+import net.minecraft.core.Direction
 import net.minecraftforge.common.util.Constants.NBT
 
 import scala.collection.JavaConverters.mapAsScalaMap
@@ -15,44 +15,44 @@ import scala.reflect.ClassTag
 
 object ExtendedNBT {
 
-  implicit def toNbt(value: Boolean): ByteNBT = ByteNBT.valueOf(value)
+  implicit def toNbt(value: Boolean): ByteTag = ByteTag.valueOf(value)
 
-  implicit def toNbt(value: Byte): ByteNBT = ByteNBT.valueOf(value)
+  implicit def toNbt(value: Byte): ByteTag = ByteTag.valueOf(value)
 
-  implicit def toNbt(value: Short): ShortNBT = ShortNBT.valueOf(value)
+  implicit def toNbt(value: Short): ShortTag = ShortTag.valueOf(value)
 
-  implicit def toNbt(value: Int): IntNBT = IntNBT.valueOf(value)
+  implicit def toNbt(value: Int): IntTag = IntTag.valueOf(value)
 
-  implicit def toNbt(value: Long): LongNBT = LongNBT.valueOf(value)
+  implicit def toNbt(value: Long): LongTag = LongTag.valueOf(value)
 
-  implicit def toNbt(value: Float): FloatNBT = FloatNBT.valueOf(value)
+  implicit def toNbt(value: Float): FloatTag = FloatTag.valueOf(value)
 
-  implicit def toNbt(value: Double): DoubleNBT = DoubleNBT.valueOf(value)
+  implicit def toNbt(value: Double): DoubleTag = DoubleTag.valueOf(value)
 
-  implicit def toNbt(value: Array[Byte]): ByteArrayNBT = new ByteArrayNBT(value)
+  implicit def toNbt(value: Array[Byte]): ByteArrayTag = new ByteArrayTag(value)
 
-  implicit def toNbt(value: Array[Int]): IntArrayNBT = new IntArrayNBT(value)
+  implicit def toNbt(value: Array[Int]): IntArrayTag = new IntArrayTag(value)
 
-  implicit def toNbt(value: Array[Boolean]): ByteArrayNBT = new ByteArrayNBT(value.map(if (_) 1: Byte else 0: Byte))
+  implicit def toNbt(value: Array[Boolean]): ByteArrayTag = new ByteArrayTag(value.map(if (_) 1: Byte else 0: Byte))
 
-  implicit def toNbt(value: String): StringNBT = StringNBT.valueOf(value)
+  implicit def toNbt(value: String): StringTag = StringTag.valueOf(value)
 
-  implicit def toNbt(value: ItemStack): CompoundNBT = {
-    val nbt = new CompoundNBT()
+  implicit def toNbt(value: ItemStack): CompoundTag = {
+    val nbt = new CompoundTag()
     if (value != null) {
       value.save(nbt)
     }
     nbt
   }
 
-  implicit def toNbt(value: CompoundNBT => Unit): CompoundNBT = {
-    val nbt = new CompoundNBT()
+  implicit def toNbt(value: CompoundTag => Unit): CompoundTag = {
+    val nbt = new CompoundTag()
     value(nbt)
     nbt
   }
 
-  implicit def toNbt(value: Map[String, _]): CompoundNBT = {
-    val nbt = new CompoundNBT()
+  implicit def toNbt(value: Map[String, _]): CompoundTag = {
+    val nbt = new CompoundTag()
     for ((key, value) <- value) value match {
       case value: Boolean => nbt.put(key, value)
       case value: Byte => nbt.put(key, value)
@@ -94,42 +94,42 @@ object ExtendedNBT {
     val nbtValue = typeAndValue.get("value")
     nbtType match {
       case Some(n: Number) => n.intValue() match {
-        case NBT.TAG_BYTE => ByteNBT.valueOf(nbtValue match {
+        case NBT.TAG_BYTE => ByteTag.valueOf(nbtValue match {
           case Some(v: Number) => v.byteValue()
           case _ => throw new IllegalArgumentException("Illegal or missing value.")
         })
 
-        case NBT.TAG_SHORT => ShortNBT.valueOf(nbtValue match {
+        case NBT.TAG_SHORT => ShortTag.valueOf(nbtValue match {
           case Some(v: Number) => v.shortValue()
           case _ => throw new IllegalArgumentException("Illegal or missing value.")
         })
 
-        case NBT.TAG_INT => IntNBT.valueOf(nbtValue match {
+        case NBT.TAG_INT => IntTag.valueOf(nbtValue match {
           case Some(v: Number) => v.intValue()
           case _ => throw new IllegalArgumentException("Illegal or missing value.")
         })
 
-        case NBT.TAG_LONG => LongNBT.valueOf(nbtValue match {
+        case NBT.TAG_LONG => LongTag.valueOf(nbtValue match {
           case Some(v: Number) => v.longValue()
           case _ => throw new IllegalArgumentException("Illegal or missing value.")
         })
 
-        case NBT.TAG_FLOAT => FloatNBT.valueOf(nbtValue match {
+        case NBT.TAG_FLOAT => FloatTag.valueOf(nbtValue match {
           case Some(v: Number) => v.floatValue()
           case _ => throw new IllegalArgumentException("Illegal or missing value.")
         })
 
-        case NBT.TAG_DOUBLE => DoubleNBT.valueOf(nbtValue match {
+        case NBT.TAG_DOUBLE => DoubleTag.valueOf(nbtValue match {
           case Some(v: Number) => v.doubleValue()
           case _ => throw new IllegalArgumentException("Illegal or missing value.")
         })
 
-        case NBT.TAG_BYTE_ARRAY => new ByteArrayNBT(asList(nbtValue).map {
+        case NBT.TAG_BYTE_ARRAY => new ByteArrayTag(asList(nbtValue).map {
           case n: Number => n.byteValue()
           case _ => throw new IllegalArgumentException("Illegal value.")
         }.toArray)
 
-        case NBT.TAG_STRING => StringNBT.valueOf(nbtValue match {
+        case NBT.TAG_STRING => StringTag.valueOf(nbtValue match {
           case Some(v: String) => v
           case Some(v: Array[Byte]) => new String(v, Charsets.UTF_8)
           case _ => throw new IllegalArgumentException("Illegal or missing value.")
@@ -141,7 +141,7 @@ object ExtendedNBT {
           list
 
         case NBT.TAG_COMPOUND =>
-          val nbt = new CompoundNBT()
+          val nbt = new CompoundTag()
           val values = asMap[String](nbtValue)
           for ((name, entry) <- values) {
             try nbt.put(name, typedMapToNbt(asMap[Any](Option(entry)))) catch {
@@ -151,7 +151,7 @@ object ExtendedNBT {
           nbt
 
         case NBT.TAG_INT_ARRAY =>
-          new IntArrayNBT(asList(nbtValue).map {
+          new IntArrayTag(asList(nbtValue).map {
             case n: Number => n.intValue()
             case _ => throw new IllegalArgumentException()
           }.toArray)
@@ -163,58 +163,58 @@ object ExtendedNBT {
     }
   }
 
-  implicit def booleanIterableToNbt(value: Iterable[Boolean]): Iterable[ByteNBT] = value.map(toNbt)
+  implicit def booleanIterableToNbt(value: Iterable[Boolean]): Iterable[ByteTag] = value.map(toNbt)
 
-  implicit def byteIterableToNbt(value: Iterable[Byte]): Iterable[ByteNBT] = value.map(toNbt)
+  implicit def byteIterableToNbt(value: Iterable[Byte]): Iterable[ByteTag] = value.map(toNbt)
 
-  implicit def shortIterableToNbt(value: Iterable[Short]): Iterable[ShortNBT] = value.map(toNbt)
+  implicit def shortIterableToNbt(value: Iterable[Short]): Iterable[ShortTag] = value.map(toNbt)
 
-  implicit def intIterableToNbt(value: Iterable[Int]): Iterable[IntNBT] = value.map(toNbt)
+  implicit def intIterableToNbt(value: Iterable[Int]): Iterable[IntTag] = value.map(toNbt)
 
-  implicit def intArrayIterableToNbt(value: Iterable[Array[Int]]): Iterable[IntArrayNBT] = value.map(toNbt)
+  implicit def intArrayIterableToNbt(value: Iterable[Array[Int]]): Iterable[IntArrayTag] = value.map(toNbt)
 
-  implicit def longIterableToNbt(value: Iterable[Long]): Iterable[LongNBT] = value.map(toNbt)
+  implicit def longIterableToNbt(value: Iterable[Long]): Iterable[LongTag] = value.map(toNbt)
 
-  implicit def floatIterableToNbt(value: Iterable[Float]): Iterable[FloatNBT] = value.map(toNbt)
+  implicit def floatIterableToNbt(value: Iterable[Float]): Iterable[FloatTag] = value.map(toNbt)
 
-  implicit def doubleIterableToNbt(value: Iterable[Double]): Iterable[DoubleNBT] = value.map(toNbt)
+  implicit def doubleIterableToNbt(value: Iterable[Double]): Iterable[DoubleTag] = value.map(toNbt)
 
-  implicit def byteArrayIterableToNbt(value: Iterable[Array[Byte]]): Iterable[ByteArrayNBT] = value.map(toNbt)
+  implicit def byteArrayIterableToNbt(value: Iterable[Array[Byte]]): Iterable[ByteArrayTag] = value.map(toNbt)
 
-  implicit def stringIterableToNbt(value: Iterable[String]): Iterable[StringNBT] = value.map(toNbt)
+  implicit def stringIterableToNbt(value: Iterable[String]): Iterable[StringTag] = value.map(toNbt)
 
-  implicit def writableIterableToNbt(value: Iterable[CompoundNBT => Unit]): Iterable[CompoundNBT] = value.map(toNbt)
+  implicit def writableIterableToNbt(value: Iterable[CompoundTag => Unit]): Iterable[CompoundTag] = value.map(toNbt)
 
-  implicit def itemStackIterableToNbt(value: Iterable[ItemStack]): Iterable[CompoundNBT] = value.map(toNbt)
+  implicit def itemStackIterableToNbt(value: Iterable[ItemStack]): Iterable[CompoundTag] = value.map(toNbt)
 
   implicit def extendINBT(nbt: INBT): ExtendedINBT = new ExtendedINBT(nbt)
 
-  implicit def extendCompoundNBT(nbt: CompoundNBT): ExtendedCompoundNBT = new ExtendedCompoundNBT(nbt)
+  implicit def extendCompoundNBT(nbt: CompoundTag): ExtendedCompoundNBT = new ExtendedCompoundNBT(nbt)
 
   implicit def extendListNBT(nbt: ListNBT): ExtendedListNBT = new ExtendedListNBT(nbt)
 
   class ExtendedINBT(val nbt: INBT) {
     def toTypedMap: Map[String, _] = Map("type" -> nbt.getId, "value" -> (nbt match {
-      case tag: ByteNBT => tag.getAsByte
-      case tag: ShortNBT => tag.getAsShort
-      case tag: IntNBT => tag.getAsInt
-      case tag: LongNBT => tag.getAsLong
-      case tag: FloatNBT => tag.getAsFloat
-      case tag: DoubleNBT => tag.getAsDouble
-      case tag: ByteArrayNBT => tag.getAsByteArray
-      case tag: StringNBT => tag.getAsString
+      case tag: ByteTag => tag.getAsByte
+      case tag: ShortTag => tag.getAsShort
+      case tag: IntTag => tag.getAsInt
+      case tag: LongTag => tag.getAsLong
+      case tag: FloatTag => tag.getAsFloat
+      case tag: DoubleTag => tag.getAsDouble
+      case tag: ByteArrayTag => tag.getAsByteArray
+      case tag: StringTag => tag.getAsString
       case tag: ListNBT => tag.map((entry: INBT) => entry.toTypedMap)
-      case tag: CompoundNBT => tag.getAllKeys.collect {
+      case tag: CompoundTag => tag.getAllKeys.collect {
         case key: String => key -> tag.get(key).toTypedMap
       }.toMap
-      case tag: IntArrayNBT => tag.getAsIntArray
+      case tag: IntArrayTag => tag.getAsIntArray
       case _ => throw new IllegalArgumentException()
     }))
   }
 
-  class ExtendedCompoundNBT(val nbt: CompoundNBT) {
-    def setNewCompoundTag(name: String, f: (CompoundNBT) => Any) = {
-      val t = new CompoundNBT()
+  class ExtendedCompoundNBT(val nbt: CompoundTag) {
+    def setNewCompoundTag(name: String, f: (CompoundTag) => Any) = {
+      val t = new CompoundTag()
       f(t)
       nbt.put(name, t)
       nbt
@@ -227,7 +227,7 @@ object ExtendedNBT {
       nbt
     }
 
-    def setNewTagList(name: String, values: INBT*): CompoundNBT = setNewTagList(name, values)
+    def setNewTagList(name: String, values: INBT*): CompoundTag = setNewTagList(name, values)
 
     def getDirection(name: String) = {
       nbt.getByte(name) match {
@@ -249,8 +249,8 @@ object ExtendedNBT {
   }
 
   class ExtendedListNBT(val nbt: ListNBT) {
-    def appendNewCompoundTag(f: (CompoundNBT) => Unit) {
-      val t = new CompoundNBT()
+    def appendNewCompoundTag(f: (CompoundTag) => Unit) {
+      val t = new CompoundTag()
       f(t)
       nbt.add(t)
     }

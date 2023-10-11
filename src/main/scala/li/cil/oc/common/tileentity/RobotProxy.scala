@@ -23,17 +23,17 @@ import net.minecraftforge.fluids.capability.IFluidHandler
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction
 import net.minecraftforge.api.distmarker.Dist
 import net.minecraftforge.api.distmarker.OnlyIn
-import net.minecraft.entity.Entity
-import net.minecraft.entity.player.Player
+import net.minecraft.world.entity.Entity
+import net.minecraft.world.entity.player.Player
 import net.minecraft.fluid.Fluid
 import net.minecraft.world.WorldlyContainer
 import net.minecraft.world.item.ItemStack
-import net.minecraft.nbt.CompoundNBT
+import net.minecraft.nbt.CompoundTag
 import net.minecraft.world.level.block.entity.BlockEntity
 import net.minecraft.world.level.block.entity.BlockEntityType
-import net.minecraft.util.Direction
+import net.minecraft.core.Direction
 import net.minecraft.util.math.AxisAlignedBB
-import net.minecraft.util.text.ITextComponent
+import net.minecraft.network.chat.Component
 import net.minecraftforge.fluids.FluidStack
 import net.minecraftforge.fluids.IFluidTank
 
@@ -176,7 +176,7 @@ class RobotProxy(selfType: BlockEntityType[_ <: RobotProxy], val robot: Robot) e
     }
     if (isServer) {
       // Use the same address we use internally on the outside.
-      val nbt = new CompoundNBT()
+      val nbt = new CompoundTag()
       nbt.putString("address", robot.node.address)
       node.loadData(nbt)
     }
@@ -189,25 +189,25 @@ class RobotProxy(selfType: BlockEntityType[_ <: RobotProxy], val robot: Robot) e
     }
   }
 
-  override def loadForServer(nbt: CompoundNBT) {
+  override def loadForServer(nbt: CompoundTag) {
     robot.info.loadData(nbt)
     super.loadForServer(nbt)
     robot.loadForServer(nbt)
   }
 
-  override def saveForServer(nbt: CompoundNBT) {
+  override def saveForServer(nbt: CompoundTag) {
     super.saveForServer(nbt)
     robot.saveForServer(nbt)
   }
 
-  override def saveData(nbt: CompoundNBT): Unit = robot.saveData(nbt)
+  override def saveData(nbt: CompoundTag): Unit = robot.saveData(nbt)
 
-  override def loadData(nbt: CompoundNBT): Unit = robot.loadData(nbt)
+  override def loadData(nbt: CompoundTag): Unit = robot.loadData(nbt)
 
   @OnlyIn(Dist.CLIENT)
-  override def loadForClient(nbt: CompoundNBT): Unit = robot.loadForClient(nbt)
+  override def loadForClient(nbt: CompoundTag): Unit = robot.loadForClient(nbt)
 
-  override def saveForClient(nbt: CompoundNBT): Unit = robot.saveForClient(nbt)
+  override def saveForClient(nbt: CompoundTag): Unit = robot.saveForClient(nbt)
 
   @OnlyIn(Dist.CLIENT)
   override def getViewDistance: Double = robot.getViewDistance
@@ -290,7 +290,7 @@ class RobotProxy(selfType: BlockEntityType[_ <: RobotProxy], val robot: Robot) e
 
   override def componentSlot(address: String): Int = robot.componentSlot(address)
 
-  override def getName: ITextComponent = robot.getName
+  override def getName: Component = robot.getName
 
   override def getContainerSize: Int = robot.getContainerSize
 

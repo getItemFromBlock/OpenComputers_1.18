@@ -3,11 +3,11 @@ package li.cil.oc.common.container
 import li.cil.oc.api.Driver
 import li.cil.oc.api.network.EnvironmentHost
 import li.cil.oc.common
-import net.minecraft.entity.player.PlayerEntity
+import net.minecraft.world.entity.player.Player
 import net.minecraft.inventory.IInventory
 import net.minecraft.inventory.container.Slot
-import net.minecraft.item.ItemStack
-import net.minecraft.util.ResourceLocation
+import net.minecraft.world.item.ItemStack
+import net.minecraft.resources.ResourceLocation
 import net.minecraftforge.api.distmarker.Dist
 import net.minecraftforge.api.distmarker.OnlyIn
 
@@ -52,7 +52,7 @@ abstract class ComponentSlot(inventory: IInventory, index: Int, x: Int, y: Int, 
     }
   }
 
-  override def onTake(player: PlayerEntity, stack: ItemStack) = {
+  override def onTake(player: Player, stack: ItemStack) = {
     for (slot <- agentContainer.slots) slot match {
       case dynamic: ComponentSlot => dynamic.clearIfInvalid(player)
       case _ =>
@@ -78,5 +78,5 @@ abstract class ComponentSlot(inventory: IInventory, index: Int, x: Int, y: Int, 
     changeListener.foreach(_(this))
   }
 
-  protected def clearIfInvalid(player: PlayerEntity) {}
+  protected def clearIfInvalid(player: Player) {}
 }

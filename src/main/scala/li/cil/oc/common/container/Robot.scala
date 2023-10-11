@@ -11,11 +11,11 @@ import li.cil.oc.util.SideTracker
 import net.minecraft.entity.player.PlayerInventory
 import net.minecraft.inventory.IInventory
 import net.minecraft.inventory.container.ContainerType
-import net.minecraft.item.ItemStack
+import net.minecraft.world.item.ItemStack
 import net.minecraft.network.PacketBuffer
-import net.minecraft.world.World
+import net.minecraft.world.level.Level
 import net.minecraft.util.IntReferenceHolder
-import net.minecraft.util.ResourceLocation
+import net.minecraft.resources.ResourceLocation
 import net.minecraftforge.api.distmarker.Dist
 import net.minecraftforge.api.distmarker.OnlyIn
 

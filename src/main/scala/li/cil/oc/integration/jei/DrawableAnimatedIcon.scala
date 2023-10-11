@@ -5,7 +5,7 @@ import mezz.jei.api.gui.ITickTimer
 import mezz.jei.api.gui.drawable.IDrawableAnimated
 import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.AbstractGui
-import net.minecraft.util.ResourceLocation
+import net.minecraft.resources.ResourceLocation
 import net.minecraftforge.api.distmarker.Dist
 import net.minecraftforge.api.distmarker.OnlyIn
 

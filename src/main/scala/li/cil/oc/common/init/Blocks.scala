@@ -8,7 +8,7 @@ import li.cil.oc.common.block._
 import net.minecraft.block.AbstractBlock.Properties
 import net.minecraft.block.material.Material
 import net.minecraft.item.Rarity
-import net.minecraft.item.Item
+import net.minecraft.world.item.Item
 
 object Blocks {
   def init() {

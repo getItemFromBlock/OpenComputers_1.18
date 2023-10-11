@@ -8,12 +8,12 @@ import li.cil.oc.client.{PacketSender => ClientPacketSender}
 import li.cil.oc.common.container
 import net.minecraft.client.gui.widget.button.Button
 import net.minecraft.entity.player.PlayerInventory
-import net.minecraft.util.text.ITextComponent
+import net.minecraft.network.chat.Component
 
 import scala.collection.JavaConverters.asJavaCollection
 import scala.collection.convert.ImplicitConversionsToJava._
 
-class Case(state: container.Case, playerInventory: PlayerInventory, name: ITextComponent)
+class Case(state: container.Case, playerInventory: PlayerInventory, name: Component)
   extends DynamicGuiContainer(state, playerInventory, name) {
 
   protected var powerButton: ImageButton = _

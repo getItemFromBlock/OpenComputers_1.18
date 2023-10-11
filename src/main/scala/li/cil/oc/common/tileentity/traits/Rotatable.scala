@@ -7,9 +7,9 @@ import li.cil.oc.server.{PacketSender => ServerPacketSender}
 import li.cil.oc.util.ExtendedEnumFacing._
 import li.cil.oc.util.ExtendedWorld._
 import li.cil.oc.util.RotationHelper
-import net.minecraft.block.BlockState
-import net.minecraft.entity.Entity
-import net.minecraft.util.Direction
+import net.minecraft.world.level.block.state.BlockState
+import net.minecraft.world.entity.Entity
+import net.minecraft.core.Direction
 import net.minecraft.util.Rotation
 
 /** TileEntity base class for rotatable blocks. */

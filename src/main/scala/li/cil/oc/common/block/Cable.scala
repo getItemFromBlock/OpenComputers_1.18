@@ -9,21 +9,21 @@ import li.cil.oc.util.Color
 import li.cil.oc.util.ExtendedWorld._
 import li.cil.oc.util.ItemColorizer
 import net.minecraft.block.AbstractBlock.Properties
-import net.minecraft.block.Block
-import net.minecraft.block.BlockState
-import net.minecraft.entity.player.PlayerEntity
+import net.minecraft.world.level.block.Block
+import net.minecraft.world.level.block.state.BlockState
+import net.minecraft.world.entity.player.Player
 import net.minecraft.entity.{Entity, LivingEntity}
 import net.minecraft.item.{BlockItemUseContext, DyeColor, ItemStack}
 import net.minecraft.state.StateContainer
-import net.minecraft.tileentity.TileEntity
-import net.minecraft.util.Direction
+import net.minecraft.world.level.block.entity.BlockEntity
+import net.minecraft.core.Direction
 import net.minecraft.util.math.{BlockPos, RayTraceResult}
 import net.minecraft.util.math.shapes.ISelectionContext
 import net.minecraft.util.math.shapes.VoxelShape
 import net.minecraft.util.math.shapes.VoxelShapes
-import net.minecraft.world.IBlockReader
+import net.minecraft.world.level.BlockGetter
 import net.minecraft.world.IWorld
-import net.minecraft.world.World
+import net.minecraft.world.level.Level
 import net.minecraft.world.server.ServerWorld
 import net.minecraftforge.common.extensions.IForgeBlock
 
@@ -63,13 +63,13 @@ class Cable(props: Properties) extends SimpleBlock(props) with IForgeBlock {
     })
   }
 
-  override def getPickBlock(state: BlockState, target: RayTraceResult, world: IBlockReader, pos: BlockPos, player: PlayerEntity) =
+  override def getPickBlock(state: BlockState, target: RayTraceResult, world: BlockGetter, pos: BlockPos, player: Player) =
     world.getBlockEntity(pos) match {
       case t: tileentity.Cable => t.createItemStack()
       case _ => createItemStack()
     }
 
-  override def getShape(state: BlockState, world: IBlockReader, pos: BlockPos, ctx: ISelectionContext): VoxelShape = Cable.shape(state)
+  override def getShape(state: BlockState, world: BlockGetter, pos: BlockPos, ctx: ISelectionContext): VoxelShape = Cable.shape(state)
 
   override def neighborChanged(state: BlockState, world: World, pos: BlockPos, other: Block, otherPos: BlockPos, moved: Boolean): Unit = {
     if (world.isClientSide) return
@@ -92,7 +92,7 @@ class Cable(props: Properties) extends SimpleBlock(props) with IForgeBlock {
 
   // ----------------------------------------------------------------------- //
 
-  override def newBlockEntity(world: IBlockReader) = new tileentity.Cable(tileentity.TileEntityTypes.CABLE)
+  override def newBlockEntity(world: BlockGetter) = new tileentity.Cable(tileentity.TileEntityTypes.CABLE)
 
   // ----------------------------------------------------------------------- //
 
@@ -145,7 +145,7 @@ object Cable {
     Cable.CachedBounds(result)
   }
 
-  def updateState(state: BlockState, tileEntity: TileEntity, defaultColor: Int, fromSide: Direction, fromState: BlockState, world: IBlockReader, fromPos: BlockPos): BlockState = {
+  def updateState(state: BlockState, tileEntity: TileEntity, defaultColor: Int, fromSide: Direction, fromState: BlockState, world: BlockGetter, fromPos: BlockPos): BlockState = {
     val prop = PropertyCableConnection.BY_DIRECTION.get(fromSide)
     val neighborTileEntity = world.getBlockEntity(fromPos)
     if (neighborTileEntity != null && neighborTileEntity.getLevel != null) {

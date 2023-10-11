@@ -23,14 +23,14 @@ import net.minecraft.world.item.crafting.ShapedRecipe
 import net.minecraft.world.item.crafting.ShapelessRecipe
 import net.minecraft.inventory.CraftingInventory
 import net.minecraft.nbt.CompressedStreamTools
-import net.minecraft.nbt.CompoundNBT
+import net.minecraft.nbt.CompoundTag
 import net.minecraftforge.registries.ForgeRegistries
 
 import scala.collection.convert.ImplicitConversionsToScala._
 import scala.collection.mutable
 
 object ItemUtils {
-  def getDisplayName(nbt: CompoundNBT): Option[String] = {
+  def getDisplayName(nbt: CompoundTag): Option[String] = {
     if (nbt.contains("display")) {
       val displayNbt = nbt.getCompound("display")
       if (displayNbt.contains("Name"))
@@ -39,9 +39,9 @@ object ItemUtils {
     None
   }
 
-  def setDisplayName(nbt: CompoundNBT, name: String): Unit = {
+  def setDisplayName(nbt: CompoundTag, name: String): Unit = {
     if (!nbt.contains("display")) {
-      nbt.put("display", new CompoundNBT())
+      nbt.put("display", new CompoundTag())
     }
     nbt.getCompound("display").putString("Name", name)
   }
@@ -70,18 +70,18 @@ object ItemUtils {
 
   def caseNameWithTierSuffix(name: String, tier: Int): String = name + (if (tier == Tier.Four) "creative" else (tier + 1).toString)
 
-  def loadTag(data: Array[Byte]): CompoundNBT = {
+  def loadTag(data: Array[Byte]): CompoundTag = {
     val bais = new ByteArrayInputStream(data)
     CompressedStreamTools.readCompressed(bais)
   }
 
   def saveStack(stack: ItemStack): Array[Byte] = {
-    val tag = new CompoundNBT()
+    val tag = new CompoundTag()
     stack.save(tag)
     saveTag(tag)
   }
 
-  def saveTag(tag: CompoundNBT): Array[Byte] = {
+  def saveTag(tag: CompoundTag): Array[Byte] = {
     val baos = new ByteArrayOutputStream()
     CompressedStreamTools.writeCompressed(tag, baos)
     baos.toByteArray

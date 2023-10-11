@@ -8,10 +8,10 @@ import li.cil.oc.common.tileentity
 import net.minecraft.client.gui.screen
 import net.minecraft.client.gui.widget.TextFieldWidget
 import net.minecraft.client.settings.KeyBinding
-import net.minecraft.util.text.StringTextComponent
+import net.minecraft.network.chat.TextComponent
 import org.lwjgl.glfw.GLFW
 
-class Waypoint(val waypoint: tileentity.Waypoint) extends screen.Screen(StringTextComponent.EMPTY) {
+class Waypoint(val waypoint: tileentity.Waypoint) extends screen.Screen(TextComponent.EMPTY) {
   val imageWidth = 176
   val imageHeight = 24
   var leftPos = 0
@@ -37,7 +37,7 @@ class Waypoint(val waypoint: tileentity.Waypoint) extends screen.Screen(StringTe
     leftPos = (width - imageWidth) / 2
     topPos = (height - imageHeight) / 2
 
-    textField = new TextFieldWidget(font, leftPos + 7, topPos + 8, 164 - 12, 12, StringTextComponent.EMPTY) {
+    textField = new TextFieldWidget(font, leftPos + 7, topPos + 8, 164 - 12, 12, TextComponent.EMPTY) {
       override def keyPressed(keyCode: Int, scanCode: Int, mods: Int): Boolean = {
         if (keyCode == GLFW.GLFW_KEY_ENTER) {
           val label = textField.getValue.take(32)

@@ -13,12 +13,12 @@ import li.cil.oc.util.RenderState
 import net.minecraft.client.gui.widget.button.Button
 import net.minecraft.entity.player.PlayerInventory
 import net.minecraft.inventory.container.Slot
-import net.minecraft.util.text.ITextComponent
+import net.minecraft.network.chat.Component
 
 import scala.collection.convert.ImplicitConversionsToJava._
 import scala.collection.convert.ImplicitConversionsToScala._
 
-class Assembler(state: container.Assembler, playerInventory: PlayerInventory, name: ITextComponent)
+class Assembler(state: container.Assembler, playerInventory: PlayerInventory, name: Component)
   extends DynamicGuiContainer(state, playerInventory, name) {
 
   imageWidth = 176
@@ -35,7 +35,7 @@ class Assembler(state: container.Assembler, playerInventory: PlayerInventory, na
     info = validate
   }
 
-  var info: Option[(Boolean, ITextComponent, Array[ITextComponent])] = None
+  var info: Option[(Boolean, Component, Array[Component])] = None
 
   protected var runButton: ImageButton = _
 

@@ -6,7 +6,7 @@ import java.util.UUID
 
 import com.google.common.hash.Hashing
 import li.cil.oc.api
-import net.minecraft.world.World
+import net.minecraft.world.level.Level
 import net.minecraft.world.server.ServerWorld
 
 import scala.collection.convert.ImplicitConversionsToScala._

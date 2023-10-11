@@ -17,9 +17,9 @@ import li.cil.oc.api.network._
 import li.cil.oc.api.prefab
 import li.cil.oc.api.prefab.AbstractManagedEnvironment
 import li.cil.oc.common.event.ChunkloaderUpgradeHandler
-import net.minecraft.entity.Entity
+import net.minecraft.world.entity.Entity
 import net.minecraft.util.math.ChunkPos
-import net.minecraft.world.World
+import net.minecraft.world.level.Level
 import net.minecraft.world.server.ServerWorld
 
 import scala.collection.convert.ImplicitConversionsToJava._

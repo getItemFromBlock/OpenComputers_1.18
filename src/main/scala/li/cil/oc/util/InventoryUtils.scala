@@ -6,15 +6,15 @@ import java.util.function.Consumer
 import li.cil.oc.OpenComputers
 import li.cil.oc.util.ExtendedWorld._
 import li.cil.oc.util.StackOption._
-import net.minecraft.entity.Entity
+import net.minecraft.world.entity.Entity
 import net.minecraft.entity.item.ItemEntity
-import net.minecraft.entity.player.PlayerEntity
+import net.minecraft.world.entity.player.Player
 import net.minecraft.inventory.IInventory
 import net.minecraft.inventory.ISidedInventory
-import net.minecraft.item.ItemStack
-import net.minecraft.tileentity.TileEntity
-import net.minecraft.util.Direction
-import net.minecraft.util.math.vector.Vector3d
+import net.minecraft.world.item.ItemStack
+import net.minecraft.world.level.block.entity.BlockEntity
+import net.minecraft.core.Direction
+import com.mojang.math.Vector3d
 import net.minecraftforge.common.util.LazyOptional
 import net.minecraftforge.items.CapabilityItemHandler
 import net.minecraftforge.items.IItemHandler
@@ -50,7 +50,7 @@ object InventoryUtils {
    */
   def inventorySourceAt(position: BlockPosition, side: Direction): Option[InventorySource] = position.world match {
     case Some(world) if world.blockExists(position) => world.getBlockEntity(position) match {
-      case tile: TileEntity if tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side).isPresent => Option(BlockInventorySource(position, side, tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side).orElse(null)))
+      case tile: BlockEntity if tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side).isPresent => Option(BlockInventorySource(position, side, tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side).orElse(null)))
       case tile: IInventory => Option(BlockInventorySource(position, side, asItemHandler(tile, side)))
       case _ => world.getEntitiesOfClass(classOf[Entity], position.bounds)
         .filter(e => e.isAlive && e.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side).isPresent)
@@ -383,7 +383,7 @@ object InventoryUtils {
   /**
    * Try inserting an item stack into a player inventory. If that fails, drop it into the world.
    */
-  def addToPlayerInventory(stack: ItemStack, player: PlayerEntity, spawnInWorld: Boolean = true): Unit = {
+  def addToPlayerInventory(stack: ItemStack, player: Player, spawnInWorld: Boolean = true): Unit = {
     if (!stack.isEmpty) {
       if (player.inventory.add(stack)) {
         player.inventory.setChanged()

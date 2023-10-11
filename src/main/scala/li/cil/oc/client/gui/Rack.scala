@@ -11,14 +11,14 @@ import net.minecraft.client.gui.widget.button.Button
 import net.minecraft.client.renderer.Tessellator
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats
 import net.minecraft.entity.player.PlayerInventory
-import net.minecraft.util.Direction
-import net.minecraft.util.text.ITextComponent
-import net.minecraft.util.text.StringTextComponent
+import net.minecraft.core.Direction
+import net.minecraft.network.chat.Component
+import net.minecraft.network.chat.TextComponent
 import org.lwjgl.opengl.GL11
 
 import scala.collection.JavaConverters.asJavaCollection
 
-class Rack(state: container.Rack, playerInventory: PlayerInventory, name: ITextComponent)
+class Rack(state: container.Rack, playerInventory: PlayerInventory, name: Component)
   extends DynamicGuiContainer(state, playerInventory, name) {
 
   imageHeight = 210
@@ -113,7 +113,7 @@ class Rack(state: container.Rack, playerInventory: PlayerInventory, name: ITextC
       }
     }
     val relayMessage = if (inventoryContainer.isRelayEnabled) Localization.Rack.RelayEnabled else Localization.Rack.RelayDisabled
-    relayButton.setMessage(new StringTextComponent(relayMessage))
+    relayButton.setMessage(new TextComponent(relayMessage))
     super.render(stack, mouseX, mouseY, dt)
   }
 
@@ -122,7 +122,7 @@ class Rack(state: container.Rack, playerInventory: PlayerInventory, name: ITextC
 
     relayButton = new ImageButton(leftPos + 101, topPos + 96, 65, 18, new Button.IPressable {
       override def onPress(b: Button) = ClientPacketSender.sendRackRelayState(inventoryContainer, !inventoryContainer.isRelayEnabled)
-    }, Textures.GUI.ButtonRelay, new StringTextComponent(Localization.Rack.RelayDisabled), textIndent = 18)
+    }, Textures.GUI.ButtonRelay, new TextComponent(Localization.Rack.RelayDisabled), textIndent = 18)
     addButton(relayButton)
 
     val (mw, mh) = hoverMasterSize

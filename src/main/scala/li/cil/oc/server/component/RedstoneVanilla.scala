@@ -17,7 +17,7 @@ import li.cil.oc.util.BlockPosition
 import li.cil.oc.util.ExtendedBlock._
 import li.cil.oc.util.ExtendedWorld._
 import li.cil.oc.util.RotationHelper
-import net.minecraft.util.Direction
+import net.minecraft.core.Direction
 
 import scala.collection.convert.ImplicitConversionsToJava._
 

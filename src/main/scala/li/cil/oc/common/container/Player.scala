@@ -8,7 +8,7 @@ import li.cil.oc.common.InventorySlots.InventorySlot
 import li.cil.oc.common.Tier
 import li.cil.oc.server.{PacketSender => ServerPacketSender}
 import li.cil.oc.util.SideTracker
-import net.minecraft.entity.player.PlayerEntity
+import net.minecraft.world.entity.player.Player
 import net.minecraft.entity.player.ServerPlayerEntity
 import net.minecraft.entity.player.PlayerInventory
 import net.minecraft.inventory._
@@ -17,11 +17,11 @@ import net.minecraft.inventory.container.Container
 import net.minecraft.inventory.container.ContainerType
 import net.minecraft.inventory.container.IContainerListener
 import net.minecraft.inventory.container.Slot
-import net.minecraft.item.ItemStack
-import net.minecraft.nbt.ByteArrayNBT
-import net.minecraft.nbt.CompoundNBT
+import net.minecraft.world.item.ItemStack
+import net.minecraft.nbt.ByteArrayTag
+import net.minecraft.nbt.CompoundTag
 import net.minecraft.nbt.INBT
-import net.minecraft.nbt.IntArrayNBT
+import net.minecraft.nbt.IntArrayTag
 import net.minecraftforge.api.distmarker.Dist
 import net.minecraftforge.api.distmarker.OnlyIn
 import net.minecraftforge.common.util.FakePlayer
@@ -42,9 +42,9 @@ abstract class Player(selfType: ContainerType[_ <: Player], id: Int, val playerI
 
   protected val playerListeners = mutable.ArrayBuffer.empty[ServerPlayerEntity]
 
-  override def stillValid(player: PlayerEntity) = otherInventory.stillValid(player)
+  override def stillValid(player: Player) = otherInventory.stillValid(player)
 
-  override def clicked(slot: Int, dragType: Int, clickType: ClickType, player: PlayerEntity): ItemStack = {
+  override def clicked(slot: Int, dragType: Int, clickType: ClickType, player: Player): ItemStack = {
     val result = super.clicked(slot, dragType, clickType, player)
     if (SideTracker.isServer) {
       broadcastChanges() // We have to enforce this more than MC does itself
@@ -54,7 +54,7 @@ abstract class Player(selfType: ContainerType[_ <: Player], id: Int, val playerI
     result
   }
 
-  override def quickMoveStack(player: PlayerEntity, index: Int): ItemStack = {
+  override def quickMoveStack(player: Player, index: Int): ItemStack = {
     val slot = Option(slots.get(index)).orNull
     if (slot != null && slot.hasItem) {
       tryTransferStackInSlot(slot, slot.container == otherInventory)
@@ -184,14 +184,14 @@ abstract class Player(selfType: ContainerType[_ <: Player], id: Int, val playerI
   override def broadcastChanges(): Unit = {
     super.broadcastChanges()
     if (SideTracker.isServer) {
-      val nbt = new CompoundNBT()
+      val nbt = new CompoundTag()
       detectCustomDataChanges(nbt)
       for (player <- playerListeners) ServerPacketSender.sendContainerUpdate(this, nbt, player)
     }
   }
 
   // Used for custom value synchronization, because shorts simply don't cut it most of the time.
-  protected def detectCustomDataChanges(nbt: CompoundNBT): Unit = {
+  protected def detectCustomDataChanges(nbt: CompoundTag): Unit = {
     val delta = synchronizedData.getDelta
     if (delta != null && !delta.isEmpty) {
       nbt.put("delta", delta)
@@ -202,7 +202,7 @@ abstract class Player(selfType: ContainerType[_ <: Player], id: Int, val playerI
     }
   }
 
-  def updateCustomData(nbt: CompoundNBT): Unit = {
+  def updateCustomData(nbt: CompoundTag): Unit = {
     if (nbt.contains("delta")) {
       val delta = nbt.getCompound("delta")
       delta.getAllKeys.foreach {
@@ -211,14 +211,14 @@ abstract class Player(selfType: ContainerType[_ <: Player], id: Int, val playerI
     }
   }
 
-  protected class SynchronizedData extends CompoundNBT {
-    private var delta = new CompoundNBT()
+  protected class SynchronizedData extends CompoundTag {
+    private var delta = new CompoundTag()
 
-    def getDelta: CompoundNBT = this.synchronized {
+    def getDelta: CompoundTag = this.synchronized {
       if (delta.isEmpty) null
       else {
         val result = delta
-        delta = new CompoundNBT()
+        delta = new CompoundTag()
         result
       }
     }
@@ -265,7 +265,7 @@ abstract class Player(selfType: ContainerType[_ <: Player], id: Int, val playerI
 
     override def putByteArray(key: String, value: Array[Byte]): Unit = this.synchronized {
       get(key) match {
-        case arr: ByteArrayNBT if !Arrays.equals(value, arr.getAsByteArray) => delta.putByteArray(key, value)
+        case arr: ByteArrayTag if !Arrays.equals(value, arr.getAsByteArray) => delta.putByteArray(key, value)
         case _ =>
       }
       super.putByteArray(key, value)
@@ -273,7 +273,7 @@ abstract class Player(selfType: ContainerType[_ <: Player], id: Int, val playerI
 
     override def putIntArray(key: String, value: Array[Int]): Unit = this.synchronized {
       get(key) match {
-        case arr: IntArrayNBT if !Arrays.equals(value, arr.getAsIntArray) => delta.putIntArray(key, value)
+        case arr: IntArrayTag if !Arrays.equals(value, arr.getAsIntArray) => delta.putIntArray(key, value)
         case _ =>
       }
       super.putIntArray(key, value)

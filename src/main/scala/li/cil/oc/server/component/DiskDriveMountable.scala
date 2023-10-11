@@ -27,19 +27,19 @@ import li.cil.oc.common.inventory.ItemStackInventory
 import li.cil.oc.util.BlockPosition
 import li.cil.oc.util.ExtendedNBT._
 import li.cil.oc.util.InventoryUtils
-import net.minecraft.entity.player.PlayerEntity
+import net.minecraft.world.entity.player.Player
 import net.minecraft.entity.player.PlayerInventory
 import net.minecraft.entity.player.ServerPlayerEntity
-import net.minecraft.inventory.container.INamedContainerProvider
-import net.minecraft.item.ItemStack
-import net.minecraft.nbt.CompoundNBT
-import net.minecraft.util.Direction
-import net.minecraft.util.Hand
-import net.minecraft.util.text.StringTextComponent
+import net.minecraft.world.level.block.entity.BaseContainerBlockEntity
+import net.minecraft.world.item.ItemStack
+import net.minecraft.nbt.CompoundTag
+import net.minecraft.core.Direction
+import net.minecraft.world.InteractionHand
+import net.minecraft.network.chat.TextComponent
 
 import scala.collection.convert.ImplicitConversionsToJava._
 
-class DiskDriveMountable(val rack: api.internal.Rack, val slot: Int) extends AbstractManagedEnvironment with ItemStackInventory with ComponentInventory with RackMountable with Analyzable with DeviceInfo with INamedContainerProvider {
+class DiskDriveMountable(val rack: api.internal.Rack, val slot: Int) extends AbstractManagedEnvironment with ItemStackInventory with ComponentInventory with RackMountable with Analyzable with DeviceInfo with BaseContainerBlockEntity {
   // Stored for filling data packet when queried.
   var lastAccess = 0L
 
@@ -154,13 +154,13 @@ class DiskDriveMountable(val rack: api.internal.Rack, val slot: Int) extends Abs
   // ----------------------------------------------------------------------- //
   // Persistable
 
-  override def loadData(nbt: CompoundNBT) {
+  override def loadData(nbt: CompoundTag) {
     super[AbstractManagedEnvironment].loadData(nbt)
     super[ComponentInventory].loadData(nbt)
     connectComponents()
   }
 
-  override def saveData(nbt: CompoundNBT) {
+  override def saveData(nbt: CompoundTag) {
     super[AbstractManagedEnvironment].saveData(nbt)
     super[ComponentInventory].saveData(nbt)
   }
@@ -168,8 +168,8 @@ class DiskDriveMountable(val rack: api.internal.Rack, val slot: Int) extends Abs
   // ----------------------------------------------------------------------- //
   // RackMountable
 
-  override def getData: CompoundNBT = {
-    val nbt = new CompoundNBT()
+  override def getData: CompoundTag = {
+    val nbt = new CompoundTag()
     nbt.putLong("lastAccess", lastAccess)
     nbt.put("disk", toNbt(getItem(0)))
     nbt
@@ -204,9 +204,9 @@ class DiskDriveMountable(val rack: api.internal.Rack, val slot: Int) extends Abs
   }
 
   // ----------------------------------------------------------------------- //
-  // INamedContainerProvider
+  // BaseContainerBlockEntity
 
-  override def getDisplayName = StringTextComponent.EMPTY
+  override def getDisplayName = TextComponent.EMPTY
 
   override def createMenu(id: Int, playerInventory: PlayerInventory, player: PlayerEntity) =
     new DiskDriveContainer(ContainerTypes.DISK_DRIVE, id, playerInventory, this)

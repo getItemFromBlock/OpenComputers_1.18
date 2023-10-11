@@ -14,11 +14,11 @@ import li.cil.oc.util.ExtendedWorld._
 import li.cil.oc.util.RotationHelper
 import net.minecraft.world.entity.player.Player
 import net.minecraft.entity.player.ServerPlayerEntity
-import net.minecraft.item.ItemStack
+import net.minecraft.world.item.ItemStack
 import net.minecraft.nbt.CompressedStreamTools
-import net.minecraft.nbt.CompoundNBT
+import net.minecraft.nbt.CompoundTag
 import net.minecraft.network.INetHandler
-import net.minecraft.util.Direction
+import net.minecraft.core.Direction
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.core.BlockPos
 import net.minecraft.world.level.Level
@@ -151,7 +151,7 @@ abstract class PacketHandler {
       else ItemStack.EMPTY
     }
 
-    def readNBT(): CompoundNBT = {
+    def readNBT(): CompoundTag = {
       val haveNbt = readBoolean()
       if (haveNbt) {
         CompressedStreamTools.read(this)

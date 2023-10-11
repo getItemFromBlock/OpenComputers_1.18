@@ -30,30 +30,30 @@ import li.cil.oc.util.ExtendedBlock._
 import li.cil.oc.util.ExtendedNBT._
 import li.cil.oc.util.ExtendedWorld._
 import li.cil.oc.util.InventoryUtils
-import net.minecraft.block.Block
+import net.minecraft.world.level.block.Block
 import net.minecraft.block.FlowingFluidBlock
 import net.minecraft.command.CommandSource
 import net.minecraft.command.ICommandSource
 import net.minecraft.entity.item.minecart.MinecartEntity
 import net.minecraft.entity.{Entity, LivingEntity}
 import net.minecraft.entity.player.ServerPlayerEntity
-import net.minecraft.item.Item
-import net.minecraft.item.ItemStack
+import net.minecraft.world.item.Item
+import net.minecraft.world.item.ItemStack
 import net.minecraft.nbt._
 import net.minecraft.scoreboard.{ScoreCriteria, Scoreboard}
 import net.minecraft.server.MinecraftServer
-import net.minecraft.tileentity.TileEntity
-import net.minecraft.util.Direction
-import net.minecraft.util.ResourceLocation
+import net.minecraft.world.level.block.entity.BlockEntity
+import net.minecraft.core.Direction
+import net.minecraft.resources.ResourceLocation
 import net.minecraft.util.RegistryKey
 import net.minecraft.util.SoundCategory
-import net.minecraft.util.math.BlockPos
+import net.minecraft.core.BlockPos
 import net.minecraft.util.math.shapes.ISelectionContext
 import net.minecraft.util.math.vector.Vector2f
-import net.minecraft.util.math.vector.Vector3d
+import com.mojang.math.Vector3d
 import net.minecraft.util.registry.Registry
-import net.minecraft.util.text.ITextComponent
-import net.minecraft.util.text.StringTextComponent
+import net.minecraft.network.chat.Component
+import net.minecraft.network.chat.TextComponent
 import net.minecraft.world.{GameType, World, WorldSettings}
 import net.minecraft.world.server.ServerWorld
 import net.minecraft.world.storage.IServerWorldInfo
@@ -95,7 +95,7 @@ class DebugCard(host: EnvironmentHost) extends AbstractManagedEnvironment with D
 
   private def createCommandSourceStack(): CommandSource = {
     val sender = new ICommandSource {
-      override def sendMessage(message: ITextComponent, sender: UUID) {
+      override def sendMessage(message: Component, sender: UUID) {
         CommandMessages = Option(CommandMessages.fold("")(_ + "\n") + message.getString)
       }
 
@@ -592,7 +592,7 @@ object DebugCard {
       val criteria = ScoreCriteria.byName(objType).orElseThrow(new Supplier[IllegalArgumentException] {
         override def get = new IllegalArgumentException("invalid criterion")
       })
-      scoreboard.addObjective(objName, criteria, new StringTextComponent(objName), ScoreCriteria.RenderType.INTEGER)
+      scoreboard.addObjective(objName, criteria, new TextComponent(objName), ScoreCriteria.RenderType.INTEGER)
       null
     }
 

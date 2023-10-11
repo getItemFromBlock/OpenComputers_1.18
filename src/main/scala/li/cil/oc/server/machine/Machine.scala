@@ -39,10 +39,10 @@ import li.cil.oc.util.ResultWrapper
 import li.cil.oc.util.ResultWrapper.result
 import li.cil.oc.util.ThreadPoolFactory
 import net.minecraft.client.Minecraft
-import net.minecraft.entity.player.PlayerEntity
-import net.minecraft.item.ItemStack
+import net.minecraft.world.entity.player.Player
+import net.minecraft.world.item.ItemStack
 import net.minecraft.nbt._
-import net.minecraft.server.integrated.IntegratedServer
+import net.minecraft.client.server.IntegratedServer
 import net.minecraftforge.common.util.Constants.NBT
 import net.minecraftforge.fml.server.ServerLifecycleHooks
 
@@ -636,7 +636,7 @@ class Machine(val host: MachineHost) extends AbstractManagedEnvironment with mac
     message.data match {
       case Array(name: String, args@_*) if message.name == "computer.signal" =>
         signal(name, Seq(message.source.address) ++ args: _*)
-      case Array(player: PlayerEntity, name: String, args@_*) if message.name == "computer.checked_signal" =>
+      case Array(player: Player, name: String, args@_*) if message.name == "computer.checked_signal" =>
         if (canInteract(player.getName.getString))
           signal(name, Seq(message.source.address) ++ args: _*)
       case _ =>

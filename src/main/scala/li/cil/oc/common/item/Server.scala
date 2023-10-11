@@ -7,17 +7,17 @@ import li.cil.oc.client.KeyBindings
 import li.cil.oc.common.container.ContainerTypes
 import li.cil.oc.common.inventory.ServerInventory
 import li.cil.oc.util.Tooltip
-import net.minecraft.entity.player.PlayerEntity
+import net.minecraft.world.entity.player.Player
 import net.minecraft.entity.player.ServerPlayerEntity
-import net.minecraft.item.Item
-import net.minecraft.item.Item.Properties
-import net.minecraft.item.ItemStack
-import net.minecraft.util.ActionResult
-import net.minecraft.util.ActionResultType
-import net.minecraft.util.Hand
-import net.minecraft.util.text.ITextComponent
-import net.minecraft.util.text.StringTextComponent
-import net.minecraft.world.World
+import net.minecraft.world.item.Item
+import net.minecraft.world.item.Item.Properties
+import net.minecraft.world.item.ItemStack
+import net.minecraft.world.InteractionResultHolder
+import net.minecraft.world.InteractionResult
+import net.minecraft.world.InteractionHand
+import net.minecraft.network.chat.Component
+import net.minecraft.network.chat.TextComponent
+import net.minecraft.world.level.Level
 import net.minecraftforge.common.extensions.IForgeItem
 
 import scala.collection.mutable
@@ -35,7 +35,7 @@ class Server(props: Properties, val tier: Int) extends Item(props) with IForgeIt
     override def rackSlot = -1
   }
 
-  override protected def tooltipExtended(stack: ItemStack, tooltip: util.List[ITextComponent]) {
+  override protected def tooltipExtended(stack: ItemStack, tooltip: util.List[Component]) {
     super.tooltipExtended(stack, tooltip)
     if (KeyBindings.showExtendedTooltips) {
       HelperInventory.container = stack
@@ -47,16 +47,16 @@ class Server(props: Properties, val tier: Int) extends Item(props) with IForgeIt
       }
       if (stacks.nonEmpty) {
         for (curr <- Tooltip.get("server.Components")) {
-          tooltip.add(new StringTextComponent(curr).setStyle(Tooltip.DefaultStyle))
+          tooltip.add(new TextComponent(curr).setStyle(Tooltip.DefaultStyle))
         }
         for (itemName <- stacks.keys.toArray.sorted) {
-          tooltip.add(new StringTextComponent("- " + stacks(itemName) + "x " + itemName).setStyle(Tooltip.DefaultStyle))
+          tooltip.add(new TextComponent("- " + stacks(itemName) + "x " + itemName).setStyle(Tooltip.DefaultStyle))
         }
       }
     }
   }
 
-  override def use(stack: ItemStack, world: World, player: PlayerEntity): ActionResult[ItemStack] = {
+  override def use(stack: ItemStack, world: Level, player: PlayerEntity): InteractionResultHolder[ItemStack] = {
     if (!player.isCrouching) {
       if (!world.isClientSide) player match {
         case srvPlr: ServerPlayerEntity => ContainerTypes.openServerGui(srvPlr, new ServerInventory {
@@ -70,7 +70,7 @@ class Server(props: Properties, val tier: Int) extends Item(props) with IForgeIt
       }
       player.swing(Hand.MAIN_HAND)
     }
-    new ActionResult(ActionResultType.sidedSuccess(world.isClientSide), stack)
+    new InteractionResultHolder(InteractionResult.sidedSuccess(world.isClientSide), stack)
   }
 
 }

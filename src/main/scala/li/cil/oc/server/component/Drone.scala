@@ -19,7 +19,7 @@ import li.cil.oc.util.ExtendedArguments._
 import li.cil.oc.util.InventoryUtils
 import net.minecraft.entity.item.ItemEntity
 import net.minecraft.util.SoundEvents
-import net.minecraft.util.Direction
+import net.minecraft.core.Direction
 import net.minecraft.util.SoundCategory
 
 import scala.collection.convert.ImplicitConversionsToJava._

@@ -6,9 +6,9 @@ import li.cil.oc.client.Textures
 import li.cil.oc.common.Tier
 import li.cil.oc.common.container
 import net.minecraft.entity.player.PlayerInventory
-import net.minecraft.util.text.ITextComponent
+import net.minecraft.network.chat.Component
 
-class Database(state: container.Database, playerInventory: PlayerInventory, name: ITextComponent)
+class Database(state: container.Database, playerInventory: PlayerInventory, name: Component)
   extends DynamicGuiContainer(state, playerInventory, name)
   with traits.LockedHotbar[container.Database] {
 

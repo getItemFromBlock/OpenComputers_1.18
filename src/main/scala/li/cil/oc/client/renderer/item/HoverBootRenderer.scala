@@ -8,8 +8,8 @@ import net.minecraft.client.renderer.model.Model
 import net.minecraft.client.renderer.model.ModelRenderer
 import net.minecraft.client.renderer.entity.model.BipedModel
 import net.minecraft.client.renderer.texture.OverlayTexture
-import net.minecraft.entity.LivingEntity
-import net.minecraft.util.ResourceLocation
+import net.minecraft.world.entity.LivingEntity
+import net.minecraft.resources.ResourceLocation
 
 object HoverBootRenderer extends BipedModel[LivingEntity](0.5f) {
   val texture = new ResourceLocation(Settings.resourceDomain, "textures/model/drone.png")

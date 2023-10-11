@@ -38,20 +38,20 @@ import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.Blocks
 import net.minecraft.world.level.block.FlowingFluidBlock
 import net.minecraft.client.Minecraft
-import net.minecraft.entity.player.Player
+import net.minecraft.world.entity.player.Player
 import net.minecraft.entity.player.PlayerInventory
 import net.minecraft.fluid.Fluid
 import net.minecraft.inventory.EquipmentSlotType
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity
 import net.minecraft.world.item.ItemStack
-import net.minecraft.nbt.CompoundNBT
+import net.minecraft.nbt.CompoundTag
 import net.minecraft.world.level.block.entity.BlockEntity
-import net.minecraft.util.Direction
+import net.minecraft.core.Direction
 import net.minecraft.util.SoundCategory
 import net.minecraft.util.SoundEvents
 import net.minecraft.Util
-import net.minecraft.util.math.BlockPos
-import net.minecraft.util.text.StringTextComponent
+import net.minecraft.core.BlockPos
+import net.minecraft.network.chat.TextComponent
 import net.minecraftforge.common.MinecraftForge
 import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.common.util.LazyOptional
@@ -423,7 +423,7 @@ class Robot extends BlockEntity(TileEntityTypes.ROBOT) with traits.Computer with
   private final val SwingingToolTag = Settings.namespace + "swingingTool"
   private final val TurnAxisTag = Settings.namespace + "turnAxis"
 
-  override def loadForServer(nbt: CompoundNBT) {
+  override def loadForServer(nbt: CompoundTag) {
     updateInventorySize()
     machine.onHostChanged()
 
@@ -458,7 +458,7 @@ class Robot extends BlockEntity(TileEntityTypes.ROBOT) with traits.Computer with
   }
 
   // Side check for Waila (and other mods that may call this client side).
-  override def saveForServer(nbt: CompoundNBT): Unit = if (isServer) this.synchronized {
+  override def saveForServer(nbt: CompoundTag): Unit = if (isServer) this.synchronized {
     info.saveData(nbt)
 
     // Note: computer is saved when proxy is saved (in proxy's super save)
@@ -484,7 +484,7 @@ class Robot extends BlockEntity(TileEntityTypes.ROBOT) with traits.Computer with
   }
 
   @OnlyIn(Dist.CLIENT)
-  override def loadForClient(nbt: CompoundNBT) {
+  override def loadForClient(nbt: CompoundTag) {
     super.loadForClient(nbt)
     loadData(nbt)
     info.loadData(nbt)
@@ -507,7 +507,7 @@ class Robot extends BlockEntity(TileEntityTypes.ROBOT) with traits.Computer with
     connectComponents()
   }
 
-  override def saveForClient(nbt: CompoundNBT): Unit = this.synchronized {
+  override def saveForClient(nbt: CompoundTag): Unit = this.synchronized {
     super.saveForClient(nbt)
     saveData(nbt)
     info.saveData(nbt)
@@ -772,7 +772,7 @@ class Robot extends BlockEntity(TileEntityTypes.ROBOT) with traits.Computer with
 
   // ----------------------------------------------------------------------- //
 
-  override def getDisplayName = StringTextComponent.EMPTY
+  override def getDisplayName = TextComponent.EMPTY
 
   override def createMenu(id: Int, playerInventory: PlayerInventory, player: player.Player) =
     new container.Robot(ContainerTypes.ROBOT, id, playerInventory, this, new container.RobotInfo(this))

@@ -1,9 +1,9 @@
 package li.cil.oc.util
 
-import net.minecraft.util.Direction
+import net.minecraft.core.Direction
 import net.minecraft.util.math.AxisAlignedBB
-import net.minecraft.util.math.BlockPos
-import net.minecraft.util.math.vector.Vector3d
+import net.minecraft.core.BlockPos
+import com.mojang.math.Vector3d
 
 import scala.language.implicitConversions
 

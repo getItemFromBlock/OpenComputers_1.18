@@ -11,18 +11,18 @@ import li.cil.oc.common.tileentity.Waypoint
 import li.cil.oc.common.tileentity.traits._
 import li.cil.oc.util.BlockPosition
 import li.cil.oc.util.PackedColor
-import net.minecraft.entity.player.PlayerEntity
+import net.minecraft.world.entity.player.Player
 import net.minecraft.entity.player.ServerPlayerEntity
 import net.minecraft.inventory.container.Container
-import net.minecraft.item.ItemStack
+import net.minecraft.world.item.ItemStack
 import net.minecraft.nbt.CompressedStreamTools
-import net.minecraft.nbt.CompoundNBT
+import net.minecraft.nbt.CompoundTag
 import net.minecraft.particles.IParticleData
-import net.minecraft.util.Direction
-import net.minecraft.util.ResourceLocation
+import net.minecraft.core.Direction
+import net.minecraft.resources.ResourceLocation
 import net.minecraft.util.SoundCategory
-import net.minecraft.util.math.BlockPos
-import net.minecraft.world.World
+import net.minecraft.core.BlockPos
+import net.minecraft.world.level.Level
 import net.minecraftforge.common.MinecraftForge
 import net.minecraftforge.registries.ForgeRegistries
 
@@ -111,7 +111,7 @@ object PacketSender {
     pb.sendToPlayersNearTileEntity(t)
   }
 
-  def sendContainerUpdate(c: Container, nbt: CompoundNBT, player: ServerPlayerEntity): Unit = {
+  def sendContainerUpdate(c: Container, nbt: CompoundTag, player: ServerPlayerEntity): Unit = {
     if (!nbt.isEmpty) {
       val pb = new SimplePacketBuilder(PacketType.ContainerUpdate)
 
@@ -144,7 +144,7 @@ object PacketSender {
       val lastHostTimeout = hostTimeouts.getIfPresent(name)
       if (lastHostTimeout == null || lastHostTimeout <= System.currentTimeMillis()) {
         val event = host match {
-          case t: net.minecraft.tileentity.TileEntity => new FileSystemAccessEvent.Server(name, t, node)
+          case t: net.minecraft.world.level.block.entity.BlockEntity => new FileSystemAccessEvent.Server(name, t, node)
           case _ => new FileSystemAccessEvent.Server(name, host.world, host.xPosition, host.yPosition, host.zPosition, node)
         }
         MinecraftForge.EVENT_BUS.post(event)
@@ -343,7 +343,7 @@ object PacketSender {
     api.Nanomachines.getController(player) match {
       case controller: ControllerImpl =>
         pb.writeBoolean(true)
-        val nbt = new CompoundNBT()
+        val nbt = new CompoundTag()
         controller.saveData(nbt)
         pb.writeNBT(nbt)
       case _ =>
@@ -691,7 +691,7 @@ object PacketSender {
     pb.writeInt(fromRow)
   }
 
-  def appendTextBufferRamInit(pb: PacketBuilder, address: String, id: Int, nbt: CompoundNBT): Unit = {
+  def appendTextBufferRamInit(pb: PacketBuilder, address: String, id: Int, nbt: CompoundTag): Unit = {
     pb.writePacketType(PacketType.TextBufferRamInit)
 
     pb.writeUTF(address)
@@ -750,7 +750,7 @@ object PacketSender {
     }
   }
 
-  def sendTextBufferInit(address: String, value: CompoundNBT, player: ServerPlayerEntity) {
+  def sendTextBufferInit(address: String, value: CompoundTag, player: ServerPlayerEntity) {
     val pb = new CompressedPacketBuilder(PacketType.TextBufferInit)
 
     pb.writeUTF(address)

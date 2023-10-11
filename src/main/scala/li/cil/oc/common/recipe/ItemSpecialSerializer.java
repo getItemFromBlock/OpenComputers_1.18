@@ -10,7 +10,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.util.IItemProvider;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.util.GsonHelper;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.ForgeRegistryEntry;
@@ -18,10 +18,10 @@ import net.minecraftforge.registries.ForgeRegistryEntry;
 public class ItemSpecialSerializer<T extends Recipe<?>> extends ForgeRegistryEntry<RecipeSerializer<?>>
     implements RecipeSerializer<T> {
 
-    private BiFunction<ResourceLocation, IItemProvider, T> ctor;
+    private BiFunction<ResourceLocation, ItemLike, T> ctor;
     private Function<T, Item> getter;
 
-    public ItemSpecialSerializer(BiFunction<ResourceLocation, IItemProvider, T> ctor, Function<T, Item> getter) {
+    public ItemSpecialSerializer(BiFunction<ResourceLocation, ItemLike, T> ctor, Function<T, Item> getter) {
         this.ctor = ctor;
         this.getter = getter;
     }

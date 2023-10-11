@@ -1,7 +1,7 @@
 package li.cil.oc.common
 
-import net.minecraft.entity.player.PlayerEntity
-import net.minecraft.item.ItemStack
+import net.minecraft.world.entity.player.Player
+import net.minecraft.world.item.ItemStack
 
 //placeholder
 
@@ -9,11 +9,11 @@ object Achievement {
   def init() {
   }
 
-  def onAssemble(stack: ItemStack, player: PlayerEntity): Unit = {
+  def onAssemble(stack: ItemStack, player: Player): Unit = {
 
   }
 
-  def onCraft(stack: ItemStack, player: PlayerEntity): Unit = {
+  def onCraft(stack: ItemStack, player: Player): Unit = {
 
   }
 }

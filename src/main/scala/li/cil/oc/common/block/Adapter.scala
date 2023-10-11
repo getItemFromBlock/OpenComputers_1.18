@@ -4,17 +4,17 @@ import li.cil.oc.common.container.ContainerTypes
 import li.cil.oc.common.tileentity
 import li.cil.oc.integration.util.Wrench
 import net.minecraft.block.AbstractBlock.Properties
-import net.minecraft.block.Block
-import net.minecraft.block.BlockState
-import net.minecraft.entity.player.PlayerEntity
+import net.minecraft.world.level.block.Block
+import net.minecraft.world.level.block.state.BlockState
+import net.minecraft.world.entity.player.Player
 import net.minecraft.entity.player.ServerPlayerEntity
-import net.minecraft.item.ItemStack
-import net.minecraft.util.Direction
-import net.minecraft.util.Hand
-import net.minecraft.util.math.BlockPos
-import net.minecraft.world.IBlockReader
+import net.minecraft.world.item.ItemStack
+import net.minecraft.core.Direction
+import net.minecraft.world.InteractionHand
+import net.minecraft.core.BlockPos
+import net.minecraft.world.level.BlockGetter
 import net.minecraft.world.IWorldReader
-import net.minecraft.world.World
+import net.minecraft.world.level.Level
 
 class Adapter(props: Properties) extends SimpleBlock(props) with traits.GUI {
   override def openGui(player: ServerPlayerEntity, world: World, pos: BlockPos): Unit = world.getBlockEntity(pos) match {
@@ -22,7 +22,7 @@ class Adapter(props: Properties) extends SimpleBlock(props) with traits.GUI {
     case _ =>
   }
 
-  override def newBlockEntity(world: IBlockReader) = new tileentity.Adapter(tileentity.TileEntityTypes.ADAPTER)
+  override def newBlockEntity(world: BlockGetter) = new tileentity.Adapter(tileentity.TileEntityTypes.ADAPTER)
 
   // ----------------------------------------------------------------------- //
 

@@ -38,30 +38,32 @@ import li.cil.oc.util.Rarity
 import li.cil.oc.util.RotationHelper
 import li.cil.oc.util.Tooltip
 import net.minecraft.client.Minecraft
-import net.minecraft.client.renderer.model.ModelBakery
-import net.minecraft.client.renderer.model.ModelResourceLocation
-import net.minecraft.entity.Entity
-import net.minecraft.entity.LivingEntity
-import net.minecraft.entity.player.{PlayerEntity, PlayerInventory, ServerPlayerEntity}
-import net.minecraft.inventory.container.INamedContainerProvider
-import net.minecraft.item // Rarity
-import net.minecraft.item.Item
-import net.minecraft.item.Item.Properties
-import net.minecraft.item.ItemGroup
-import net.minecraft.item.ItemStack
-import net.minecraft.nbt.CompoundNBT
-import net.minecraft.server.integrated.IntegratedServer
-import net.minecraft.util.ActionResult
-import net.minecraft.util.ActionResultType
-import net.minecraft.util.Direction
-import net.minecraft.util.Hand
-import net.minecraft.util.NonNullList
-import net.minecraft.util.ResourceLocation
-import net.minecraft.util.Util
-import net.minecraft.util.math.BlockPos
-import net.minecraft.util.text.ITextComponent
-import net.minecraft.util.text.StringTextComponent
-import net.minecraft.world.World
+import net.minecraft.client.resources.model.ModelBakery
+import net.minecraft.client.resources.model.ModelResourceLocation
+import net.minecraft.world.entity.Entity
+import net.minecraft.world.entity.LivingEntity
+import net.minecraft.world.entity.player.Player
+import net.minecraft.world.entity.PlayerInventory
+import net.minecraft.world.entity.ServerPlayerEntity
+import net.minecraft.world.level.block.entity.BaseContainerBlockEntity
+import net.minecraft.world.item // Rarity
+import net.minecraft.world.item.Item
+import net.minecraft.world.item.Item.Properties
+import net.minecraft.world.item.CreativeModeTab
+import net.minecraft.world.item.ItemStack
+import net.minecraft.nbt.CompoundTag
+import net.minecraft.client.server.IntegratedServer
+import net.minecraft.world.InteractionResultHolder
+import net.minecraft.world.InteractionResult
+import net.minecraft.core.Direction
+import net.minecraft.world.InteractionHand
+import net.minecraft.core.NonNullList
+import net.minecraft.resources.ResourceLocation
+import net.minecraft.Util
+import net.minecraft.core.BlockPos
+import net.minecraft.network.chat.Component
+import net.minecraft.network.chat.TextComponent
+import net.minecraft.world.level.Level
 import net.minecraftforge.api.distmarker.Dist
 import net.minecraftforge.api.distmarker.OnlyIn
 import net.minecraftforge.client.model.ModelLoader
@@ -82,17 +84,17 @@ class Tablet(props: Properties) extends Item(props) with IForgeItem with traits.
 
   // ----------------------------------------------------------------------- //
 
-  override protected def tooltipExtended(stack: ItemStack, tooltip: util.List[ITextComponent]): Unit = {
+  override protected def tooltipExtended(stack: ItemStack, tooltip: util.List[Component]): Unit = {
     if (KeyBindings.showExtendedTooltips) {
       val info = new TabletData(stack)
       // Ignore/hide the screen.
       val components = info.items.drop(1)
       if (components.length > 1) {
         for (curr <- Tooltip.get("server.Components")) {
-          tooltip.add(new StringTextComponent(curr).setStyle(Tooltip.DefaultStyle))
+          tooltip.add(new TextComponent(curr).setStyle(Tooltip.DefaultStyle))
         }
         components.collect {
-          case component if !component.isEmpty => tooltip.add(new StringTextComponent("- " + component.getHoverName.getString).setStyle(Tooltip.DefaultStyle))
+          case component if !component.isEmpty => tooltip.add(new TextComponent("- " + component.getHoverName.getString).setStyle(Tooltip.DefaultStyle))
         }
       }
     }
@@ -156,11 +158,11 @@ class Tablet(props: Properties) extends Item(props) with IForgeItem with traits.
   // ----------------------------------------------------------------------- //
 
   // Must be assembled to be usable so we hide it in the item list.
-  override def fillItemCategory(tab: ItemGroup, list: NonNullList[ItemStack]) {}
+  override def fillItemCategory(tab: CreativeModeTab, list: NonNullList[ItemStack]) {}
 
   override def inventoryTick(stack: ItemStack, world: World, entity: Entity, slot: Int, selected: Boolean): Unit =
     entity match {
-      case player: PlayerEntity =>
+      case player: Player =>
         // Play an audio cue to let players know when they finished analyzing a block.
         if (world.isClientSide && player.getUseItemRemainingTicks == TimeToAnalyze && api.Items.get(player.getUseItem) == api.Items.get(Constants.ItemName.Tablet)) {
           Audio.play(player.getX.toFloat, player.getY.toFloat + 2, player.getZ.toFloat, ".")
@@ -169,26 +171,26 @@ class Tablet(props: Properties) extends Item(props) with IForgeItem with traits.
       case _ =>
     }
 
-  override def onItemUseFirst(stack: ItemStack, player: PlayerEntity, world: World, pos: BlockPos, side: Direction, hitX: Float, hitY: Float, hitZ: Float, hand: Hand): ActionResultType = {
+  override def onItemUseFirst(stack: ItemStack, player: Player, world: World, pos: BlockPos, side: Direction, hitX: Float, hitY: Float, hitZ: Float, hand: Hand): InteractionResult = {
     Tablet.currentlyAnalyzing = Some((BlockPosition(pos, world), side, hitX, hitY, hitZ))
     super.onItemUseFirst(stack, player, world, pos, side, hitX, hitY, hitZ, hand)
   }
 
-  override def onItemUse(stack: ItemStack, player: PlayerEntity, position: BlockPosition, side: Direction, hitX: Float, hitY: Float, hitZ: Float): Boolean = {
+  override def onItemUse(stack: ItemStack, player: Player, position: BlockPosition, side: Direction, hitX: Float, hitY: Float, hitZ: Float): Boolean = {
     player.startUsingItem(if (player.getItemInHand(Hand.MAIN_HAND) == stack) Hand.MAIN_HAND else Hand.OFF_HAND)
     true
   }
 
-  override def use(stack: ItemStack, world: World, player: PlayerEntity): ActionResult[ItemStack] = {
+  override def use(stack: ItemStack, world: World, player: Player): InteractionResultHolder[ItemStack] = {
     player.startUsingItem(if (player.getItemInHand(Hand.MAIN_HAND) == stack) Hand.MAIN_HAND else Hand.OFF_HAND)
-    new ActionResult(ActionResultType.sidedSuccess(world.isClientSide), stack)
+    new InteractionResultHolder(InteractionResult.sidedSuccess(world.isClientSide), stack)
   }
 
   override def getUseDuration(stack: ItemStack): Int = 72000
 
   override def releaseUsing(stack: ItemStack, world: World, entity: LivingEntity, duration: Int): Unit = {
     entity match {
-      case player: PlayerEntity =>
+      case player: Player =>
         val didAnalyze = getUseDuration(stack) - duration >= TimeToAnalyze
         if (didAnalyze) {
           if (!world.isClientSide) {
@@ -196,7 +198,7 @@ class Tablet(props: Properties) extends Item(props) with IForgeItem with traits.
               case Some((position, side, hitX, hitY, hitZ)) => try {
                 val computer = Tablet.get(stack, player).machine
                 if (computer.isRunning) {
-                  val data = new CompoundNBT()
+                  val data = new CompoundTag()
                   computer.node.sendToReachable("tablet.use", data, stack, player, position, side, Float.box(hitX), Float.box(hitY), Float.box(hitZ))
                   if (!data.isEmpty) {
                     computer.signal("tablet_use", data)
@@ -260,7 +262,7 @@ class Tablet(props: Properties) extends Item(props) with IForgeItem with traits.
   }
 }
 
-class TabletWrapper(var stack: ItemStack, var player: PlayerEntity) extends ComponentInventory with MachineHost with internal.Tablet with INamedContainerProvider {
+class TabletWrapper(var stack: ItemStack, var player: Player) extends ComponentInventory with MachineHost with internal.Tablet with BaseContainerBlockEntity {
   // Remember our *original* world, so we know which tablets to clear on dimension
   // changes of players holding tablets - since the player entity instance may be
   // kept the same and components are not required to properly handle world changes.
@@ -313,7 +315,7 @@ class TabletWrapper(var stack: ItemStack, var player: PlayerEntity) extends Comp
     val data = stack.getOrCreateTag
     if (!world.isClientSide) {
       if (!data.contains(Settings.namespace + "data")) {
-        data.put(Settings.namespace + "data", new CompoundNBT())
+        data.put(Settings.namespace + "data", new CompoundTag())
       }
       data.setNewCompoundTag(Settings.namespace + "component", tablet.saveData(_))
       data.setNewCompoundTag(Settings.namespace + "data", machine.saveData(_))
@@ -339,7 +341,7 @@ class TabletWrapper(var stack: ItemStack, var player: PlayerEntity) extends Comp
 
   override def getDisplayName = getName
 
-  override def createMenu(id: Int, playerInventory: PlayerInventory, player: PlayerEntity) =
+  override def createMenu(id: Int, playerInventory: PlayerInventory, player: Player) =
     new container.Tablet(ContainerTypes.TABLET, id, playerInventory, stack, this, containerSlotType, containerSlotTier)
 
   // ----------------------------------------------------------------------- //
@@ -393,7 +395,7 @@ class TabletWrapper(var stack: ItemStack, var player: PlayerEntity) extends Comp
     case _ => false
   })
 
-  override def stillValid(player: PlayerEntity): Boolean = machine != null && machine.canInteract(player.getName.getString)
+  override def stillValid(player: Player): Boolean = machine != null && machine.canInteract(player.getName.getString)
 
   override def setChanged(): Unit = {
     data.saveData(stack)
@@ -442,7 +444,7 @@ class TabletWrapper(var stack: ItemStack, var player: PlayerEntity) extends Comp
 
   // ----------------------------------------------------------------------- //
 
-  def update(world: World, player: PlayerEntity, slot: Int, selected: Boolean) {
+  def update(world: World, player: Player, slot: Int, selected: Boolean) {
     this.player = player
     if (!isInitialized) {
       isInitialized = true
@@ -490,11 +492,11 @@ class TabletWrapper(var stack: ItemStack, var player: PlayerEntity) extends Comp
 
   // ----------------------------------------------------------------------- //
 
-  override def loadData(nbt: CompoundNBT) {
+  override def loadData(nbt: CompoundTag) {
     data.loadData(nbt)
   }
 
-  override def saveData(nbt: CompoundNBT) {
+  override def saveData(nbt: CompoundTag) {
     saveComponents()
     data.saveData(nbt)
   }
@@ -521,7 +523,7 @@ object Tablet {
     data.getString(Settings.namespace + "tablet")
   }
 
-  def get(stack: ItemStack, holder: PlayerEntity): TabletWrapper = {
+  def get(stack: ItemStack, holder: Player): TabletWrapper = {
     if (holder.level.isClientSide) Client.get(stack, holder)
     else Server.get(stack, holder)
   }
@@ -567,9 +569,9 @@ object Tablet {
     // To allow access in cache entry init.
     private var currentStack: ItemStack = _
 
-    private var currentHolder: PlayerEntity = _
+    private var currentHolder: Player = _
 
-    def get(stack: ItemStack, holder: PlayerEntity): TabletWrapper = {
+    def get(stack: ItemStack, holder: Player): TabletWrapper = {
       val id = getOrCreateId(stack)
       cache.synchronized {
         currentStack = stack

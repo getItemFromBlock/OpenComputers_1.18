@@ -13,7 +13,7 @@ import net.minecraft.client.renderer.IRenderTypeBuffer
 import net.minecraft.client.renderer.texture.AtlasTexture
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher
-import net.minecraft.util.Direction
+import net.minecraft.core.Direction
 
 object AdapterRenderer extends Function[TileEntityRendererDispatcher, AdapterRenderer] {
   override def apply(dispatch: TileEntityRendererDispatcher) = new AdapterRenderer(dispatch)

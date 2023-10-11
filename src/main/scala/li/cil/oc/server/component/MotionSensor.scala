@@ -15,12 +15,12 @@ import li.cil.oc.api.network.EnvironmentHost
 import li.cil.oc.api.network.Visibility
 import li.cil.oc.api.prefab
 import li.cil.oc.util.SideTracker
-import net.minecraft.entity.LivingEntity
-import net.minecraft.nbt.CompoundNBT
+import net.minecraft.world.entity.LivingEntity
+import net.minecraft.nbt.CompoundTag
 import net.minecraft.potion.Effect
 import net.minecraft.potion.Effects
 import net.minecraft.util.math.{AxisAlignedBB, BlockPos, RayTraceContext, RayTraceResult}
-import net.minecraft.util.math.vector.Vector3d
+import com.mojang.math.Vector3d
 
 import scala.collection.convert.ImplicitConversionsToJava._
 import scala.collection.convert.ImplicitConversionsToScala._
@@ -141,12 +141,12 @@ class MotionSensor(val host: EnvironmentHost) extends prefab.AbstractManagedEnvi
 
   private final val SensitivityTag = Settings.namespace + "sensitivity"
 
-  override def loadData(nbt: CompoundNBT) {
+  override def loadData(nbt: CompoundTag) {
     super.loadData(nbt)
     sensitivity = nbt.getDouble(SensitivityTag)
   }
 
-  override def saveData(nbt: CompoundNBT) {
+  override def saveData(nbt: CompoundTag) {
     super.saveData(nbt)
     nbt.putDouble(SensitivityTag, sensitivity)
   }

@@ -15,38 +15,38 @@ import li.cil.oc.server.agent.{Inventory => AgentInventory}
 import li.cil.oc.util.BlockPosition
 import li.cil.oc.util.InventoryUtils
 import net.minecraft.block.PistonBlock
-import net.minecraft.entity.Entity
+import net.minecraft.world.entity.Entity
 import net.minecraft.entity.EntitySize
-import net.minecraft.entity.LivingEntity
+import net.minecraft.world.entity.LivingEntity
 import net.minecraft.entity.Pose
 import net.minecraft.entity.item.ItemEntity
 import net.minecraft.entity.merchant.IMerchant
-import net.minecraft.entity.player.PlayerEntity
+import net.minecraft.world.entity.player.Player
 import net.minecraft.entity.player.PlayerEntity.SleepResult
 import net.minecraft.block.Blocks
 import net.minecraft.item.Items
 import net.minecraft.inventory._
-import net.minecraft.inventory.container.INamedContainerProvider
+import net.minecraft.world.level.block.entity.BaseContainerBlockEntity
 import net.minecraft.inventory.container.PlayerContainer
 import net.minecraft.item.BlockItem
 import net.minecraft.item.ItemUseContext
-import net.minecraft.item.ItemStack
+import net.minecraft.world.item.ItemStack
 import net.minecraft.item.MerchantOffers
 import net.minecraft.network.play.ServerPlayNetHandler
 import net.minecraft.network.play.client.CPlayerDiggingPacket
 import net.minecraft.potion.EffectInstance
 import net.minecraft.server.management.{PlayerInteractionManager, OpEntry}
 import net.minecraft.tileentity._
-import net.minecraft.util.ActionResultType
+import net.minecraft.world.InteractionResult
 import net.minecraft.util.DamageSource
-import net.minecraft.util.Direction
-import net.minecraft.util.Hand
-import net.minecraft.util.math.BlockPos
+import net.minecraft.core.Direction
+import net.minecraft.world.InteractionHand
+import net.minecraft.core.BlockPos
 import net.minecraft.util.math.BlockRayTraceResult
-import net.minecraft.util.math.vector.Vector3d
-import net.minecraft.util.text.ITextComponent
-import net.minecraft.util.text.StringTextComponent
-import net.minecraft.world.World
+import com.mojang.math.Vector3d
+import net.minecraft.network.chat.Component
+import net.minecraft.network.chat.TextComponent
+import net.minecraft.world.level.Level
 import net.minecraft.world.server.ServerWorld
 import net.minecraftforge.common.MinecraftForge
 import net.minecraftforge.common.util.FakePlayer
@@ -110,7 +110,7 @@ object Player {
   def setPlayerInventoryItems(player: Player): Unit = {
     // the offhand is simply the agent's tool item
     val agent = player.agent
-    def setCopyOrNull(inv: net.minecraft.util.NonNullList[ItemStack], agentInv: IInventory, slot: Int): Unit = {
+    def setCopyOrNull(inv: net.minecraft.core.NonNullList[ItemStack], agentInv: IInventory, slot: Int): Unit = {
       val item = agentInv.getItem(slot)
       inv.set(slot, if (item != null) item.copy() else ItemStack.EMPTY)
     }
@@ -188,7 +188,7 @@ class Player(val agent: internal.Agent) extends FakePlayer(agent.world.asInstanc
 
   var facing, side = Direction.SOUTH
 
-  override def getName = new StringTextComponent(agent.name)
+  override def getName = new TextComponent(agent.name)
 
   // ----------------------------------------------------------------------- //
 
@@ -236,7 +236,7 @@ class Player(val agent: internal.Agent) extends FakePlayer(agent.world.asInstanc
     })
   }
 
-  override def interactOn(entity: Entity, hand: Hand): ActionResultType = {
+  override def interactOn(entity: Entity, hand: Hand): InteractionResult = {
     val cancel = try MinecraftForge.EVENT_BUS.post(new PlayerInteractEvent.EntityInteract(this, hand, entity)) catch {
       case t: Throwable =>
         if (!t.getStackTrace.exists(_.getClassName.startsWith("mods.battlegear2."))) {
@@ -261,7 +261,7 @@ class Player(val agent: internal.Agent) extends FakePlayer(agent.world.asInstanc
         }
       }
       result
-    })) ActionResultType.sidedSuccess(level.isClientSide) else ActionResultType.PASS
+    })) InteractionResult.sidedSuccess(level.isClientSide) else InteractionResult.PASS
   }
 
   def activateBlockOrUseItem(pos: BlockPos, side: Direction, hitX: Float, hitY: Float, hitZ: Float, duration: Double): ActivationType.Value = {
@@ -619,13 +619,13 @@ class Player(val agent: internal.Agent) extends FakePlayer(agent.world.asInstanc
 
   override def startSleepInBed(bedLocation: BlockPos) = Either.left[SleepResult, net.minecraft.util.Unit](SleepResult.OTHER_PROBLEM)
 
-  override def sendMessage(message: ITextComponent, sender: UUID) {}
+  override def sendMessage(message: Component, sender: UUID) {}
 
   override def openCommandBlock(commandBlock: CommandBlockTileEntity): Unit = {}
 
   override def sendMerchantOffers(containerId: Int, offers: MerchantOffers, villagerLevel: Int, villagerXP: Int, showProgress: Boolean, canRestock: Boolean): Unit = {}
 
-  override def openMenu(guiOwner: INamedContainerProvider) = util.OptionalInt.empty
+  override def openMenu(guiOwner: BaseContainerBlockEntity) = util.OptionalInt.empty
 
   override def openMinecartCommandBlock(thing: CommandBlockLogic): Unit = {}
 

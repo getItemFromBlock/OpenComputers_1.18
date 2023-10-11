@@ -7,8 +7,8 @@ import li.cil.oc.util.ExtendedBlock._
 import li.cil.oc.util.ExtendedWorld._
 import li.cil.oc.util.RTree
 import net.minecraft.util.RegistryKey
-import net.minecraft.util.math.vector.Vector3d
-import net.minecraft.world.World
+import com.mojang.math.Vector3d
+import net.minecraft.world.level.Level
 import net.minecraftforge.event.world.ChunkEvent
 import net.minecraftforge.event.world.WorldEvent
 import net.minecraftforge.eventbus.api.SubscribeEvent

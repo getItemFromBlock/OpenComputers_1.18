@@ -9,11 +9,11 @@ import li.cil.oc.common.container
 import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.widget.button.Button
 import net.minecraft.entity.player.PlayerInventory
-import net.minecraft.util.text.ITextComponent
+import net.minecraft.network.chat.Component
 
 import scala.collection.JavaConverters.asJavaCollection
 
-class Server(state: container.Server, playerInventory: PlayerInventory, name: ITextComponent)
+class Server(state: container.Server, playerInventory: PlayerInventory, name: Component)
   extends DynamicGuiContainer(state, playerInventory, name)
   with traits.LockedHotbar[container.Server] {
 
