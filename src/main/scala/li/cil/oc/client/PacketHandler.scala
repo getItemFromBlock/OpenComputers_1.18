@@ -121,7 +121,7 @@ object PacketHandler extends CommonPacketHandler {
   def onAnalyze(p: PacketParser) {
     val address = p.readUTF()
     if (KeyBindings.isAnalyzeCopyingAddress) {
-      RenderSystem.recordRenderCall(new IRenderCall {
+      RenderSystem.recordRenderCall(new RenderCall {
         override def execute = {
           val mc = Minecraft.getInstance
           mc.keyboardHandler.setClipboard(address)
@@ -146,7 +146,7 @@ object PacketHandler extends CommonPacketHandler {
 
   def onClipboard(p: PacketParser) {
     val contents = p.readUTF()
-    RenderSystem.recordRenderCall(new IRenderCall {
+    RenderSystem.recordRenderCall(new RenderCall {
       override def execute = Minecraft.getInstance.keyboardHandler.setClipboard(contents)
     })
   }
