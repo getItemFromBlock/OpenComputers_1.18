@@ -34,22 +34,22 @@ import li.cil.oc.util.ExtendedWorld._
 import li.cil.oc.util.InventoryUtils
 import li.cil.oc.util.StackOption
 import li.cil.oc.util.StackOption._
-import net.minecraft.block.Block
-import net.minecraft.block.Blocks
-import net.minecraft.block.FlowingFluidBlock
+import net.minecraft.world.level.block.Block
+import net.minecraft.world.level.block.Blocks
+import net.minecraft.world.level.block.FlowingFluidBlock
 import net.minecraft.client.Minecraft
-import net.minecraft.entity.player.PlayerEntity
+import net.minecraft.entity.player.Player
 import net.minecraft.entity.player.PlayerInventory
 import net.minecraft.fluid.Fluid
 import net.minecraft.inventory.EquipmentSlotType
-import net.minecraft.inventory.container.INamedContainerProvider
-import net.minecraft.item.ItemStack
+import net.minecraft.world.level.block.entity.BaseContainerBlockEntity
+import net.minecraft.world.item.ItemStack
 import net.minecraft.nbt.CompoundNBT
-import net.minecraft.tileentity.TileEntity
+import net.minecraft.world.level.block.entity.BlockEntity
 import net.minecraft.util.Direction
 import net.minecraft.util.SoundCategory
 import net.minecraft.util.SoundEvents
-import net.minecraft.util.Util
+import net.minecraft.Util
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.text.StringTextComponent
 import net.minecraftforge.common.MinecraftForge
@@ -71,8 +71,8 @@ import scala.collection.mutable
 // robot moves we only create a new proxy tile entity, hook the instance of this
 // class that was held by the old proxy to it and can then safely forget the
 // old proxy, which will be cleaned up by Minecraft like any other tile entity.
-class Robot extends TileEntity(TileEntityTypes.ROBOT) with traits.Computer with traits.PowerInformation with traits.RotatableTile
-  with IFluidHandler with internal.Robot with InventorySelection with TankSelection with INamedContainerProvider {
+class Robot extends BlockEntity(TileEntityTypes.ROBOT) with traits.Computer with traits.PowerInformation with traits.RotatableTile
+  with IFluidHandler with internal.Robot with InventorySelection with TankSelection with BaseContainerBlockEntity {
 
   var proxy: RobotProxy = _
 
@@ -148,7 +148,7 @@ class Robot extends TileEntity(TileEntityTypes.ROBOT) with traits.Computer with 
 
   override def getComponentInSlot(index: Int): ManagedEnvironment = if (components.length > index) components(index).orNull else null
 
-  override def player: Player = {
+  override def player: agent.Player = {
     agent.Player.updatePositionAndRotation(player_, facing, facing)
     agent.Player.setPlayerInventoryItems(player_)
     player_
@@ -749,7 +749,7 @@ class Robot extends TileEntity(TileEntityTypes.ROBOT) with traits.Computer with 
     else if (!stack.isEmpty && stack.getCount > 0 && !getLevel.isClientSide) spawnStackInWorld(stack, Option(Direction.UP))
   }
 
-  override def stillValid(player: PlayerEntity): Boolean =
+  override def stillValid(player: player.Player): Boolean =
     super.stillValid(player) && (!isCreative || player.isCreative)
 
   override def canPlaceItem(slot: Int, stack: ItemStack): Boolean = (slot, Option(Driver.driverFor(stack, getClass))) match {
@@ -774,7 +774,7 @@ class Robot extends TileEntity(TileEntityTypes.ROBOT) with traits.Computer with 
 
   override def getDisplayName = StringTextComponent.EMPTY
 
-  override def createMenu(id: Int, playerInventory: PlayerInventory, player: PlayerEntity) =
+  override def createMenu(id: Int, playerInventory: PlayerInventory, player: player.Player) =
     new container.Robot(ContainerTypes.ROBOT, id, playerInventory, this, new container.RobotInfo(this))
 
   // ----------------------------------------------------------------------- //

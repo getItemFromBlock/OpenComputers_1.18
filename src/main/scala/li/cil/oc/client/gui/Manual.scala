@@ -10,7 +10,7 @@ import li.cil.oc.client.renderer.markdown.segment.InteractiveSegment
 import li.cil.oc.client.renderer.markdown.segment.Segment
 import li.cil.oc.client.{Manual => ManualAPI}
 import net.minecraft.client.Minecraft
-import net.minecraft.client.gui.screen
+import net.minecraft.client.gui.screens.Screen
 import net.minecraft.client.gui.widget.button.Button
 import net.minecraft.client.util.InputMappings
 import net.minecraft.client.settings.KeyBinding
@@ -21,7 +21,7 @@ import org.lwjgl.glfw.GLFW
 import scala.collection.JavaConverters.{asJavaIterable, seqAsJavaList}
 import scala.collection.convert.ImplicitConversionsToScala._
 
-class Manual extends screen.Screen(StringTextComponent.EMPTY) with traits.Window {
+class Manual extends Screen(StringTextComponent.EMPTY) with traits.Window {
   final val documentMaxWidth = 230
   final val documentMaxHeight = 176
   final val scrollPosX = 244

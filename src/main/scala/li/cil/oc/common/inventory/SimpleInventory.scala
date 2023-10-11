@@ -2,12 +2,12 @@ package li.cil.oc.common.inventory
 
 import li.cil.oc.Localization
 import net.minecraft.entity.player.PlayerEntity
-import net.minecraft.inventory.IInventory
-import net.minecraft.item.ItemStack
-import net.minecraft.util.INameable
+import net.minecraft.world.Container
+import net.minecraft.world.item.ItemStack
+import net.minecraft.world.Nameable
 import net.minecraft.util.text.ITextComponent
 
-trait SimpleInventory extends IInventory with INameable {
+trait SimpleInventory extends Container with Nameable {
   override def hasCustomName = false
 
   override def getDisplayName: ITextComponent = getName

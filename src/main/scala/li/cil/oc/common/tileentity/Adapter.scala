@@ -17,14 +17,14 @@ import li.cil.oc.common.Slot
 import li.cil.oc.common.container
 import li.cil.oc.common.container.ContainerTypes
 import li.cil.oc.server.{PacketSender => ServerPacketSender}
-import net.minecraft.entity.player.PlayerEntity
+import net.minecraft.entity.player.Player
 import net.minecraft.entity.player.PlayerInventory
-import net.minecraft.inventory.container.INamedContainerProvider
-import net.minecraft.item.ItemStack
+import net.minecraft.world.level.block.entity.BaseContainerBlockEntity
+import net.minecraft.world.item.ItemStack
 import net.minecraft.nbt.CompoundNBT
 import net.minecraft.nbt.ListNBT
-import net.minecraft.tileentity.TileEntity
-import net.minecraft.tileentity.TileEntityType
+import net.minecraft.world.level.block.entity.BlockEntity
+import net.minecraft.world.level.block.entity.BlockEntityType
 import net.minecraft.util.Direction
 import net.minecraft.util.SoundCategory
 import net.minecraft.util.SoundEvents
@@ -33,8 +33,8 @@ import net.minecraftforge.common.util.Constants.NBT
 import scala.collection.convert.ImplicitConversionsToJava._
 import scala.collection.mutable
 
-class Adapter(selfType: TileEntityType[_ <: Adapter]) extends TileEntity(selfType) with traits.Environment with traits.ComponentInventory
-  with traits.Tickable with traits.OpenSides with Analyzable with internal.Adapter with DeviceInfo with INamedContainerProvider {
+class Adapter(selfType: BlockEntityType[_ <: Adapter]) extends BlockEntity(selfType) with traits.Environment with traits.ComponentInventory
+  with traits.Tickable with traits.OpenSides with Analyzable with internal.Adapter with DeviceInfo with BaseContainerBlockEntity {
 
   val node = api.Network.newNode(this, Visibility.Network).create()
 
@@ -71,7 +71,7 @@ class Adapter(selfType: TileEntityType[_ <: Adapter]) extends TileEntity(selfTyp
 
   // ----------------------------------------------------------------------- //
 
-  override def onAnalyze(player: PlayerEntity, side: Direction, hitX: Float, hitY: Float, hitZ: Float): Array[Node] = {
+  override def onAnalyze(player: Player, side: Direction, hitX: Float, hitY: Float, hitZ: Float): Array[Node] = {
     (blocks collect {
       case Some((environment, _)) => environment.node
     }) ++
@@ -193,7 +193,7 @@ class Adapter(selfType: TileEntityType[_ <: Adapter]) extends TileEntity(selfTyp
 
   // ----------------------------------------------------------------------- //
 
-  override def createMenu(id: Int, playerInventory: PlayerInventory, player: PlayerEntity) =
+  override def createMenu(id: Int, playerInventory: PlayerInventory, player: Player) =
     new container.Adapter(ContainerTypes.ADAPTER, id, playerInventory, this)
 
   // ----------------------------------------------------------------------- //

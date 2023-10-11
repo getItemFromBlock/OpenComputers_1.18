@@ -5,7 +5,7 @@ import java.util
 import com.mojang.blaze3d.matrix.MatrixStack
 import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.AbstractGui
-import net.minecraft.client.gui.screen.Screen
+import net.minecraft.client.gui.screens.Screen
 import net.minecraft.util.ResourceLocation
 
 trait Window extends Screen {

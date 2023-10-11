@@ -15,7 +15,7 @@ import net.minecraft.world.World
 import net.minecraftforge.api.distmarker.Dist
 import net.minecraftforge.api.distmarker.OnlyIn
 
-trait TileEntity extends net.minecraft.tileentity.TileEntity {
+trait TileEntity extends net.minecraft.world.level.block.entity.BlockEntity {
   private final val IsServerDataTag = Settings.namespace + "isServerData"
 
   def x: Int = getBlockPos.getX

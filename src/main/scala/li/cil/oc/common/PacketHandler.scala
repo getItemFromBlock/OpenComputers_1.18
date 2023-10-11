@@ -12,16 +12,16 @@ import li.cil.oc.common.block.RobotAfterimage
 import li.cil.oc.util.BlockPosition
 import li.cil.oc.util.ExtendedWorld._
 import li.cil.oc.util.RotationHelper
-import net.minecraft.entity.player.PlayerEntity
+import net.minecraft.world.entity.player.Player
 import net.minecraft.entity.player.ServerPlayerEntity
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.CompressedStreamTools
 import net.minecraft.nbt.CompoundNBT
 import net.minecraft.network.INetHandler
 import net.minecraft.util.Direction
-import net.minecraft.util.ResourceLocation
-import net.minecraft.util.math.BlockPos
-import net.minecraft.world.World
+import net.minecraft.resources.ResourceLocation
+import net.minecraft.core.BlockPos
+import net.minecraft.world.level.Level
 import net.minecraftforge.fml.network.NetworkDirection
 import net.minecraftforge.fml.server.ServerLifecycleHooks
 import net.minecraftforge.registries._
@@ -35,7 +35,7 @@ object PacketHandler {
 
   var serverHandler: PacketHandler = _
 
-  private[oc] def handlePacket(side: NetworkDirection, arr: Array[Byte], player: PlayerEntity): Unit = {
+  private[oc] def handlePacket(side: NetworkDirection, arr: Array[Byte], player: Player): Unit = {
     // Don't crash on badly formatted packets (may have been altered by a
     // malicious client, in which case we don't want to allow it to kill the
     // server like this). Just spam the log a bit... ;)
@@ -77,13 +77,13 @@ abstract class PacketHandler {
     * dimension; None otherwise. For the server it returns the world for the
     * specified dimension, if such a dimension exists; None otherwise.
     */
-  protected def world(player: PlayerEntity, dimension: ResourceLocation): Option[World]
+  protected def world(player: Player, dimension: ResourceLocation): Option[Level]
 
   protected def dispatch(p: PacketParser): Unit
 
-  protected def createParser(stream: InputStream, player: PlayerEntity): PacketParser
+  protected def createParser(stream: InputStream, player: Player): PacketParser
 
-  private[oc] class PacketParser(stream: InputStream, val player: PlayerEntity) extends DataInputStream(stream) {
+  private[oc] class PacketParser(stream: InputStream, val player: Player) extends DataInputStream(stream) {
     val packetType = PacketType(readByte())
 
     def readRegistryEntry[T <: IForgeRegistryEntry[T]](registry: IForgeRegistry[T]): T =
