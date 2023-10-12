@@ -1,9 +1,9 @@
 package li.cil.oc.client.gui.traits
 
 import net.minecraft.client.gui.screen.inventory.ContainerScreen
-import net.minecraft.inventory.container.ClickType
-import net.minecraft.inventory.container.Container
-import net.minecraft.inventory.container.Slot
+import net.minecraft.world.inventory.ClickType
+import net.minecraft.world.inventory.AbstractContainerMenu
+import net.minecraft.world.inventory.Slot
 import net.minecraft.world.item.ItemStack
 
 trait LockedHotbar[C <: Container] extends ContainerScreen[C] {

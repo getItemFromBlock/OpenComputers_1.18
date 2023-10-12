@@ -18,7 +18,7 @@ import net.minecraft.nbt.CompoundTag
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.storage.FolderName
 import net.minecraftforge.fml.loading.FMLLoader
-import net.minecraftforge.fml.server.ServerLifecycleHooks
+import net.minecraftforge.server.ServerLifecycleHooks
 
 import scala.util.Try
 

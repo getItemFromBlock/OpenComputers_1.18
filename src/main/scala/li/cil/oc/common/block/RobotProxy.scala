@@ -20,7 +20,7 @@ import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.client.util.ITooltipFlag
 import net.minecraft.world.entity.LivingEntity
 import net.minecraft.world.entity.player.Player
-import net.minecraft.entity.player.ServerPlayerEntity
+import net.minecraft.server.level.ServerPlayer
 import net.minecraft.fluid.FluidState
 import net.minecraft.world.item.ItemStack
 import net.minecraft.loot.LootContext
@@ -183,7 +183,7 @@ class RobotProxy(props: Properties) extends RedstoneAware(props) with traits.Sta
         // change since this player got into range he might have the wrong one,
         // so we send him the current one just in case.
         (player, world.getBlockEntity(pos)) match {
-          case (srvPlr: ServerPlayerEntity, proxy: tileentity.RobotProxy) if proxy.robot.node.network != null =>
+          case (srvPlr: ServerPlayer, proxy: tileentity.RobotProxy) if proxy.robot.node.network != null =>
             PacketSender.sendRobotSelectedSlotChange(proxy.robot)
             if (proxy.stillValid(player)) {
               ContainerTypes.openRobotGui(srvPlr, proxy.robot)

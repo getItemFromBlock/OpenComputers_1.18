@@ -4,7 +4,7 @@ import li.cil.oc.OpenComputers
 import li.cil.oc.common.container.ContainerTypes
 import li.cil.oc.common.inventory.DiskDriveMountableInventory
 import net.minecraft.world.entity.player.Player
-import net.minecraft.entity.player.ServerPlayerEntity
+import net.minecraft.server.level.ServerPlayer
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.Item.Properties
 import net.minecraft.world.item.ItemStack
@@ -15,7 +15,7 @@ import net.minecraftforge.common.extensions.IForgeItem
 class DiskDriveMountable(props: Properties) extends Item(props) with IForgeItem with traits.SimpleItem {
   override def use(stack: ItemStack, world: Level, player: PlayerEntity) = {
     if (!world.isClientSide) player match {
-      case srvPlr: ServerPlayerEntity => ContainerTypes.openDiskDriveGui(srvPlr, new DiskDriveMountableInventory {
+      case srvPlr: ServerPlayer => ContainerTypes.openDiskDriveGui(srvPlr, new DiskDriveMountableInventory {
         override def container: ItemStack = stack
 
         override def stillValid(player: PlayerEntity) = player == srvPlr

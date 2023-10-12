@@ -21,9 +21,9 @@ import li.cil.oc.server.machine.luac.{LuaStateFactory, NativeLua52Architecture, 
 import li.cil.oc.server.machine.luaj.LuaJLuaArchitecture
 import net.minecraft.world.level.block.Block
 import net.minecraft.world.entity.player.Player
-import net.minecraft.entity.player.PlayerInventory
-import net.minecraft.entity.player.ServerPlayerEntity
-import net.minecraft.inventory.container.Container
+import net.minecraft.world.entity.player.Inventory
+import net.minecraft.server.level.ServerPlayer
+import net.minecraft.world.inventory.AbstractContainerMenu
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack

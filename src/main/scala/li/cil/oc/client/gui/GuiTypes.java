@@ -3,7 +3,7 @@ package li.cil.oc.client.gui;
 import li.cil.oc.OpenComputers;
 import li.cil.oc.common.container.ContainerTypes;
 import net.minecraft.client.gui.ScreenManager;
-import net.minecraft.inventory.container.Container;
+import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 

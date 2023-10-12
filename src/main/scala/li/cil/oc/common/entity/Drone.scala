@@ -40,8 +40,8 @@ import net.minecraft.entity.MoverType
 import net.minecraft.entity.Pose
 import net.minecraft.entity.item.ItemEntity
 import net.minecraft.world.entity.player.Player
-import net.minecraft.entity.player.PlayerInventory
-import net.minecraft.entity.player.ServerPlayerEntity
+import net.minecraft.world.entity.player.Inventory
+import net.minecraft.server.level.ServerPlayer
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity
 import net.minecraft.world.item.ItemStack
 import net.minecraft.nbt.CompoundTag
@@ -512,7 +512,7 @@ class Drone(selfType: EntityType[Drone], world: World) extends Entity(selfType, 
       }
     }
     else player match {
-      case srvPlr: ServerPlayerEntity if !world.isClientSide => ContainerTypes.openDroneGui(srvPlr, this)
+      case srvPlr: ServerPlayer if !world.isClientSide => ContainerTypes.openDroneGui(srvPlr, this)
       case _ =>
     }
     InteractionResult.sidedSuccess(world.isClientSide)

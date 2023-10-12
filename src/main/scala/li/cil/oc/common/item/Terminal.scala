@@ -28,7 +28,7 @@ import net.minecraft.network.chat.TextComponent
 import net.minecraft.world.level.Level
 import net.minecraftforge.api.distmarker.Dist
 import net.minecraftforge.api.distmarker.OnlyIn
-import net.minecraftforge.client.model.ModelLoader
+import net.minecraftforge.client.model.ForgeModelBakery
 import net.minecraftforge.common.extensions.IForgeItem
 
 class Terminal(props: Properties) extends Item(props) with IForgeItem with traits.SimpleItem with CustomModel {
@@ -56,7 +56,7 @@ class Terminal(props: Properties) extends Item(props) with IForgeItem with trait
   @OnlyIn(Dist.CLIENT)
   override def registerModelLocations(): Unit = {
     for (state <- Seq(true, false)) {
-      ModelLoader.addSpecialModel(modelLocationFromState(state))
+      ForgeModelBakery.addSpecialModel(modelLocationFromState(state))
     }
   }
 

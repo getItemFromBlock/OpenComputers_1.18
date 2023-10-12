@@ -26,7 +26,7 @@ import net.minecraft.world.storage.FolderName
 import net.minecraftforge.event.world.WorldEvent
 import net.minecraftforge.eventbus.api.EventPriority
 import net.minecraftforge.eventbus.api.SubscribeEvent
-import net.minecraftforge.fml.server.ServerLifecycleHooks
+import net.minecraftforge.server.ServerLifecycleHooks
 import org.apache.commons.lang3.JavaVersion
 import org.apache.commons.lang3.SystemUtils
 

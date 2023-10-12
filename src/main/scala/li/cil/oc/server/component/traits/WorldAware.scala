@@ -11,7 +11,7 @@ import net.minecraft.world.entity.LivingEntity
 import net.minecraft.entity.item.minecart.MinecartEntity
 import net.minecraft.world.entity.player.Player
 import net.minecraft.util.{ActionResult, Direction, Hand}
-import net.minecraft.util.math.AxisAlignedBB
+import net.minecraft.world.phys.AABB
 import net.minecraft.util.math.BlockRayTraceResult
 import net.minecraft.util.math.shapes.ISelectionContext
 import net.minecraft.world.server.ServerWorld
@@ -71,7 +71,7 @@ trait WorldAware {
     case _ => true
   })
 
-  def entitiesInBounds[Type <: Entity](clazz: Class[Type], bounds: AxisAlignedBB) = {
+  def entitiesInBounds[Type <: Entity](clazz: Class[Type], bounds: AABB) = {
     world.getEntitiesOfClass(clazz, bounds)
   }
 

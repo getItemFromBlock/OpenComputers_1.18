@@ -25,8 +25,8 @@ import li.cil.oc.util.ExtendedInventory._
 import li.cil.oc.util.ExtendedNBT._
 import li.cil.oc.util.RotationHelper
 import net.minecraft.world.entity.player.Player
-import net.minecraft.entity.player.PlayerInventory
-import net.minecraft.inventory.IInventory
+import net.minecraft.world.entity.player.Inventory
+import net.minecraft.world.Container
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity
 import net.minecraft.world.item.ItemStack
 import net.minecraft.nbt.CompoundTag
@@ -321,7 +321,7 @@ class Rack(selfType: BlockEntityType[_ <: Rack]) extends BlockEntity(selfType) w
   }
 
   // ----------------------------------------------------------------------- //
-  // IInventory
+  // Container
 
   override def getContainerSize = 4
 
@@ -346,7 +346,7 @@ class Rack(selfType: BlockEntityType[_ <: Rack]) extends BlockEntity(selfType) w
   // ----------------------------------------------------------------------- //
   // BaseContainerBlockEntity
 
-  override def createMenu(id: Int, playerInventory: PlayerInventory, player: Player) =
+  override def createMenu(id: Int, playerInventory: Inventory, player: Player) =
     new container.Rack(ContainerTypes.RACK, id, playerInventory, this)
 
   // ----------------------------------------------------------------------- //
@@ -479,7 +479,7 @@ class Rack(selfType: BlockEntityType[_ <: Rack]) extends BlockEntity(selfType) w
   def isWorking(mountable: RackMountable): Boolean = mountable.getCurrentState.contains(api.util.StateAware.State.IsWorking)
 
   def hasRedstoneCard: Boolean = components.exists {
-    case Some(mountable: EnvironmentHost with RackMountable with IInventory) if isWorking(mountable) =>
+    case Some(mountable: EnvironmentHost with RackMountable with Container) if isWorking(mountable) =>
       mountable.exists(stack => DriverRedstoneCard.worksWith(stack, mountable.getClass))
     case _ => false
   }

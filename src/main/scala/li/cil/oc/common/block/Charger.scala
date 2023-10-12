@@ -10,7 +10,7 @@ import net.minecraft.block.AbstractBlock.Properties
 import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.world.entity.player.Player
-import net.minecraft.entity.player.ServerPlayerEntity
+import net.minecraft.server.level.ServerPlayer
 import net.minecraft.world.item.ItemStack
 import net.minecraft.state.StateContainer
 import net.minecraft.core.Direction
@@ -27,7 +27,7 @@ class Charger(props: Properties) extends RedstoneAware(props) with traits.PowerA
 
   override def energyThroughput = Settings.get.chargerRate
 
-  override def openGui(player: ServerPlayerEntity, world: Level, pos: BlockPos): Unit = world.getBlockEntity(pos) match {
+  override def openGui(player: ServerPlayer, world: Level, pos: BlockPos): Unit = world.getBlockEntity(pos) match {
     case te: tileentity.Charger => ContainerTypes.openChargerGui(player, te)
     case _ =>
   }

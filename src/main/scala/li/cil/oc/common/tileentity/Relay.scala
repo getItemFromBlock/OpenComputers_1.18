@@ -32,7 +32,7 @@ import li.cil.oc.integration.opencomputers.DriverLinkedCard
 import li.cil.oc.server.network.QuantumNetwork
 import li.cil.oc.util.ExtendedNBT._
 import net.minecraft.world.entity.player.Player
-import net.minecraft.entity.player.PlayerInventory
+import net.minecraft.world.entity.player.Inventory
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity
 import net.minecraft.world.item.ItemStack
 import net.minecraft.nbt.CompoundTag
@@ -290,7 +290,7 @@ class Relay(selfType: BlockEntityType[_ <: Relay]) extends BlockEntity(selfType)
 
   // ----------------------------------------------------------------------- //
 
-  override def createMenu(id: Int, playerInventory: PlayerInventory, player: Player) =
+  override def createMenu(id: Int, playerInventory: Inventory, player: Player) =
     new container.Relay(ContainerTypes.RELAY, id, playerInventory, this)
 
   // ----------------------------------------------------------------------- //

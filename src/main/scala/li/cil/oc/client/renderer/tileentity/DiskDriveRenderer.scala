@@ -12,15 +12,15 @@ import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.IRenderTypeBuffer
 import net.minecraft.client.renderer.model.ItemCameraTransforms
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer
-import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher
 import net.minecraft.core.Direction
 import net.minecraft.util.math.vector.Vector3f
 
-object DiskDriveRenderer extends Function[TileEntityRendererDispatcher, DiskDriveRenderer] {
-  override def apply(dispatch: TileEntityRendererDispatcher) = new DiskDriveRenderer(dispatch)
+object DiskDriveRenderer extends Function[BlockEntityRenderDispatcher, DiskDriveRenderer] {
+  override def apply(dispatch: BlockEntityRenderDispatcher) = new DiskDriveRenderer(dispatch)
 }
 
-class DiskDriveRenderer(dispatch: TileEntityRendererDispatcher) extends TileEntityRenderer[DiskDrive](dispatch) {
+class DiskDriveRenderer(dispatch: BlockEntityRenderDispatcher) extends TileEntityRenderer[DiskDrive](dispatch) {
   override def render(drive: DiskDrive, dt: Float, matrix: MatrixStack, buffer: IRenderTypeBuffer, light: Int, overlay: Int) {
     RenderState.checkError(getClass.getName + ".render: entering (aka: wasntme)")
 

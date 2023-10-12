@@ -7,7 +7,7 @@ import net.minecraft.block.AbstractBlock.Properties
 import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.world.entity.player.Player
-import net.minecraft.entity.player.ServerPlayerEntity
+import net.minecraft.server.level.ServerPlayer
 import net.minecraft.world.item.ItemStack
 import net.minecraft.core.Direction
 import net.minecraft.world.InteractionHand
@@ -17,7 +17,7 @@ import net.minecraft.world.IWorldReader
 import net.minecraft.world.level.Level
 
 class Adapter(props: Properties) extends SimpleBlock(props) with traits.GUI {
-  override def openGui(player: ServerPlayerEntity, world: World, pos: BlockPos): Unit = world.getBlockEntity(pos) match {
+  override def openGui(player: ServerPlayer, world: World, pos: BlockPos): Unit = world.getBlockEntity(pos) match {
     case te: tileentity.Adapter => ContainerTypes.openAdapterGui(player, te)
     case _ =>
   }

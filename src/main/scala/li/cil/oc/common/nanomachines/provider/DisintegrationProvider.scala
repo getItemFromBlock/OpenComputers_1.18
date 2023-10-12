@@ -11,7 +11,7 @@ import li.cil.oc.util.StackOption._
 import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.world.entity.player.Player
-import net.minecraft.entity.player.ServerPlayerEntity
+import net.minecraft.server.level.ServerPlayer
 import net.minecraft.world.item.ItemStack
 import net.minecraft.nbt.CompoundTag
 import net.minecraft.core.Direction
@@ -48,7 +48,7 @@ object DisintegrationProvider extends ScalaProvider("c4e7e3c2-8069-4fbb-b08e-74b
       val world = player.level
       if (!world.isClientSide) player match {
         case _: FakePlayer => // Nope
-        case playerMP: ServerPlayerEntity =>
+        case playerMP: ServerPlayer =>
           val now = world.getGameTime
 
           // Check blocks in range.
@@ -131,7 +131,7 @@ object DisintegrationProvider extends ScalaProvider("c4e7e3c2-8069-4fbb-b08e-74b
       }
     }
 
-    def finish(world: World, player: ServerPlayerEntity): Unit = {
+    def finish(world: World, player: ServerPlayer): Unit = {
       val sameBlock = world.getBlockState(pos.toBlockPos) == blockState
       if (sameBlock) {
         world.destroyBlockInWorldPartially(pos.hashCode(), pos, -1)

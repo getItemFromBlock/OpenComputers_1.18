@@ -10,13 +10,13 @@ import li.cil.oc.common.tileentity.Geolyzer
 import li.cil.oc.util.RenderState
 import net.minecraft.client.renderer.IRenderTypeBuffer
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer
-import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher
 
-object GeolyzerRenderer extends Function[TileEntityRendererDispatcher, GeolyzerRenderer] {
-  override def apply(dispatch: TileEntityRendererDispatcher) = new GeolyzerRenderer(dispatch)
+object GeolyzerRenderer extends Function[BlockEntityRenderDispatcher, GeolyzerRenderer] {
+  override def apply(dispatch: BlockEntityRenderDispatcher) = new GeolyzerRenderer(dispatch)
 }
 
-class GeolyzerRenderer(dispatch: TileEntityRendererDispatcher) extends TileEntityRenderer[Geolyzer](dispatch) {
+class GeolyzerRenderer(dispatch: BlockEntityRenderDispatcher) extends TileEntityRenderer[Geolyzer](dispatch) {
   override def render(geolyzer: Geolyzer, dt: Float, stack: MatrixStack, buffer: IRenderTypeBuffer, light: Int, overlay: Int) {
     RenderState.checkError(getClass.getName + ".render: entering (aka: wasntme)")
 

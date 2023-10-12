@@ -4,8 +4,8 @@ import li.cil.oc.api.Driver
 import li.cil.oc.api.network.EnvironmentHost
 import li.cil.oc.common
 import net.minecraft.world.entity.player.Player
-import net.minecraft.inventory.IInventory
-import net.minecraft.inventory.container.Slot
+import net.minecraft.world.Container
+import net.minecraft.world.inventory.Slot
 import net.minecraft.world.item.ItemStack
 import net.minecraft.resources.ResourceLocation
 import net.minecraftforge.api.distmarker.Dist
@@ -13,7 +13,7 @@ import net.minecraftforge.api.distmarker.OnlyIn
 
 import scala.collection.convert.ImplicitConversionsToScala._
 
-abstract class ComponentSlot(inventory: IInventory, index: Int, x: Int, y: Int, host: Class[_ <: EnvironmentHost]) extends Slot(inventory, index, x, y) {
+abstract class ComponentSlot(inventory: Container, index: Int, x: Int, y: Int, host: Class[_ <: EnvironmentHost]) extends Slot(inventory, index, x, y) {
   def agentContainer: Player
 
   def slot: String

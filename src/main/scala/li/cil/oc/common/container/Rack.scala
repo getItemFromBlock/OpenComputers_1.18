@@ -5,15 +5,15 @@ import li.cil.oc.common.Slot
 import li.cil.oc.common.tileentity
 import li.cil.oc.util.ExtendedNBT._
 import li.cil.oc.util.RotationHelper
-import net.minecraft.entity.player.PlayerInventory
-import net.minecraft.inventory.IInventory
-import net.minecraft.inventory.container.ContainerType
+import net.minecraft.world.entity.player.Inventory
+import net.minecraft.world.Container
+import net.minecraft.world.inventory.MenuType
 import net.minecraft.nbt.CompoundTag
 import net.minecraft.nbt.IntArrayNBT
 import net.minecraft.core.Direction
 import net.minecraftforge.common.util.Constants.NBT
 
-class Rack(selfType: ContainerType[_ <: Rack], id: Int, playerInventory: PlayerInventory, val rack: IInventory)
+class Rack(selfType: MenuType[_ <: Rack], id: Int, playerInventory: Inventory, val rack: Container)
   extends Player(selfType, id, playerInventory, rack) {
 
   override protected def getHostClass = classOf[tileentity.Rack]

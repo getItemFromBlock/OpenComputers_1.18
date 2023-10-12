@@ -9,17 +9,17 @@ import li.cil.oc.common.tileentity.Rack
 import li.cil.oc.util.RenderState
 import net.minecraft.client.renderer.IRenderTypeBuffer
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer
-import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher
 import net.minecraft.core.Direction
 import net.minecraft.util.math.vector.Vector3f
 import net.minecraftforge.common.MinecraftForge
 import org.lwjgl.opengl.GL11
 
-object RackRenderer extends Function[TileEntityRendererDispatcher, RackRenderer] {
-  override def apply(dispatch: TileEntityRendererDispatcher) = new RackRenderer(dispatch)
+object RackRenderer extends Function[BlockEntityRenderDispatcher, RackRenderer] {
+  override def apply(dispatch: BlockEntityRenderDispatcher) = new RackRenderer(dispatch)
 }
 
-class RackRenderer(dispatch: TileEntityRendererDispatcher) extends TileEntityRenderer[Rack](dispatch) {
+class RackRenderer(dispatch: BlockEntityRenderDispatcher) extends TileEntityRenderer[Rack](dispatch) {
   private final val vOffset = 2 / 16f
   private final val vSize = 3 / 16f
 

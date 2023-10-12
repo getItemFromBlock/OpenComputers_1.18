@@ -19,7 +19,7 @@ import li.cil.oc.common.container
 import li.cil.oc.common.container.ContainerTypes
 import li.cil.oc.util.Color
 import net.minecraft.world.entity.player.Player
-import net.minecraft.entity.player.PlayerInventory
+import net.minecraft.world.entity.player.Inventory
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity
 import net.minecraft.world.item.ItemStack
 import net.minecraft.nbt.CompoundTag
@@ -149,6 +149,6 @@ class Case(selfType: BlockEntityType[_ <: Case], var tier: Int) extends BlockEnt
 
   // ----------------------------------------------------------------------- //
 
-  override def createMenu(id: Int, playerInventory: PlayerInventory, player: Player) =
+  override def createMenu(id: Int, playerInventory: Inventory, player: Player) =
     new container.Case(ContainerTypes.CASE, id, playerInventory, this, tier)
 }

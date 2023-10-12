@@ -12,8 +12,8 @@ import li.cil.oc.common.tileentity.traits._
 import li.cil.oc.util.BlockPosition
 import li.cil.oc.util.PackedColor
 import net.minecraft.world.entity.player.Player
-import net.minecraft.entity.player.ServerPlayerEntity
-import net.minecraft.inventory.container.Container
+import net.minecraft.server.level.ServerPlayer
+import net.minecraft.world.inventory.AbstractContainerMenu
 import net.minecraft.world.item.ItemStack
 import net.minecraft.nbt.CompressedStreamTools
 import net.minecraft.nbt.CompoundTag
@@ -39,7 +39,7 @@ object PacketSender {
     pb.sendToPlayersNearTileEntity(t)
   }
 
-  def sendAnalyze(address: String, player: ServerPlayerEntity) {
+  def sendAnalyze(address: String, player: ServerPlayer) {
     val pb = new SimplePacketBuilder(PacketType.Analyze)
 
     pb.writeUTF(address)
@@ -57,7 +57,7 @@ object PacketSender {
     pb.sendToPlayersNearTileEntity(t)
   }
 
-  def sendClientLog(line: String, player: ServerPlayerEntity) {
+  def sendClientLog(line: String, player: ServerPlayer) {
     val pb = new CompressedPacketBuilder(PacketType.ClientLog)
 
     pb.writeUTF(line)
@@ -65,7 +65,7 @@ object PacketSender {
     pb.sendToPlayer(player)
   }
 
-  def sendClipboard(player: ServerPlayerEntity, text: String) {
+  def sendClipboard(player: ServerPlayer, text: String) {
     val pb = new SimplePacketBuilder(PacketType.Clipboard)
 
     pb.writeUTF(text)
@@ -92,7 +92,7 @@ object PacketSender {
     pb.sendToPlayersNearTileEntity(t)
   }
 
-  def sendMachineItemState(player: ServerPlayerEntity, stack: ItemStack, isRunning: Boolean): Unit = {
+  def sendMachineItemState(player: ServerPlayer, stack: ItemStack, isRunning: Boolean): Unit = {
     val pb = new SimplePacketBuilder(PacketType.MachineItemStateResponse)
 
     pb.writeItemStack(stack)
@@ -111,7 +111,7 @@ object PacketSender {
     pb.sendToPlayersNearTileEntity(t)
   }
 
-  def sendContainerUpdate(c: Container, nbt: CompoundTag, player: ServerPlayerEntity): Unit = {
+  def sendContainerUpdate(c: Container, nbt: CompoundTag, player: ServerPlayer): Unit = {
     if (!nbt.isEmpty) {
       val pb = new SimplePacketBuilder(PacketType.ContainerUpdate)
 
@@ -317,7 +317,7 @@ object PacketSender {
     pb.sendToPlayersNearTileEntity(t)
   }
 
-  def sendLootDisks(p: ServerPlayerEntity): Unit = {
+  def sendLootDisks(p: ServerPlayer): Unit = {
     // Sending as separate packets, because CompressedStreamTools hiccups otherwise...
     val stacks = Loot.worldDisks.map(_._1)
     for (stack <- stacks) {
@@ -406,7 +406,7 @@ object PacketSender {
     pb.sendToNearbyPlayers(position.world.get, position.x, position.y, position.z, Some(Settings.get.maxNetworkClientEffectPacketDistance / 2.0D))
   }
 
-  def sendPetVisibility(name: Option[String] = None, player: Option[ServerPlayerEntity] = None) {
+  def sendPetVisibility(name: Option[String] = None, player: Option[ServerPlayer] = None) {
     val pb = new SimplePacketBuilder(PacketType.PetVisibility)
 
     name match {
@@ -750,7 +750,7 @@ object PacketSender {
     }
   }
 
-  def sendTextBufferInit(address: String, value: CompoundTag, player: ServerPlayerEntity) {
+  def sendTextBufferInit(address: String, value: CompoundTag, player: ServerPlayer) {
     val pb = new CompressedPacketBuilder(PacketType.TextBufferInit)
 
     pb.writeUTF(address)

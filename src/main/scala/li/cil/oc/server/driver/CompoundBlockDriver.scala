@@ -5,7 +5,7 @@ import li.cil.oc.api.driver
 import li.cil.oc.api.driver.DriverBlock
 import li.cil.oc.api.driver.NamedBlock
 import li.cil.oc.api.network.ManagedEnvironment
-import net.minecraft.inventory.IInventory
+import net.minecraft.world.Container
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.block.entity.BlockEntity

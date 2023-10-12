@@ -11,11 +11,11 @@ import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.Tessellator
 import net.minecraft.client.renderer.Rectangle2d
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats
-import net.minecraft.entity.player.PlayerInventory
+import net.minecraft.world.entity.player.Inventory
 import net.minecraft.network.chat.Component
 import org.lwjgl.opengl.GL11
 
-class Relay(state: container.Relay, playerInventory: PlayerInventory, name: Component)
+class Relay(state: container.Relay, playerInventory: Inventory, name: Component)
   extends DynamicGuiContainer(state, playerInventory, name) {
 
   private val format = new DecimalFormat("#.##hz")

@@ -9,7 +9,7 @@ import li.cil.oc.api.nanomachines.BehaviorProvider
 import li.cil.oc.server.PacketSender
 import li.cil.oc.util.ExtendedNBT._
 import net.minecraft.world.entity.player.Player
-import net.minecraft.entity.player.ServerPlayerEntity
+import net.minecraft.server.level.ServerPlayer
 import net.minecraft.nbt.CompoundTag
 import net.minecraft.Util
 import net.minecraft.network.chat.TextComponent
@@ -100,7 +100,7 @@ class NeuralNetwork(controller: ControllerImpl) extends Persistable {
   // Enter debug configuration, one input -> one behavior, and list mapping in console.
   def debug(): Unit = {
     val log = controller.player match {
-      case playerMP: ServerPlayerEntity => (s: String) => PacketSender.sendClientLog(s, playerMP)
+      case playerMP: ServerPlayer => (s: String) => PacketSender.sendClientLog(s, playerMP)
       case _ => (s: String) => OpenComputers.log.info(s)
     }
     log(s"Creating debug configuration for nanomachines in player ${controller.player.getDisplayName.getString}.")

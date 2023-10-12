@@ -12,7 +12,7 @@ import li.cil.oc.server.PacketSender
 import li.cil.oc.util.BlockPosition
 import li.cil.oc.util.ExtendedWorld._
 import net.minecraft.world.entity.player.Player
-import net.minecraft.entity.player.ServerPlayerEntity
+import net.minecraft.server.level.ServerPlayer
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.Item.Properties
 import net.minecraft.world.item.ItemStack
@@ -66,7 +66,7 @@ object Analyzer {
   private def analyzeNodes(nodes: Array[Node], player: PlayerEntity) = if (nodes != null) for (node <- nodes if node != null) {
     player match {
       case _: FakePlayer => // Nope
-      case playerMP: ServerPlayerEntity =>
+      case playerMP: ServerPlayer =>
         if (node != null) node.host match {
           case machine: Machine =>
             if (machine != null) {

@@ -2,14 +2,14 @@ package li.cil.oc.common.container
 
 import li.cil.oc.common.inventory.DatabaseInventory
 import net.minecraft.world.entity.player.Player
-import net.minecraft.entity.player.PlayerInventory
-import net.minecraft.inventory.IInventory
-import net.minecraft.inventory.container.ClickType
-import net.minecraft.inventory.container.ContainerType
-import net.minecraft.inventory.container.Slot
+import net.minecraft.world.entity.player.Inventory
+import net.minecraft.world.Container
+import net.minecraft.world.inventory.ClickType
+import net.minecraft.world.inventory.MenuType
+import net.minecraft.world.inventory.Slot
 import net.minecraft.world.item.ItemStack
 
-class Database(selfType: ContainerType[_ <: Database], id: Int, playerInventory: PlayerInventory, val container: ItemStack, databaseInventory: IInventory, val tier: Int)
+class Database(selfType: MenuType[_ <: Database], id: Int, playerInventory: Inventory, val container: ItemStack, databaseInventory: Container, val tier: Int)
   extends Player(selfType, id, playerInventory, databaseInventory) {
 
   override protected def getHostClass = null

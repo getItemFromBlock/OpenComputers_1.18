@@ -4,13 +4,13 @@ import li.cil.oc.common.InventorySlots
 import li.cil.oc.common.Tier
 import li.cil.oc.common.tileentity
 import net.minecraft.world.entity.player.Player
-import net.minecraft.entity.player.PlayerInventory
-import net.minecraft.inventory.IInventory
-import net.minecraft.inventory.container.ContainerType
+import net.minecraft.world.entity.player.Inventory
+import net.minecraft.world.Container
+import net.minecraft.world.inventory.MenuType
 import net.minecraft.util.IntReferenceHolder
 import net.minecraft.network.chat.Component
 
-class Case(selfType: ContainerType[_ <: Case], id: Int, playerInventory: PlayerInventory, computer: IInventory, tier: Int)
+class Case(selfType: MenuType[_ <: Case], id: Int, playerInventory: Inventory, computer: Container, tier: Int)
   extends Player(selfType, id, playerInventory, computer) {
 
   override protected def getHostClass = classOf[tileentity.Case]

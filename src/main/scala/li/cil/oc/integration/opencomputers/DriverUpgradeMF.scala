@@ -14,7 +14,7 @@ import net.minecraft.util.RegistryKey
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.util.registry.Registry
 import net.minecraft.world.server.ServerWorld
-import net.minecraftforge.fml.server.ServerLifecycleHooks
+import net.minecraftforge.server.ServerLifecycleHooks
 
 /**
   * @author Vexatos

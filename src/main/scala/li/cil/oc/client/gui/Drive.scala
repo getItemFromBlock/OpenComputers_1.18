@@ -8,11 +8,11 @@ import li.cil.oc.common.item.data.DriveData
 import net.minecraft.client.gui.widget.button.Button
 import net.minecraft.client.gui.screen
 import net.minecraft.client.settings.KeyBinding
-import net.minecraft.entity.player.PlayerInventory
+import net.minecraft.world.entity.player.Inventory
 import net.minecraft.world.item.ItemStack
 import net.minecraft.network.chat.TextComponent
 
-class Drive(playerInventory: PlayerInventory, val driveStack: () => ItemStack) extends screen.Screen(TextComponent.EMPTY) with traits.Window {
+class Drive(playerInventory: Inventory, val driveStack: () => ItemStack) extends screen.Screen(TextComponent.EMPTY) with traits.Window {
   override val windowHeight = 120
 
   override def backgroundImage = Textures.GUI.Drive

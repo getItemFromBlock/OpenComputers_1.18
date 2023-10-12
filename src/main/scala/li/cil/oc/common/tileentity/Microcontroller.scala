@@ -21,7 +21,7 @@ import li.cil.oc.util.ExtendedNBT._
 import li.cil.oc.util.StackOption
 import li.cil.oc.util.StackOption._
 import net.minecraft.world.entity.player.Player
-import net.minecraft.inventory.ISidedInventory
+import net.minecraft.world.WorldlyContainer
 import net.minecraft.world.item.ItemStack
 import net.minecraft.nbt.CompoundTag
 import net.minecraft.world.level.block.entity.BlockEntity
@@ -34,7 +34,7 @@ import net.minecraftforge.api.distmarker.OnlyIn
 import scala.collection.JavaConverters.asJavaIterable
 import scala.collection.convert.ImplicitConversionsToJava._
 
-class Microcontroller(selfType: BlockEntityType[_ <: Microcontroller]) extends BlockEntity(selfType) with traits.PowerAcceptor with traits.Hub with traits.Computer with ISidedInventory with internal.Microcontroller with DeviceInfo {
+class Microcontroller(selfType: BlockEntityType[_ <: Microcontroller]) extends BlockEntity(selfType) with traits.PowerAcceptor with traits.Hub with traits.Computer with WorldlyContainer with internal.Microcontroller with DeviceInfo {
   val info = new MicrocontrollerData()
 
   override def node = null

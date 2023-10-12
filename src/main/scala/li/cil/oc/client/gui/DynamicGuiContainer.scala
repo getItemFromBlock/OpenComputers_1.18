@@ -16,16 +16,16 @@ import li.cil.oc.util.StackOption._
 import net.minecraft.client.gui.AbstractGui
 import net.minecraft.client.renderer.Tessellator
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats
-import net.minecraft.entity.player.PlayerInventory
-import net.minecraft.inventory.container.Container
-import net.minecraft.inventory.container.Slot
+import net.minecraft.world.entity.player.Inventory
+import net.minecraft.world.inventory.AbstractContainerMenu
+import net.minecraft.world.inventory.Slot
 import net.minecraft.network.chat.Component
 import org.lwjgl.opengl.GL11
 
 import scala.collection.convert.ImplicitConversionsToJava._
 import scala.collection.convert.ImplicitConversionsToScala._
 
-abstract class DynamicGuiContainer[C <: Container](container: C, inv: PlayerInventory, title: Component)
+abstract class DynamicGuiContainer[C <: Container](container: C, inv: Inventory, title: Component)
   extends CustomGuiContainer(container, inv, title) {
 
   protected var hoveredStackNEI: StackOption = EmptyStack

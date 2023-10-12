@@ -28,8 +28,8 @@ import li.cil.oc.util.BlockPosition
 import li.cil.oc.util.ExtendedNBT._
 import li.cil.oc.util.InventoryUtils
 import net.minecraft.world.entity.player.Player
-import net.minecraft.entity.player.PlayerInventory
-import net.minecraft.entity.player.ServerPlayerEntity
+import net.minecraft.world.entity.player.Inventory
+import net.minecraft.server.level.ServerPlayer
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity
 import net.minecraft.world.item.ItemStack
 import net.minecraft.nbt.CompoundTag
@@ -195,7 +195,7 @@ class DiskDriveMountable(val rack: api.internal.Rack, val slot: Int) extends Abs
       isDiskInDrive || isHoldingDisk
     }
     else player match {
-      case srvPlr: ServerPlayerEntity => {
+      case srvPlr: ServerPlayer => {
         srvPlr.openMenu(this)
         true
       }
@@ -208,7 +208,7 @@ class DiskDriveMountable(val rack: api.internal.Rack, val slot: Int) extends Abs
 
   override def getDisplayName = TextComponent.EMPTY
 
-  override def createMenu(id: Int, playerInventory: PlayerInventory, player: PlayerEntity) =
+  override def createMenu(id: Int, playerInventory: Inventory, player: PlayerEntity) =
     new DiskDriveContainer(ContainerTypes.DISK_DRIVE, id, playerInventory, this)
 
   // ----------------------------------------------------------------------- //

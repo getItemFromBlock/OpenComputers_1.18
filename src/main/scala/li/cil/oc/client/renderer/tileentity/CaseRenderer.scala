@@ -10,16 +10,16 @@ import li.cil.oc.common.tileentity.Case
 import li.cil.oc.util.RenderState
 import net.minecraft.client.renderer.IRenderTypeBuffer
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer
-import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher
 import net.minecraft.core.Direction
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.util.math.vector.Vector3f
 
-object CaseRenderer extends Function[TileEntityRendererDispatcher, CaseRenderer] {
-  override def apply(dispatch: TileEntityRendererDispatcher) = new CaseRenderer(dispatch)
+object CaseRenderer extends Function[BlockEntityRenderDispatcher, CaseRenderer] {
+  override def apply(dispatch: BlockEntityRenderDispatcher) = new CaseRenderer(dispatch)
 }
 
-class CaseRenderer(dispatch: TileEntityRendererDispatcher) extends TileEntityRenderer[Case](dispatch) {
+class CaseRenderer(dispatch: BlockEntityRenderDispatcher) extends TileEntityRenderer[Case](dispatch) {
   override def render(computer: Case, dt: Float, stack: MatrixStack, buffer: IRenderTypeBuffer, light: Int, overlay: Int) {
     RenderState.checkError(getClass.getName + ".render: entering (aka: wasntme)")
 

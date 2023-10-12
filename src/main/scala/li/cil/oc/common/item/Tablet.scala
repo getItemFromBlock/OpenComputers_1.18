@@ -43,8 +43,8 @@ import net.minecraft.client.resources.model.ModelResourceLocation
 import net.minecraft.world.entity.Entity
 import net.minecraft.world.entity.LivingEntity
 import net.minecraft.world.entity.player.Player
-import net.minecraft.world.entity.PlayerInventory
-import net.minecraft.world.entity.ServerPlayerEntity
+import net.minecraft.world.entity.player.Inventory
+import net.minecraft.server.level.ServerPlayer
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity
 import net.minecraft.world.item // Rarity
 import net.minecraft.world.item.Item
@@ -66,14 +66,14 @@ import net.minecraft.network.chat.TextComponent
 import net.minecraft.world.level.Level
 import net.minecraftforge.api.distmarker.Dist
 import net.minecraftforge.api.distmarker.OnlyIn
-import net.minecraftforge.client.model.ModelLoader
+import net.minecraftforge.client.model.ForgeModelBakery
 import net.minecraftforge.common.extensions.IForgeItem
-import net.minecraftforge.common.util.Constants.NBT
+import net.minecraft.nbt.Tag
 import net.minecraftforge.event.world.WorldEvent
 import net.minecraftforge.event.TickEvent.ClientTickEvent
 import net.minecraftforge.event.TickEvent.ServerTickEvent
 import net.minecraftforge.eventbus.api.SubscribeEvent
-import net.minecraftforge.fml.server.ServerLifecycleHooks
+import net.minecraftforge.server.ServerLifecycleHooks
 
 import scala.collection.JavaConverters.asJavaIterable
 import scala.collection.convert.ImplicitConversionsToJava._
@@ -140,7 +140,7 @@ class Tablet(props: Properties) extends Item(props) with IForgeItem with traits.
   @OnlyIn(Dist.CLIENT)
   override def registerModelLocations(): Unit = {
     for (state <- Seq(None, Some(true), Some(false))) {
-      ModelLoader.addSpecialModel(modelLocationFromState(state))
+      ForgeModelBakery.addSpecialModel(modelLocationFromState(state))
     }
   }
 
@@ -218,7 +218,7 @@ class Tablet(props: Properties) extends Item(props) with IForgeItem with traits.
               val tablet = Tablet.Server.get(stack, player)
               tablet.machine.stop()
               if (tablet.data.tier > Tier.One) player match {
-                case srvPlr: ServerPlayerEntity => ContainerTypes.openTabletGui(srvPlr, Tablet.get(stack, player))
+                case srvPlr: ServerPlayer => ContainerTypes.openTabletGui(srvPlr, Tablet.get(stack, player))
                 case _ =>
               }
             }
@@ -341,7 +341,7 @@ class TabletWrapper(var stack: ItemStack, var player: Player) extends ComponentI
 
   override def getDisplayName = getName
 
-  override def createMenu(id: Int, playerInventory: PlayerInventory, player: Player) =
+  override def createMenu(id: Int, playerInventory: Inventory, player: Player) =
     new container.Tablet(ContainerTypes.TABLET, id, playerInventory, stack, this, containerSlotType, containerSlotTier)
 
   // ----------------------------------------------------------------------- //
@@ -476,7 +476,7 @@ class TabletWrapper(var stack: ItemStack, var player: Player) extends ComponentI
         setChanged()
 
         player match {
-          case mp: ServerPlayerEntity => server.PacketSender.sendMachineItemState(mp, stack, machine.isRunning)
+          case mp: ServerPlayer => server.PacketSender.sendMachineItemState(mp, stack, machine.isRunning)
           case _ =>
         }
 
@@ -508,7 +508,7 @@ object Tablet {
   var currentlyAnalyzing: Option[(BlockPosition, Direction, Float, Float, Float)] = None
 
   def getId(stack: ItemStack): Option[String] = {
-    if (stack.hasTag && stack.getTag.contains(Settings.namespace + "tablet", NBT.TAG_STRING)) {
+    if (stack.hasTag && stack.getTag.contains(Settings.namespace + "tablet", Tag.TAG_STRING)) {
       Some(stack.getTag.getString(Settings.namespace + "tablet"))
     }
     else None

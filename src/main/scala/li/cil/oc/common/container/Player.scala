@@ -9,18 +9,18 @@ import li.cil.oc.common.Tier
 import li.cil.oc.server.{PacketSender => ServerPacketSender}
 import li.cil.oc.util.SideTracker
 import net.minecraft.world.entity.player.Player
-import net.minecraft.entity.player.ServerPlayerEntity
-import net.minecraft.entity.player.PlayerInventory
-import net.minecraft.inventory._
-import net.minecraft.inventory.container.ClickType
-import net.minecraft.inventory.container.Container
-import net.minecraft.inventory.container.ContainerType
-import net.minecraft.inventory.container.IContainerListener
-import net.minecraft.inventory.container.Slot
+import net.minecraft.world.Container
+import net.minecraft.server.level.ServerPlayer
+import net.minecraft.world.entity.player.Inventory
+import net.minecraft.world.inventory.ClickType
+import net.minecraft.world.inventory.AbstractContainerMenu
+import net.minecraft.world.inventory.MenuType
+import net.minecraft.world.inventory.ContainerListener
+import net.minecraft.world.inventory.Slot
 import net.minecraft.world.item.ItemStack
 import net.minecraft.nbt.ByteArrayTag
 import net.minecraft.nbt.CompoundTag
-import net.minecraft.nbt.INBT
+import net.minecraft.nbt.Tag
 import net.minecraft.nbt.IntArrayTag
 import net.minecraftforge.api.distmarker.Dist
 import net.minecraftforge.api.distmarker.OnlyIn
@@ -29,9 +29,9 @@ import net.minecraftforge.common.util.FakePlayer
 import scala.collection.convert.ImplicitConversionsToScala._
 import scala.collection.mutable
 
-abstract class Player(selfType: ContainerType[_ <: Player], id: Int, val playerInventory: PlayerInventory, val otherInventory: IInventory) extends Container(selfType, id) {
+abstract class Player(selfType: MenuType[_ <: Player], id: Int, val playerInventory: Inventory, val otherInventory: Container) extends AbstractContainerMenu(selfType, id) {
   /** Number of player inventory slots to display horizontally. */
-  protected val playerInventorySizeX = math.min(9, PlayerInventory.getSelectionSize)
+  protected val playerInventorySizeX = math.min(9, Inventory.getSelectionSize)
 
   protected val playerInventorySizeY = math.min(4, playerInventory.items.size / playerInventorySizeX)
 
@@ -40,7 +40,7 @@ abstract class Player(selfType: ContainerType[_ <: Player], id: Int, val playerI
 
   private var lastSync = System.currentTimeMillis()
 
-  protected val playerListeners = mutable.ArrayBuffer.empty[ServerPlayerEntity]
+  protected val playerListeners = mutable.ArrayBuffer.empty[ServerPlayer]
 
   override def stillValid(player: Player) = otherInventory.stillValid(player)
 
@@ -166,18 +166,18 @@ abstract class Player(selfType: ContainerType[_ <: Player], id: Int, val playerI
     }
   }
 
-  override def addSlotListener(listener: IContainerListener): Unit = {
+  override def addSlotListener(listener: ContainerListener): Unit = {
     listener match {
       case _: FakePlayer => // Nope
-      case player: ServerPlayerEntity => playerListeners += player
+      case player: ServerPlayer => playerListeners += player
       case _ =>
     }
     super.addSlotListener(listener)
   }
 
   @OnlyIn(Dist.CLIENT)
-  override def removeSlotListener(listener: IContainerListener): Unit = {
-    if (listener.isInstanceOf[ServerPlayerEntity]) playerListeners -= listener.asInstanceOf[ServerPlayerEntity]
+  override def removeSlotListener(listener: ContainerListener): Unit = {
+    if (listener.isInstanceOf[ServerPlayer]) playerListeners -= listener.asInstanceOf[ServerPlayer]
     super.removeSlotListener(listener)
   }
 
@@ -223,7 +223,7 @@ abstract class Player(selfType: ContainerType[_ <: Player], id: Int, val playerI
       }
     }
 
-    override def put(key: String, value: INBT): INBT = this.synchronized {
+    override def put(key: String, value: Tag): Tag = this.synchronized {
       if (!value.equals(get(key))) delta.put(key, value)
       super.put(key, value)
     }

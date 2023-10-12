@@ -10,7 +10,7 @@ import net.minecraft.block.AbstractBlock.Properties
 import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.client.util.ITooltipFlag
 import net.minecraft.world.entity.player.Player
-import net.minecraft.entity.player.ServerPlayerEntity
+import net.minecraft.server.level.ServerPlayer
 import net.minecraft.world.item.ItemStack
 import net.minecraft.core.BlockPos
 import net.minecraft.network.chat.Component
@@ -31,7 +31,7 @@ class Disassembler(props: Properties) extends SimpleBlock(props) with traits.Pow
 
   override def energyThroughput = Settings.get.disassemblerRate
 
-  override def openGui(player: ServerPlayerEntity, world: Level, pos: BlockPos): Unit = world.getBlockEntity(pos) match {
+  override def openGui(player: ServerPlayer, world: Level, pos: BlockPos): Unit = world.getBlockEntity(pos) match {
     case te: tileentity.Disassembler => ContainerTypes.openDisassemblerGui(player, te)
     case _ =>
   }

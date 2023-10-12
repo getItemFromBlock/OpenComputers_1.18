@@ -18,7 +18,7 @@ import li.cil.oc.util.RenderState
 import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.IRenderTypeBuffer
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer
-import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher
 import net.minecraft.world.level.block.entity.BlockEntity
 import net.minecraft.core.Direction
 import net.minecraft.util.math.vector.Vector3f
@@ -31,10 +31,10 @@ import org.lwjgl.opengl.GL15
 
 import scala.util.Random
 
-object HologramRenderer extends Function[TileEntityRendererDispatcher, HologramRenderer]
+object HologramRenderer extends Function[BlockEntityRenderDispatcher, HologramRenderer]
   with Callable[Int] with RemovalListener[TileEntity, Int] {
 
-  override def apply(dispatch: TileEntityRendererDispatcher) = new HologramRenderer(dispatch)
+  override def apply(dispatch: BlockEntityRenderDispatcher) = new HologramRenderer(dispatch)
 
   private val random = new Random()
 
@@ -403,7 +403,7 @@ object HologramRenderer extends Function[TileEntityRendererDispatcher, HologramR
   def onTick(e: ClientTickEvent) = cache.cleanUp()
 }
 
-class HologramRenderer(dispatch: TileEntityRendererDispatcher) extends TileEntityRenderer[Hologram](dispatch) {
+class HologramRenderer(dispatch: BlockEntityRenderDispatcher) extends TileEntityRenderer[Hologram](dispatch) {
   override def render(hologram: Hologram, f: Float, stack: MatrixStack, buffer: IRenderTypeBuffer, light: Int, overlay: Int) {
     if (HologramRenderer.failed) {
       HologramRendererFallback.render(hologram, f, stack, buffer, light, overlay)

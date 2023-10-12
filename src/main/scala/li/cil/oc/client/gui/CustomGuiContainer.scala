@@ -11,8 +11,8 @@ import net.minecraft.client.gui.screen.inventory.ContainerScreen
 import net.minecraft.client.renderer.IRenderTypeBuffer
 import net.minecraft.client.renderer.RenderHelper
 import net.minecraft.client.renderer.Tessellator
-import net.minecraft.entity.player.PlayerInventory
-import net.minecraft.inventory.container.Container
+import net.minecraft.world.entity.player.Inventory
+import net.minecraft.world.inventory.AbstractContainerMenu
 import net.minecraft.network.chat.Component
 import net.minecraft.util.text.ITextProperties
 import net.minecraft.util.text.LanguageMap
@@ -24,7 +24,7 @@ import scala.collection.convert.ImplicitConversionsToScala._
 // transformations that break things! Such fun. Many annoyed. And yes, this
 // is a common issue, have a look at EnderIO and Enchanting Plus. They have
 // to work around this, too.
-abstract class CustomGuiContainer[C <: Container](val inventoryContainer: C, inv: PlayerInventory, title: Component)
+abstract class CustomGuiContainer[C <: Container](val inventoryContainer: C, inv: Inventory, title: Component)
   extends ContainerScreen(inventoryContainer, inv, title) with WidgetContainer {
 
   override def windowX = leftPos

@@ -10,13 +10,13 @@ import li.cil.oc.common.tileentity
 import li.cil.oc.util.RenderState
 import net.minecraft.client.renderer.IRenderTypeBuffer
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer
-import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher
 
-object RelayRenderer extends Function[TileEntityRendererDispatcher, RelayRenderer] {
-  override def apply(dispatch: TileEntityRendererDispatcher) = new RelayRenderer(dispatch)
+object RelayRenderer extends Function[BlockEntityRenderDispatcher, RelayRenderer] {
+  override def apply(dispatch: BlockEntityRenderDispatcher) = new RelayRenderer(dispatch)
 }
 
-class RelayRenderer(dispatch: TileEntityRendererDispatcher) extends TileEntityRenderer[tileentity.Relay](dispatch) {
+class RelayRenderer(dispatch: BlockEntityRenderDispatcher) extends TileEntityRenderer[tileentity.Relay](dispatch) {
   override def render(switch: tileentity.Relay, dt: Float, stack: MatrixStack, buffer: IRenderTypeBuffer, light: Int, overlay: Int) {
     RenderState.checkError(getClass.getName + ".render: entering (aka: wasntme)")
 

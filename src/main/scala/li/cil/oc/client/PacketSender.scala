@@ -22,7 +22,7 @@ object PacketSender {
   // avoid spamming large packets on key repeat.
   protected var clipboardCooldown = 0L
 
-  def sendComputerPower(computer: container.Case, power: Boolean) {
+  def sendComputerPower(computer: container.Case, power: Boolean): Unit = {
     val pb = new SimplePacketBuilder(PacketType.ComputerPower)
 
     pb.writeInt(computer.containerId)
@@ -31,7 +31,7 @@ object PacketSender {
     pb.sendToServer()
   }
 
-  def sendRobotPower(robot: container.Robot, power: Boolean) {
+  def sendRobotPower(robot: container.Robot, power: Boolean): Unit = {
     val pb = new SimplePacketBuilder(PacketType.ComputerPower)
 
     pb.writeInt(robot.containerId)
@@ -40,7 +40,7 @@ object PacketSender {
     pb.sendToServer()
   }
 
-  def sendDriveMode(unmanaged: Boolean) {
+  def sendDriveMode(unmanaged: Boolean): Unit = {
     val pb = new SimplePacketBuilder(PacketType.DriveMode)
 
     pb.writeBoolean(unmanaged)
@@ -54,7 +54,7 @@ object PacketSender {
     pb.sendToServer()
   }
 
-  def sendDronePower(drone: container.Drone, power: Boolean) {
+  def sendDronePower(drone: container.Drone, power: Boolean): Unit = {
     val pb = new SimplePacketBuilder(PacketType.DronePower)
 
     pb.writeInt(drone.containerId)
@@ -63,7 +63,7 @@ object PacketSender {
     pb.sendToServer()
   }
 
-  def sendKeyDown(address: String, char: Char, code: Int) {
+  def sendKeyDown(address: String, char: Char, code: Int): Unit = {
     val pb = new SimplePacketBuilder(PacketType.KeyDown)
 
     pb.writeUTF(address)
@@ -73,7 +73,7 @@ object PacketSender {
     pb.sendToServer()
   }
 
-  def sendKeyUp(address: String, char: Char, code: Int) {
+  def sendKeyUp(address: String, char: Char, code: Int): Unit = {
     val pb = new SimplePacketBuilder(PacketType.KeyUp)
 
     pb.writeUTF(address)
@@ -83,7 +83,7 @@ object PacketSender {
     pb.sendToServer()
   }
 
-  def sendTextInput(address: String, codePt: Int) {
+  def sendTextInput(address: String, codePt: Int): Unit = {
     val pb = new SimplePacketBuilder(PacketType.TextInput)
 
     pb.writeUTF(address)
@@ -92,7 +92,7 @@ object PacketSender {
     pb.sendToServer()
   }
 
-  def sendClipboard(address: String, value: String) {
+  def sendClipboard(address: String, value: String): Unit = {
     if (value != null && !value.isEmpty) {
       if (value.length > 64 * 1024 || System.currentTimeMillis() < clipboardCooldown) {
         val handler = Minecraft.getInstance.getSoundManager
@@ -120,7 +120,7 @@ object PacketSender {
     pb.sendToServer()
   }
 
-  def sendMouseClick(address: String, x: Double, y: Double, drag: Boolean, button: Int) {
+  def sendMouseClick(address: String, x: Double, y: Double, drag: Boolean, button: Int): Unit = {
     val pb = new SimplePacketBuilder(PacketType.MouseClickOrDrag)
 
     pb.writeUTF(address)
@@ -132,7 +132,7 @@ object PacketSender {
     pb.sendToServer()
   }
 
-  def sendMouseScroll(address: String, x: Double, y: Double, scroll: Int) {
+  def sendMouseScroll(address: String, x: Double, y: Double, scroll: Int): Unit = {
     val pb = new SimplePacketBuilder(PacketType.MouseScroll)
 
     pb.writeUTF(address)
@@ -143,7 +143,7 @@ object PacketSender {
     pb.sendToServer()
   }
 
-  def sendMouseUp(address: String, x: Double, y: Double, button: Int) {
+  def sendMouseUp(address: String, x: Double, y: Double, button: Int): Unit = {
     val pb = new SimplePacketBuilder(PacketType.MouseUp)
 
     pb.writeUTF(address)
@@ -163,12 +163,12 @@ object PacketSender {
     pb.sendToServer()
   }
 
-  def sendMultiPlace() {
+  def sendMultiPlace(): Unit = {
     val pb = new SimplePacketBuilder(PacketType.MultiPartPlace)
     pb.sendToServer()
   }
 
-  def sendPetVisibility() {
+  def sendPetVisibility(): Unit = {
     val pb = new SimplePacketBuilder(PacketType.PetVisibility)
 
     pb.writeBoolean(!Settings.get.hideOwnPet)
@@ -176,7 +176,7 @@ object PacketSender {
     pb.sendToServer()
   }
 
-  def sendRackMountableMapping(rack: container.Rack, mountableIndex: Int, nodeIndex: Int, side: Option[Direction]) {
+  def sendRackMountableMapping(rack: container.Rack, mountableIndex: Int, nodeIndex: Int, side: Option[Direction]): Unit = {
     val pb = new SimplePacketBuilder(PacketType.RackMountableMapping)
 
     pb.writeInt(rack.containerId)
@@ -187,7 +187,7 @@ object PacketSender {
     pb.sendToServer()
   }
 
-  def sendRackRelayState(rack: container.Rack, enabled: Boolean) {
+  def sendRackRelayState(rack: container.Rack, enabled: Boolean): Unit = {
     val pb = new SimplePacketBuilder(PacketType.RackRelayState)
 
     pb.writeInt(rack.containerId)
@@ -196,7 +196,7 @@ object PacketSender {
     pb.sendToServer()
   }
 
-  def sendRobotAssemblerStart(assembler: container.Assembler) {
+  def sendRobotAssemblerStart(assembler: container.Assembler): Unit = {
     val pb = new SimplePacketBuilder(PacketType.RobotAssemblerStart)
 
     pb.writeInt(assembler.containerId)
@@ -204,7 +204,7 @@ object PacketSender {
     pb.sendToServer()
   }
 
-  def sendRobotStateRequest(dimension: ResourceLocation, x: Int, y: Int, z: Int) {
+  def sendRobotStateRequest(dimension: ResourceLocation, x: Int, y: Int, z: Int): Unit = {
     val pb = new SimplePacketBuilder(PacketType.RobotStateRequest)
 
     pb.writeUTF(dimension.toString)
@@ -215,7 +215,7 @@ object PacketSender {
     pb.sendToServer()
   }
 
-  def sendServerPower(server: container.Server, mountableIndex: Int, power: Boolean) {
+  def sendServerPower(server: container.Server, mountableIndex: Int, power: Boolean): Unit = {
     val pb = new SimplePacketBuilder(PacketType.ServerPower)
 
     pb.writeInt(server.containerId)
@@ -225,7 +225,7 @@ object PacketSender {
     pb.sendToServer()
   }
 
-  def sendTextBufferInit(address: String) {
+  def sendTextBufferInit(address: String): Unit = {
     val pb = new SimplePacketBuilder(PacketType.TextBufferInit)
 
     pb.writeUTF(address)

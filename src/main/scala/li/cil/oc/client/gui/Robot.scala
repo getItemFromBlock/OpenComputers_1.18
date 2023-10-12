@@ -18,7 +18,7 @@ import net.minecraft.client.gui.INestedGuiEventHandler
 import net.minecraft.client.gui.widget.button.Button
 import net.minecraft.client.renderer.Tessellator
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats
-import net.minecraft.entity.player.PlayerInventory
+import net.minecraft.world.entity.player.Inventory
 import net.minecraft.network.chat.Component
 import org.lwjgl.glfw.GLFW
 import org.lwjgl.opengl.GL11
@@ -26,7 +26,7 @@ import org.lwjgl.opengl.GL11
 import scala.collection.JavaConverters.asJavaCollection
 import scala.collection.convert.ImplicitConversionsToJava._
 
-class Robot(state: container.Robot, playerInventory: PlayerInventory, name: Component)
+class Robot(state: container.Robot, playerInventory: Inventory, name: Component)
   extends DynamicGuiContainer(state, playerInventory, name)
   with traits.InputBuffer with INestedGuiEventHandler {
 

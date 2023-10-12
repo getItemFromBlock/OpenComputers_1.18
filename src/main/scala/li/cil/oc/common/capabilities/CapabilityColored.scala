@@ -2,7 +2,7 @@ package li.cil.oc.common.capabilities
 
 import li.cil.oc.api.internal.Colored
 import li.cil.oc.integration.Mods
-import net.minecraft.nbt.INBT
+import net.minecraft.nbt.Tag
 import net.minecraft.nbt.IntNBT
 import net.minecraft.world.level.block.entity.BlockEntity
 import net.minecraft.core.Direction
@@ -45,12 +45,12 @@ object CapabilityColored {
   }
 
   class DefaultStorage extends Capability.IStorage[Colored] {
-    override def writeNBT(capability: Capability[Colored], t: Colored, Direction: Direction): INBT = {
+    override def writeNBT(capability: Capability[Colored], t: Colored, Direction: Direction): Tag = {
       val color = t.getColor
       IntNBT.valueOf(color)
     }
 
-    override def readNBT(capability: Capability[Colored], t: Colored, Direction: Direction, nbtBase: INBT): Unit = {
+    override def readNBT(capability: Capability[Colored], t: Colored, Direction: Direction, nbtBase: Tag): Unit = {
       nbtBase match {
         case nbt: IntNBT =>
           t.setColor(nbt.getAsInt)

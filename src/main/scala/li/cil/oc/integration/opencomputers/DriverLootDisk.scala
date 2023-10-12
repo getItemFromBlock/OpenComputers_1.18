@@ -11,7 +11,7 @@ import li.cil.oc.common.Slot
 import net.minecraft.world.item.ItemStack
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.storage.FolderName
-import net.minecraftforge.fml.server.ServerLifecycleHooks
+import net.minecraftforge.server.ServerLifecycleHooks
 
 // This is deprecated and kept for compatibility with old saves.
 // As of OC 1.5.10, loot disks are generated using normal floppies, and using

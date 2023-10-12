@@ -8,7 +8,7 @@ import li.cil.oc.common.container.ContainerTypes
 import li.cil.oc.common.inventory.ServerInventory
 import li.cil.oc.util.Tooltip
 import net.minecraft.world.entity.player.Player
-import net.minecraft.entity.player.ServerPlayerEntity
+import net.minecraft.server.level.ServerPlayer
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.Item.Properties
 import net.minecraft.world.item.ItemStack
@@ -59,7 +59,7 @@ class Server(props: Properties, val tier: Int) extends Item(props) with IForgeIt
   override def use(stack: ItemStack, world: Level, player: PlayerEntity): InteractionResultHolder[ItemStack] = {
     if (!player.isCrouching) {
       if (!world.isClientSide) player match {
-        case srvPlr: ServerPlayerEntity => ContainerTypes.openServerGui(srvPlr, new ServerInventory {
+        case srvPlr: ServerPlayer => ContainerTypes.openServerGui(srvPlr, new ServerInventory {
             override def container = stack
 
             override def rackSlot = -1

@@ -6,7 +6,7 @@ import li.cil.oc.api.network._
 import li.cil.oc.util.BlockPosition
 import li.cil.oc.util.ExtendedWorld._
 import net.minecraft.world.entity.player.Player
-import net.minecraft.entity.player.ServerPlayerEntity
+import net.minecraft.server.level.ServerPlayer
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.Item.Properties
 import net.minecraft.world.item.ItemStack
@@ -19,7 +19,7 @@ class Debugger(props: Properties) extends Item(props) with IForgeItem with trait
     val world = position.world.get
     player match {
       case _: FakePlayer => false // Nope
-      case realPlayer: ServerPlayerEntity =>
+      case realPlayer: ServerPlayer =>
         world.getBlockEntity(position) match {
           case host: SidedEnvironment =>
             if (!world.isClientSide) {

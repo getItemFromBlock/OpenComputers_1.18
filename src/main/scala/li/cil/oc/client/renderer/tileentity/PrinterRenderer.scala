@@ -12,15 +12,15 @@ import net.minecraft.client.renderer.IRenderTypeBuffer
 import net.minecraft.client.renderer.RenderHelper
 import net.minecraft.client.renderer.model.ItemCameraTransforms
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer
-import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher
 import net.minecraft.util.math.vector.Vector3f
 import org.lwjgl.opengl.GL13
 
-object PrinterRenderer extends Function[TileEntityRendererDispatcher, PrinterRenderer] {
-  override def apply(dispatch: TileEntityRendererDispatcher) = new PrinterRenderer(dispatch)
+object PrinterRenderer extends Function[BlockEntityRenderDispatcher, PrinterRenderer] {
+  override def apply(dispatch: BlockEntityRenderDispatcher) = new PrinterRenderer(dispatch)
 }
 
-class PrinterRenderer(dispatch: TileEntityRendererDispatcher) extends TileEntityRenderer[Printer](dispatch) {
+class PrinterRenderer(dispatch: BlockEntityRenderDispatcher) extends TileEntityRenderer[Printer](dispatch) {
   override def render(printer: Printer, dt: Float, matrix: MatrixStack, buffer: IRenderTypeBuffer, light: Int, overlay: Int) {
     RenderState.checkError(getClass.getName + ".render: entering (aka: wasntme)")
 

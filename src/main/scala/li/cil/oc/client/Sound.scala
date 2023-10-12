@@ -32,7 +32,7 @@ object Sound {
   private val updateTimer = new Timer("OpenComputers-SoundUpdater", true)
   if (Settings.get.soundVolume > 0) {
     updateTimer.scheduleAtFixedRate(new TimerTask {
-      override def run() {
+      override def run(): Unit = {
         sources.synchronized(Sound.updateCallable = Some(() => processQueue()))
       }
     }, 500, 50)
@@ -40,7 +40,7 @@ object Sound {
 
   private var updateCallable = None: Option[() => Unit]
 
-  private def processQueue() {
+  private def processQueue(): Unit = {
     if (commandQueue.nonEmpty) {
       commandQueue.synchronized {
         while (commandQueue.nonEmpty && commandQueue.head.when < System.currentTimeMillis()) {
@@ -52,7 +52,7 @@ object Sound {
     }
   }
 
-  def startLoop(tileEntity: BlockEntity, name: String, volume: Float = 1f, delay: Long = 0) {
+  def startLoop(tileEntity: BlockEntity, name: String, volume: Float = 1f, delay: Long = 0): Unit = {
     if (Settings.get.soundVolume > 0) {
       commandQueue.synchronized {
         commandQueue += new StartCommand(System.currentTimeMillis() + delay, tileEntity, name, volume)
@@ -60,7 +60,7 @@ object Sound {
     }
   }
 
-  def stopLoop(tileEntity: BlockEntity) {
+  def stopLoop(tileEntity: BlockEntity): Unit = {
     if (Settings.get.soundVolume > 0) {
       commandQueue.synchronized {
         commandQueue += new StopCommand(tileEntity)
@@ -68,7 +68,7 @@ object Sound {
     }
   }
 
-  def updatePosition(tileEntity: BlockEntity) {
+  def updatePosition(tileEntity: BlockEntity): Unit = {
     if (Settings.get.soundVolume > 0) {
       commandQueue.synchronized {
         commandQueue += new UpdatePositionCommand(tileEntity)
@@ -77,7 +77,7 @@ object Sound {
   }
 
   @SubscribeEvent
-  def onTick(e: ClientTickEvent) {
+  def onTick(e: ClientTickEvent): Unit = {
     sources.synchronized {
       updateCallable.foreach(_ ())
       updateCallable = None
@@ -85,7 +85,7 @@ object Sound {
   }
 
   @SubscribeEvent
-  def onWorldUnload(event: WorldEvent.Unload) {
+  def onWorldUnload(event: WorldEvent.Unload): Unit = {
     commandQueue.synchronized(commandQueue.clear())
     sources.synchronized(try sources.foreach(_._2.stop()) catch {
       case _: Throwable => // Ignore.
@@ -100,7 +100,7 @@ object Sound {
   }
 
   private class StartCommand(when: Long, tileEntity: BlockEntity, val name: String, val volume: Float) extends Command(when, tileEntity) {
-    override def apply() {
+    override def apply(): Unit = {
       sources.synchronized {
         val current = sources.getOrElse(tileEntity, null)
         if (current == null || !current.getLocation.getPath.equals(name)) {
@@ -112,7 +112,7 @@ object Sound {
   }
 
   private class StopCommand(tileEntity: BlockEntity) extends Command(System.currentTimeMillis() + 1, tileEntity) {
-    override def apply() {
+    override def apply(): Unit = {
       sources.synchronized {
         sources.remove(tileEntity) match {
           case Some(sound) => sound.stop()
@@ -129,7 +129,7 @@ object Sound {
   }
 
   private class UpdatePositionCommand(tileEntity: BlockEntity) extends Command(System.currentTimeMillis(), tileEntity) {
-    override def apply() {
+    override def apply(): Unit = {
       sources.synchronized {
         sources.get(tileEntity) match {
           case Some(sound) => sound.updatePosition()
@@ -148,7 +148,7 @@ object Sound {
     looping = true
     updatePosition()
 
-    def updatePosition() {
+    def updatePosition(): Unit = {
       if (tileEntity != null) {
         val pos = tileEntity.getBlockPos
         x = pos.getX + 0.5
@@ -164,7 +164,7 @@ object Sound {
     // Required by ITickableSound, which is required to update position while playing
     override def tick() = ()
 
-    def stop() {
+    def stop(): Unit = {
       stopped = true
       looping = false
     }

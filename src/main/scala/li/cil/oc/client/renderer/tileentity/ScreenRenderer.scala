@@ -17,17 +17,17 @@ import li.cil.oc.util.RenderState
 import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.IRenderTypeBuffer
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer
-import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher
 import net.minecraft.world.item.ItemStack
 import net.minecraft.core.Direction
 import net.minecraft.world.InteractionHand
 import net.minecraft.util.math.vector.Vector3f
 
-object ScreenRenderer extends Function[TileEntityRendererDispatcher, ScreenRenderer] {
-  override def apply(dispatch: TileEntityRendererDispatcher) = new ScreenRenderer(dispatch)
+object ScreenRenderer extends Function[BlockEntityRenderDispatcher, ScreenRenderer] {
+  override def apply(dispatch: BlockEntityRenderDispatcher) = new ScreenRenderer(dispatch)
 }
 
-class ScreenRenderer(dispatch: TileEntityRendererDispatcher) extends TileEntityRenderer[Screen](dispatch) {
+class ScreenRenderer(dispatch: BlockEntityRenderDispatcher) extends TileEntityRenderer[Screen](dispatch) {
   private val maxRenderDistanceSq = Settings.get.maxScreenTextRenderDistance * Settings.get.maxScreenTextRenderDistance
 
   private val fadeDistanceSq = Settings.get.screenTextFadeStartDistance * Settings.get.screenTextFadeStartDistance

@@ -30,7 +30,7 @@ import net.minecraft.core.BlockPos
 import net.minecraft.util.registry.{Registry => VanillaRegistry}
 import net.minecraft.world.level.Level
 import net.minecraftforge.common.util.Constants.NBT
-import net.minecraftforge.fml.server.ServerLifecycleHooks
+import net.minecraftforge.server.ServerLifecycleHooks
 
 import scala.collection.convert.ImplicitConversionsToJava._
 import scala.collection.convert.ImplicitConversionsToScala._

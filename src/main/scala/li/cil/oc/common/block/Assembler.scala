@@ -6,7 +6,7 @@ import li.cil.oc.common.tileentity
 import net.minecraft.block.AbstractBlock.Properties
 import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.state.BlockState
-import net.minecraft.entity.player.ServerPlayerEntity
+import net.minecraft.server.level.ServerPlayer
 import net.minecraft.core.BlockPos
 import net.minecraft.util.math.shapes.ISelectionContext
 import net.minecraft.util.math.shapes.VoxelShape
@@ -26,7 +26,7 @@ class Assembler(props: Properties) extends SimpleBlock(props) with traits.PowerA
 
   override def getShape(state: BlockState, world: BlockGetter, pos: BlockPos, ctx: ISelectionContext): VoxelShape = blockShape
 
-  override def openGui(player: ServerPlayerEntity, world: Level, pos: BlockPos): Unit = world.getBlockEntity(pos) match {
+  override def openGui(player: ServerPlayer, world: Level, pos: BlockPos): Unit = world.getBlockEntity(pos) match {
     case te: tileentity.Assembler => ContainerTypes.openAssemblerGui(player, te)
     case _ =>
   }

@@ -5,10 +5,10 @@ import com.mojang.blaze3d.systems.RenderSystem
 import li.cil.oc.client.Textures
 import li.cil.oc.client.gui.widget.ProgressBar
 import li.cil.oc.common.container
-import net.minecraft.entity.player.PlayerInventory
+import net.minecraft.world.entity.player.Inventory
 import net.minecraft.network.chat.Component
 
-class Disassembler(state: container.Disassembler, playerInventory: PlayerInventory, name: Component)
+class Disassembler(state: container.Disassembler, playerInventory: Inventory, name: Component)
   extends DynamicGuiContainer(state, playerInventory, name) {
 
   val progress = addCustomWidget(new ProgressBar(18, 65))

@@ -1,12 +1,12 @@
 package li.cil.oc.common.inventory
 
 import net.minecraft.world.entity.player.Player
-import net.minecraft.inventory.IInventory
+import net.minecraft.world.Container
 import net.minecraft.world.item.ItemStack
 import net.minecraft.network.chat.Component
 
-trait InventoryProxy extends IInventory {
-  def inventory: IInventory
+trait InventoryProxy extends Container {
+  def inventory: Container
 
   def offset = 0
 

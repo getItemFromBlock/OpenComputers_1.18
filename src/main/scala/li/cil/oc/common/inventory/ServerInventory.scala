@@ -7,7 +7,7 @@ import li.cil.oc.common.container.ContainerTypes
 import li.cil.oc.common.container.{Server => ServerContainer}
 import li.cil.oc.util.ItemUtils
 import net.minecraft.world.entity.player.Player
-import net.minecraft.entity.player.PlayerInventory
+import net.minecraft.world.entity.player.Inventory
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity
 import net.minecraft.world.item.ItemStack
 
@@ -30,6 +30,6 @@ trait ServerInventory extends ItemStackInventory with BaseContainerBlockEntity {
       driver.slot(stack) == provided.slot && driver.tier(stack) <= provided.tier
     })
 
-  override def createMenu(id: Int, playerInventory: PlayerInventory, player: Player) =
+  override def createMenu(id: Int, playerInventory: Inventory, player: Player) =
     new ServerContainer(ContainerTypes.SERVER, id, playerInventory, container, this, tier, rackSlot)
 }

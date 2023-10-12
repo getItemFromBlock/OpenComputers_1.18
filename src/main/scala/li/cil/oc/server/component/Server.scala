@@ -30,7 +30,7 @@ import li.cil.oc.server.network.Connector
 import li.cil.oc.util.BlockPosition
 import li.cil.oc.util.ExtendedNBT._
 import net.minecraft.world.entity.player.Player
-import net.minecraft.entity.player.ServerPlayerEntity
+import net.minecraft.server.level.ServerPlayer
 import net.minecraft.world.item.ItemStack
 import net.minecraft.nbt.CompoundTag
 import net.minecraft.core.Direction
@@ -193,7 +193,7 @@ class Server(val rack: api.internal.Rack, val slot: Int) extends Environment wit
       }
       else {
         player match {
-          case srvPlr: ServerPlayerEntity => ContainerTypes.openServerGui(srvPlr, this, slot)
+          case srvPlr: ServerPlayer => ContainerTypes.openServerGui(srvPlr, this, slot)
           case _ =>
         }
       }

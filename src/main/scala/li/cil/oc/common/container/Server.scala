@@ -4,13 +4,13 @@ import li.cil.oc.common.InventorySlots
 import li.cil.oc.common.inventory.ServerInventory
 import li.cil.oc.server.component
 import net.minecraft.world.entity.player.Player
-import net.minecraft.entity.player.PlayerInventory
-import net.minecraft.inventory.IInventory
-import net.minecraft.inventory.container.ContainerType
+import net.minecraft.world.entity.player.Inventory
+import net.minecraft.world.Container
+import net.minecraft.world.inventory.MenuType
 import net.minecraft.world.item.ItemStack
 import net.minecraft.nbt.CompoundTag
 
-class Server(selfType: ContainerType[_ <: Server], id: Int, playerInventory: PlayerInventory, val stack: ItemStack, serverInventory: IInventory, tier: Int, val rackSlot: Int)
+class Server(selfType: MenuType[_ <: Server], id: Int, playerInventory: Inventory, val stack: ItemStack, serverInventory: Container, tier: Int, val rackSlot: Int)
   extends Player(selfType, id, playerInventory, serverInventory) {
 
   override protected def getHostClass = classOf[component.Server]

@@ -36,7 +36,7 @@ import net.minecraft.command.CommandSource
 import net.minecraft.command.ICommandSource
 import net.minecraft.entity.item.minecart.MinecartEntity
 import net.minecraft.entity.{Entity, LivingEntity}
-import net.minecraft.entity.player.ServerPlayerEntity
+import net.minecraft.server.level.ServerPlayer
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
 import net.minecraft.nbt._
@@ -65,7 +65,7 @@ import net.minecraftforge.fluids.FluidStack
 import net.minecraftforge.fluids.IFluidBlock
 import net.minecraftforge.fluids.capability.IFluidHandler
 import net.minecraftforge.fml.ModList
-import net.minecraftforge.fml.server.ServerLifecycleHooks
+import net.minecraftforge.server.ServerLifecycleHooks
 import net.minecraftforge.registries.ForgeRegistries
 import net.minecraftforge.registries.ForgeRegistry
 import net.minecraftforge.registries.IForgeRegistry
@@ -420,10 +420,10 @@ object DebugCard {
 
     // ----------------------------------------------------------------------- //
 
-    def withPlayer(f: (ServerPlayerEntity) => Array[AnyRef]): Array[AnyRef] = {
+    def withPlayer(f: (ServerPlayer) => Array[AnyRef]): Array[AnyRef] = {
       checkAccess()
       ServerLifecycleHooks.getCurrentServer.getPlayerList.getPlayerByName(name) match {
-        case player: ServerPlayerEntity => f(player)
+        case player: ServerPlayer => f(player)
         case _ => result((), "player is offline")
       }
     }

@@ -4,14 +4,14 @@ import li.cil.oc.api.machine.Arguments
 import li.cil.oc.util.ExtendedArguments._
 import li.cil.oc.util.StackOption
 import net.minecraft.world.entity.player.Player
-import net.minecraft.inventory.IInventory
+import net.minecraft.world.Container
 
 import scala.collection.immutable
 
 trait InventoryAware {
   def fakePlayer: Player
 
-  def inventory: IInventory
+  def inventory: Container
 
   def selectedSlot: Int
 

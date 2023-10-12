@@ -19,7 +19,7 @@ import net.minecraft.item.crafting.IRecipeType
 import net.minecraft.world.entity.player.Player
 import net.minecraft.inventory
 import net.minecraft.inventory.{CraftResultInventory, IInventory}
-import net.minecraft.inventory.container.Container
+import net.minecraft.world.inventory.AbstractContainerMenu
 import net.minecraft.inventory.container.CraftingResultSlot
 
 import scala.collection.convert.ImplicitConversionsToJava._

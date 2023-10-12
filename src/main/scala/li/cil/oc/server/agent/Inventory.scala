@@ -8,8 +8,8 @@ import li.cil.oc.util.InventoryUtils
 import li.cil.oc.util.StackOption
 import li.cil.oc.util.StackOption._
 import net.minecraft.world.entity.player.Player
-import net.minecraft.entity.player.PlayerInventory
-import net.minecraft.inventory.IInventory
+import net.minecraft.world.entity.player.Inventory
+import net.minecraft.world.Container
 import net.minecraft.world.item.ItemStack
 import net.minecraft.nbt.CompoundTag
 import net.minecraft.nbt.ListNBT
@@ -20,7 +20,7 @@ import net.minecraft.world.level.block.state.BlockState
 
 import scala.collection.immutable
 
-class Inventory(playerEntity: Player, val agent: internal.Agent) extends PlayerInventory(playerEntity) {
+class Inventory(playerEntity: Player, val agent: internal.Agent) extends Inventory(playerEntity) {
 
   private def selectedItemStack: ItemStack = agent.mainInventory.getItem(agent.selectedSlot)
 
@@ -35,7 +35,7 @@ class Inventory(playerEntity: Player, val agent: internal.Agent) extends PlayerI
 
   override def pickSlot(direction: Int) {}
 
-  override def clearOrCountMatchingItems(f: Predicate[ItemStack], count: Int, inv: IInventory): Int = 0
+  override def clearOrCountMatchingItems(f: Predicate[ItemStack], count: Int, inv: Container): Int = 0
 
   override def tick() {
     for (slot <- 0 until getContainerSize) {
@@ -67,9 +67,9 @@ class Inventory(playerEntity: Player, val agent: internal.Agent) extends PlayerI
 
   override def contains(stack: ItemStack): Boolean = (0 until getContainerSize).map(getItem).filter(!_.isEmpty).exists(_.sameItem(stack))
 
-  override def replaceWith(from: PlayerInventory) {}
+  override def replaceWith(from: Inventory) {}
 
-  // IInventory
+  // Container
 
   override def getContainerSize: Int = agent.mainInventory.getContainerSize
 

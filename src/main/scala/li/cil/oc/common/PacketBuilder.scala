@@ -12,7 +12,7 @@ import io.netty.buffer.Unpooled
 import li.cil.oc.{OpenComputers, Settings}
 import li.cil.oc.api.network.EnvironmentHost
 import net.minecraft.world.entity.Entity
-import net.minecraft.entity.player.ServerPlayerEntity
+import net.minecraft.server.level.ServerPlayer
 import net.minecraft.world.item.ItemStack
 import net.minecraft.nbt.CompressedStreamTools
 import net.minecraft.nbt.CompoundTag
@@ -22,7 +22,7 @@ import net.minecraft.util.math.ChunkPos
 import net.minecraft.world.level.Level
 import net.minecraft.world.server.ServerWorld
 import net.minecraftforge.fml.network.PacketDistributor
-import net.minecraftforge.fml.server.ServerLifecycleHooks
+import net.minecraftforge.server.ServerLifecycleHooks
 import net.minecraftforge.registries._
 
 import scala.collection.convert.ImplicitConversionsToScala._
@@ -123,7 +123,7 @@ abstract class PacketBuilder(stream: OutputStream) extends DataOutputStream(stre
     }
   }
 
-  def sendToPlayer(player: ServerPlayerEntity) = OpenComputers.channel.send(PacketDistributor.PLAYER.`with`(new Supplier[ServerPlayerEntity] {
+  def sendToPlayer(player: ServerPlayer) = OpenComputers.channel.send(PacketDistributor.PLAYER.`with`(new Supplier[ServerPlayer] {
     override def get = player
   }), packet)
 

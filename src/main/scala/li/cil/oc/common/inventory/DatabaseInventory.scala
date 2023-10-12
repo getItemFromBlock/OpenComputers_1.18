@@ -5,7 +5,7 @@ import li.cil.oc.common.container.ContainerTypes
 import li.cil.oc.common.container.{Database => DatabaseContainer}
 import li.cil.oc.integration.opencomputers.DriverUpgradeDatabase
 import net.minecraft.world.entity.player.Player
-import net.minecraft.entity.player.PlayerInventory
+import net.minecraft.world.entity.player.Inventory
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity
 import net.minecraft.world.item.ItemStack
 import net.minecraft.network.chat.TextComponent
@@ -25,6 +25,6 @@ trait DatabaseInventory extends ItemStackInventory with BaseContainerBlockEntity
 
   override def getDisplayName = TextComponent.EMPTY
 
-  override def createMenu(id: Int, playerInventory: PlayerInventory, player: Player) =
+  override def createMenu(id: Int, playerInventory: Inventory, player: Player) =
     new DatabaseContainer(ContainerTypes.DATABASE, id, playerInventory, container, this, tier)
 }

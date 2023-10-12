@@ -22,7 +22,7 @@ import li.cil.oc.util.ExtendedNBT._
 import li.cil.oc.util.InventoryUtils
 import li.cil.oc.util.PlayerUtils
 import net.minecraft.world.entity.player.Player
-import net.minecraft.entity.player.ServerPlayerEntity
+import net.minecraft.server.level.ServerPlayer
 import net.minecraft.nbt.CompoundTag
 import net.minecraft.particles.ParticleTypes
 import net.minecraft.potion.Effect
@@ -172,7 +172,7 @@ class ControllerImpl(val player: PlayerEntity) extends Controller with WirelessE
       activeBehaviorsDirty = true
 
       player match {
-        case playerMP: ServerPlayerEntity if playerMP.connection != null =>
+        case playerMP: ServerPlayer if playerMP.connection != null =>
           player.addEffect(new EffectInstance(Effects.BLINDNESS, 100))
           player.addEffect(new EffectInstance(Effects.POISON, 150))
           player.addEffect(new EffectInstance(Effects.MOVEMENT_SLOWDOWN, 200))

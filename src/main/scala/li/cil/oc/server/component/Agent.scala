@@ -22,7 +22,7 @@ import net.minecraft.entity.Pose
 import net.minecraft.entity.item.ItemEntity
 import net.minecraft.entity.item.minecart.MinecartEntity
 import net.minecraft.world.entity.player.Player
-import net.minecraft.inventory.IInventory
+import net.minecraft.world.Container
 import net.minecraft.core.Direction
 import net.minecraft.world.InteractionHand
 import net.minecraft.core.BlockPos
@@ -52,7 +52,7 @@ trait Agent extends traits.WorldControl with traits.InventoryControl with traits
 
   // ----------------------------------------------------------------------- //
 
-  override def inventory: IInventory = agent.mainInventory
+  override def inventory: Container = agent.mainInventory
 
   override def selectedSlot: Int = agent.selectedSlot
 

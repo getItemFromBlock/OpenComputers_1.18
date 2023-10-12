@@ -11,14 +11,14 @@ import li.cil.oc.common.container.ComponentSlot
 import li.cil.oc.common.template.AssemblerTemplates
 import li.cil.oc.util.RenderState
 import net.minecraft.client.gui.widget.button.Button
-import net.minecraft.entity.player.PlayerInventory
-import net.minecraft.inventory.container.Slot
+import net.minecraft.world.entity.player.Inventory
+import net.minecraft.world.inventory.Slot
 import net.minecraft.network.chat.Component
 
 import scala.collection.convert.ImplicitConversionsToJava._
 import scala.collection.convert.ImplicitConversionsToScala._
 
-class Assembler(state: container.Assembler, playerInventory: PlayerInventory, name: Component)
+class Assembler(state: container.Assembler, playerInventory: Inventory, name: Component)
   extends DynamicGuiContainer(state, playerInventory, name) {
 
   imageWidth = 176
@@ -29,7 +29,7 @@ class Assembler(state: container.Assembler, playerInventory: PlayerInventory, na
     case _ =>
   }
 
-  private def onSlotChanged(slot: Slot) {
+  private def onSlotChanged(slot: Slot): Unit = {
     runButton.active = canBuild
     runButton.toggled = !runButton.active
     info = validate
@@ -45,7 +45,7 @@ class Assembler(state: container.Assembler, playerInventory: PlayerInventory, na
 
   private def canBuild = !inventoryContainer.isAssembling && validate.exists(_._1)
 
-  override protected def init() {
+  override protected def init(): Unit = {
     super.init()
     runButton = new ImageButton(leftPos + 7, topPos + 89, 18, 18, new Button.IPressable {
       override def onPress(b: Button) = if (canBuild) ClientPacketSender.sendRobotAssemblerStart(inventoryContainer)
@@ -53,7 +53,7 @@ class Assembler(state: container.Assembler, playerInventory: PlayerInventory, na
     addButton(runButton)
   }
 
-  override protected def renderLabels(stack: MatrixStack, mouseX: Int, mouseY: Int) {
+  override protected def renderLabels(stack: MatrixStack, mouseX: Int, mouseY: Int): Unit = {
     drawSecondaryForegroundLayer(stack, mouseX, mouseY)
 
     for (slot <- 0 until menu.slots.size()) {
@@ -100,7 +100,7 @@ class Assembler(state: container.Assembler, playerInventory: PlayerInventory, na
     else f"${seconds / 60}:${seconds % 60}%02d"
   }
 
-  override protected def renderBg(stack: MatrixStack, dt: Float, mouseX: Int, mouseY: Int) {
+  override protected def renderBg(stack: MatrixStack, dt: Float, mouseX: Int, mouseY: Int): Unit = {
     RenderSystem.color3f(1, 1, 1) // Required under Linux.
     Textures.bind(Textures.GUI.RobotAssembler)
     blit(stack, leftPos, topPos, 0, 0, imageWidth, imageHeight)
@@ -110,5 +110,5 @@ class Assembler(state: container.Assembler, playerInventory: PlayerInventory, na
     drawInventorySlots(stack)
   }
 
-  override protected def drawDisabledSlot(stack: MatrixStack, slot: ComponentSlot) {}
+  override protected def drawDisabledSlot(stack: MatrixStack, slot: ComponentSlot): Unit = {}
 }

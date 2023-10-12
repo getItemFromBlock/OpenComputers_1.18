@@ -3,16 +3,16 @@ package li.cil.oc.common.container
 import li.cil.oc.client.Textures
 import li.cil.oc.common
 import li.cil.oc.common.entity
-import net.minecraft.entity.player.PlayerInventory
-import net.minecraft.inventory.IInventory
-import net.minecraft.inventory.container.ContainerType
+import net.minecraft.world.entity.player.Inventory
+import net.minecraft.world.Container
+import net.minecraft.world.inventory.MenuType
 import net.minecraft.world.item.ItemStack
 import net.minecraft.nbt.CompoundTag
 import net.minecraft.util.IntReferenceHolder
 import net.minecraftforge.api.distmarker.Dist
 import net.minecraftforge.api.distmarker.OnlyIn
 
-class Drone(selfType: ContainerType[_ <: Drone], id: Int, playerInventory: PlayerInventory, droneInv: IInventory, val mainInvSize: Int)
+class Drone(selfType: MenuType[_ <: Drone], id: Int, playerInventory: Inventory, droneInv: Container, val mainInvSize: Int)
   extends Player(selfType, id, playerInventory, droneInv) {
 
   val deltaY = 0
@@ -92,7 +92,7 @@ class Drone(selfType: ContainerType[_ <: Drone], id: Int, playerInventory: Playe
     super.detectCustomDataChanges(nbt)
   }
 
-  class InventorySlot(container: Player, inventory: IInventory, index: Int, x: Int, y: Int)
+  class InventorySlot(container: Player, inventory: Container, index: Int, x: Int, y: Int)
     extends StaticComponentSlot(container, inventory, index, x, y, getHostClass, common.Slot.Any, common.Tier.Any) {
 
     def isValid = (0 until mainInvSize).contains(getSlotIndex)

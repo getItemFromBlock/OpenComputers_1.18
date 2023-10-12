@@ -26,7 +26,7 @@ import li.cil.oc.api.prefab.AbstractManagedEnvironment
 import li.cil.oc.server.{PacketSender => ServerPacketSender}
 import net.minecraft.nbt.CompoundTag
 import net.minecraft.world.storage.FolderName
-import net.minecraftforge.fml.server.ServerLifecycleHooks
+import net.minecraftforge.server.ServerLifecycleHooks
 
 import scala.collection.convert.ImplicitConversionsToJava._
 

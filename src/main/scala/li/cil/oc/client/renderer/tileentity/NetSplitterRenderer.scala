@@ -12,14 +12,14 @@ import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.IRenderTypeBuffer
 import net.minecraft.client.renderer.texture.AtlasTexture
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer
-import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher
 import net.minecraft.core.Direction
 
-object NetSplitterRenderer extends Function[TileEntityRendererDispatcher, NetSplitterRenderer] {
-  override def apply(dispatch: TileEntityRendererDispatcher) = new NetSplitterRenderer(dispatch)
+object NetSplitterRenderer extends Function[BlockEntityRenderDispatcher, NetSplitterRenderer] {
+  override def apply(dispatch: BlockEntityRenderDispatcher) = new NetSplitterRenderer(dispatch)
 }
 
-class NetSplitterRenderer(dispatch: TileEntityRendererDispatcher) extends TileEntityRenderer[tileentity.NetSplitter](dispatch) {
+class NetSplitterRenderer(dispatch: BlockEntityRenderDispatcher) extends TileEntityRenderer[tileentity.NetSplitter](dispatch) {
   override def render(splitter: tileentity.NetSplitter, dt: Float, stack: MatrixStack, buffer: IRenderTypeBuffer, light: Int, overlay: Int) {
     RenderState.checkError(getClass.getName + ".render: entering (aka: wasntme)")
 

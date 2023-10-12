@@ -10,15 +10,15 @@ import li.cil.oc.common.tileentity.Charger
 import li.cil.oc.util.RenderState
 import net.minecraft.client.renderer.IRenderTypeBuffer
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer
-import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher
 import net.minecraft.core.Direction
 import net.minecraft.util.math.vector.Vector3f
 
-object ChargerRenderer extends Function[TileEntityRendererDispatcher, ChargerRenderer] {
-  override def apply(dispatch: TileEntityRendererDispatcher) = new ChargerRenderer(dispatch)
+object ChargerRenderer extends Function[BlockEntityRenderDispatcher, ChargerRenderer] {
+  override def apply(dispatch: BlockEntityRenderDispatcher) = new ChargerRenderer(dispatch)
 }
 
-class ChargerRenderer(dispatch: TileEntityRendererDispatcher) extends TileEntityRenderer[Charger](dispatch) {
+class ChargerRenderer(dispatch: BlockEntityRenderDispatcher) extends TileEntityRenderer[Charger](dispatch) {
   override def render(charger: Charger, dt: Float, stack: MatrixStack, buffer: IRenderTypeBuffer, light: Int, overlay: Int) {
     RenderState.checkError(getClass.getName + ".render: entering (aka: wasntme)")
 

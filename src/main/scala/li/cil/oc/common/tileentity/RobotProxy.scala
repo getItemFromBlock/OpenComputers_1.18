@@ -32,7 +32,7 @@ import net.minecraft.nbt.CompoundTag
 import net.minecraft.world.level.block.entity.BlockEntity
 import net.minecraft.world.level.block.entity.BlockEntityType
 import net.minecraft.core.Direction
-import net.minecraft.util.math.AxisAlignedBB
+import net.minecraft.world.phys.AABB
 import net.minecraft.network.chat.Component
 import net.minecraftforge.fluids.FluidStack
 import net.minecraftforge.fluids.IFluidTank
@@ -212,7 +212,7 @@ class RobotProxy(selfType: BlockEntityType[_ <: RobotProxy], val robot: Robot) e
   @OnlyIn(Dist.CLIENT)
   override def getViewDistance: Double = robot.getViewDistance
 
-  override def getRenderBoundingBox: AxisAlignedBB = robot.getRenderBoundingBox
+  override def getRenderBoundingBox: AABB = robot.getRenderBoundingBox
 
   override def setChanged(): Unit = robot.setChanged()
 

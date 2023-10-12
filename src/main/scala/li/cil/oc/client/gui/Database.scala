@@ -5,10 +5,10 @@ import com.mojang.blaze3d.systems.RenderSystem
 import li.cil.oc.client.Textures
 import li.cil.oc.common.Tier
 import li.cil.oc.common.container
-import net.minecraft.entity.player.PlayerInventory
+import net.minecraft.world.entity.player.Inventory
 import net.minecraft.network.chat.Component
 
-class Database(state: container.Database, playerInventory: PlayerInventory, name: Component)
+class Database(state: container.Database, playerInventory: Inventory, name: Component)
   extends DynamicGuiContainer(state, playerInventory, name)
   with traits.LockedHotbar[container.Database] {
 

@@ -5,7 +5,7 @@ import li.cil.oc.Settings
 import li.cil.oc.common.container.ContainerTypes
 import li.cil.oc.common.inventory.DatabaseInventory
 import net.minecraft.world.entity.player.Player
-import net.minecraft.entity.player.ServerPlayerEntity
+import net.minecraft.server.level.ServerPlayer
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.Item.Properties
 import net.minecraft.world.item.ItemStack
@@ -26,7 +26,7 @@ class UpgradeDatabase(props: Properties, val tier: Int) extends Item(props) with
   override def use(stack: ItemStack, world: Level, player: PlayerEntity): InteractionResultHolder[ItemStack] = {
     if (!player.isCrouching) {
       if (!world.isClientSide) player match {
-        case srvPlr: ServerPlayerEntity => ContainerTypes.openDatabaseGui(srvPlr, new DatabaseInventory {
+        case srvPlr: ServerPlayer => ContainerTypes.openDatabaseGui(srvPlr, new DatabaseInventory {
             override def container = stack
 
             override def stillValid(player: PlayerEntity) = player == srvPlr

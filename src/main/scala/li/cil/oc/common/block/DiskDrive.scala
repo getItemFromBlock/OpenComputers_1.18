@@ -12,7 +12,7 @@ import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.client.util.ITooltipFlag
 import net.minecraft.world.entity.player.Player
-import net.minecraft.entity.player.ServerPlayerEntity
+import net.minecraft.server.level.ServerPlayer
 import net.minecraft.world.item.ItemStack
 import net.minecraft.state.StateContainer
 import net.minecraft.core.Direction
@@ -40,7 +40,7 @@ class DiskDrive(props: Properties) extends SimpleBlock(props) with traits.GUI {
 
   // ----------------------------------------------------------------------- //
 
-  override def openGui(player: ServerPlayerEntity, world: Level, pos: BlockPos): Unit = world.getBlockEntity(pos) match {
+  override def openGui(player: ServerPlayer, world: Level, pos: BlockPos): Unit = world.getBlockEntity(pos) match {
     case te: tileentity.DiskDrive => ContainerTypes.openDiskDriveGui(player, te)
     case _ =>
   }

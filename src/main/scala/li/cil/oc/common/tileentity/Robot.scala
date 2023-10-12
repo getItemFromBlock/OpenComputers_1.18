@@ -39,7 +39,7 @@ import net.minecraft.world.level.block.Blocks
 import net.minecraft.world.level.block.FlowingFluidBlock
 import net.minecraft.client.Minecraft
 import net.minecraft.world.entity.player.Player
-import net.minecraft.entity.player.PlayerInventory
+import net.minecraft.world.entity.player.Inventory
 import net.minecraft.fluid.Fluid
 import net.minecraft.inventory.EquipmentSlotType
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity

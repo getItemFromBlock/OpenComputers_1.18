@@ -7,13 +7,13 @@ import li.cil.oc.common.InventorySlots.InventorySlot
 import li.cil.oc.util.InventoryUtils
 import li.cil.oc.util.SideTracker
 import net.minecraft.world.entity.player.Player
-import net.minecraft.inventory.IInventory
+import net.minecraft.world.Container
 import net.minecraft.world.item.ItemStack
 import net.minecraft.resources.ResourceLocation
 import net.minecraftforge.api.distmarker.Dist
 import net.minecraftforge.api.distmarker.OnlyIn
 
-class DynamicComponentSlot(val agentContainer: Player, inventory: IInventory, index: Int, x: Int, y: Int, host: Class[_ <: EnvironmentHost],
+class DynamicComponentSlot(val agentContainer: Player, inventory: Container, index: Int, x: Int, y: Int, host: Class[_ <: EnvironmentHost],
     val info: DynamicComponentSlot => InventorySlot, val containerTierGetter: () => Int)
   extends ComponentSlot(inventory, index, x, y, host) {
 

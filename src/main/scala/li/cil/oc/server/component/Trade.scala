@@ -10,7 +10,7 @@ import li.cil.oc.common.EventHandler
 import li.cil.oc.util.InventoryUtils
 import net.minecraft.world.entity.Entity
 import net.minecraft.entity.merchant.IMerchant
-import net.minecraft.inventory.IInventory
+import net.minecraft.world.Container
 import net.minecraft.world.item.ItemStack
 import net.minecraft.item.MerchantOffer
 import net.minecraft.nbt.CompoundTag
@@ -19,7 +19,7 @@ import net.minecraft.resources.ResourceLocation
 import net.minecraft.util.RegistryKey
 import net.minecraft.core.BlockPos
 import net.minecraft.util.registry.Registry
-import net.minecraftforge.fml.server.ServerLifecycleHooks
+import net.minecraftforge.server.ServerLifecycleHooks
 
 import scala.collection.convert.ImplicitConversionsToScala._
 import scala.ref.WeakReference
@@ -97,13 +97,13 @@ class Trade(val info: TradeInfo) extends AbstractValue {
     }
   }
 
-  def hasRoomForRecipe(inventory: IInventory, recipe: MerchantOffer) : Boolean = {
+  def hasRoomForRecipe(inventory: Container, recipe: MerchantOffer) : Boolean = {
     val remainder = recipe.getResult.copy()
     InventoryUtils.insertIntoInventory(remainder, InventoryUtils.asItemHandler(inventory), remainder.getCount, simulate = true)
     remainder.getCount == 0
   }
 
-  def completeTrade(inventory: IInventory, recipe: MerchantOffer, exact: Boolean) : Boolean = {
+  def completeTrade(inventory: Container, recipe: MerchantOffer, exact: Boolean) : Boolean = {
     // Now we'll check if we have enough items to perform the trade, caching first
     info.merchant.get match {
       case Some(merchant) => {

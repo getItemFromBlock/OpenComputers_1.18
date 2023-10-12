@@ -18,7 +18,7 @@ import li.cil.oc.common.container
 import li.cil.oc.common.container.ContainerTypes
 import li.cil.oc.server.{PacketSender => ServerPacketSender}
 import net.minecraft.world.entity.player.Player
-import net.minecraft.entity.player.PlayerInventory
+import net.minecraft.world.entity.player.Inventory
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity
 import net.minecraft.world.item.ItemStack
 import net.minecraft.nbt.CompoundTag
@@ -193,7 +193,7 @@ class Adapter(selfType: BlockEntityType[_ <: Adapter]) extends BlockEntity(selfT
 
   // ----------------------------------------------------------------------- //
 
-  override def createMenu(id: Int, playerInventory: PlayerInventory, player: Player) =
+  override def createMenu(id: Int, playerInventory: Inventory, player: Player) =
     new container.Adapter(ContainerTypes.ADAPTER, id, playerInventory, this)
 
   // ----------------------------------------------------------------------- //

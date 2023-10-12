@@ -4,12 +4,12 @@ import li.cil.oc.api.Driver
 import li.cil.oc.common.Slot
 import li.cil.oc.common.Tier
 import li.cil.oc.common.tileentity
-import net.minecraft.entity.player.PlayerInventory
+import net.minecraft.world.entity.player.Inventory
 import net.minecraft.world.item.ItemStack
-import net.minecraft.inventory.IInventory
-import net.minecraft.inventory.container.ContainerType
+import net.minecraft.world.Container
+import net.minecraft.world.inventory.MenuType
 
-class Adapter(selfType: ContainerType[_ <: Adapter], id: Int, playerInventory: PlayerInventory, adapter: IInventory)
+class Adapter(selfType: MenuType[_ <: Adapter], id: Int, playerInventory: Inventory, adapter: Container)
   extends Player(selfType, id, playerInventory, adapter) {
 
   override protected def getHostClass = classOf[tileentity.Adapter]

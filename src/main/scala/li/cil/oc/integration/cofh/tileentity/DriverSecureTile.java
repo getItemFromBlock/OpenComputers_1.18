@@ -12,7 +12,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.fml.server.ServerLifecycleHooks;
+import net.minecraftforge.server.ServerLifecycleHooks;
 import org.apache.commons.lang3.text.WordUtils;
 
 public final class DriverSecureTile extends DriverSidedTileEntity {

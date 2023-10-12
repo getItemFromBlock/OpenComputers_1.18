@@ -37,7 +37,7 @@ import li.cil.oc.util.ExtendedWorld._
 import li.cil.oc.util.StackOption._
 import li.cil.oc.util._
 import net.minecraft.world.entity.player.Player
-import net.minecraft.entity.player.ServerPlayerEntity
+import net.minecraft.server.level.ServerPlayer
 import net.minecraft.util.SoundEvents
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.block.entity.BlockEntity
@@ -63,7 +63,7 @@ import net.minecraftforge.event.world.ChunkEvent
 import net.minecraftforge.event.world.WorldEvent
 import net.minecraftforge.eventbus.api.SubscribeEvent
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper
-import net.minecraftforge.fml.server.ServerLifecycleHooks
+import net.minecraftforge.server.ServerLifecycleHooks
 
 import scala.collection.convert.ImplicitConversionsToScala._
 import scala.collection.mutable
@@ -253,7 +253,7 @@ object EventHandler {
   def playerLoggedIn(e: PlayerLoggedInEvent) {
     if (SideTracker.isServer) e.getPlayer match {
       case _: FakePlayer => // Nope
-      case player: ServerPlayerEntity =>
+      case player: ServerPlayer =>
         if (!LuaStateFactory.isAvailable && !LuaStateFactory.luajRequested) {
           player.sendMessage(Localization.Chat.WarningLuaFallback, Util.NIL_UUID)
         }
@@ -376,7 +376,7 @@ object EventHandler {
     // Presents?
     e.getPlayer match {
       case _: FakePlayer => // No presents for you, automaton. Such discrimination. Much bad conscience.
-      case player: ServerPlayerEntity if player.level != null && !player.level.isClientSide =>
+      case player: ServerPlayer if player.level != null && !player.level.isClientSide =>
         // Presents!? If we didn't recraft, it's an OC item, and the time is right...
         if (Settings.get.presentChance > 0 && !didRecraft && api.Items.get(e.getCrafting) != null &&
           e.getPlayer.getRandom.nextFloat() < Settings.get.presentChance && timeForPresents) {

@@ -44,7 +44,7 @@ import net.minecraft.world.item.ItemStack
 import net.minecraft.nbt._
 import net.minecraft.client.server.IntegratedServer
 import net.minecraftforge.common.util.Constants.NBT
-import net.minecraftforge.fml.server.ServerLifecycleHooks
+import net.minecraftforge.server.ServerLifecycleHooks
 
 import scala.collection.JavaConverters.mapAsJavaMap
 import scala.collection.convert.ImplicitConversionsToJava._

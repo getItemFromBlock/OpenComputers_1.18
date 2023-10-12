@@ -14,7 +14,7 @@ import li.cil.oc.common.tileentity.traits.NotAnalyzable
 import li.cil.oc.util.ExtendedNBT._
 import li.cil.oc.util.StackOption.SomeStack
 import mcp.mobius.waila.api._
-import net.minecraft.entity.player.ServerPlayerEntity
+import net.minecraft.server.level.ServerPlayer
 import net.minecraft.world.item.ItemStack
 import net.minecraft.nbt.CompoundTag
 import net.minecraft.nbt.StringNBT
@@ -47,7 +47,7 @@ object BlockDataProvider extends IServerDataProvider[BlockEntity] with IComponen
     registrar.addConfig(ConfigComponentName, true)
   }
 
-  override def appendServerData(tag: CompoundTag, player: ServerPlayerEntity, world: Level, tileEntity: BlockEntity): Unit = {
+  override def appendServerData(tag: CompoundTag, player: ServerPlayer, world: Level, tileEntity: BlockEntity): Unit = {
     def writeNode(node: Node, tag: CompoundTag) = {
       if (node != null && node.reachability != Visibility.None && !tileEntity.isInstanceOf[NotAnalyzable]) {
         if (node.address != null) {

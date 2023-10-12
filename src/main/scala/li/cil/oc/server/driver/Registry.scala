@@ -14,7 +14,7 @@ import li.cil.oc.api.machine.Value
 import li.cil.oc.api.network.EnvironmentHost
 import li.cil.oc.util.InventoryUtils
 import net.minecraft.world.entity.player.Player
-import net.minecraft.inventory.IInventory
+import net.minecraft.world.Container
 import net.minecraft.world.item.ItemStack
 import net.minecraft.core.Direction
 import net.minecraft.core.BlockPos

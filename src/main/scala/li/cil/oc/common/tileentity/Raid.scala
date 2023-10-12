@@ -18,7 +18,7 @@ import li.cil.oc.server.component.FileSystem
 import li.cil.oc.server.{PacketSender => ServerPacketSender}
 import li.cil.oc.util.ExtendedNBT._
 import net.minecraft.world.entity.player.Player
-import net.minecraft.entity.player.PlayerInventory
+import net.minecraft.world.entity.player.Inventory
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity
 import net.minecraft.world.item.ItemStack
 import net.minecraft.nbt.CompoundTag
@@ -134,7 +134,7 @@ class Raid(selfType: BlockEntityType[_ <: Raid]) extends BlockEntity(selfType) w
 
   // ----------------------------------------------------------------------- //
 
-  override def createMenu(id: Int, playerInventory: PlayerInventory, player: Player) =
+  override def createMenu(id: Int, playerInventory: Inventory, player: Player) =
     new container.Raid(ContainerTypes.RAID, id, playerInventory, this)
 
   // ----------------------------------------------------------------------- //

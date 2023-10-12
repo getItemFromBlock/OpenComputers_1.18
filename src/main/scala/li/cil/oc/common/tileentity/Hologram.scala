@@ -18,7 +18,7 @@ import net.minecraft.nbt.CompoundTag
 import net.minecraft.world.level.block.entity.BlockEntity
 import net.minecraft.world.level.block.entity.BlockEntityType
 import net.minecraft.core.Direction
-import net.minecraft.util.math.AxisAlignedBB
+import net.minecraft.world.phys.AABB
 import com.mojang.math.Vector3d
 import net.minecraftforge.api.distmarker.Dist
 import net.minecraftforge.api.distmarker.OnlyIn
@@ -446,7 +446,7 @@ class Hologram(selfType: BlockEntityType[_ <: Hologram], var tier: Int) extends 
     val sh = width / 16 * scale * Sqrt2
     // overscale to take into account 45 degree rotation
     val sv = height / 16 * scale * Sqrt2
-    new AxisAlignedBB(
+    new AABB(
       cx + (-0.5 + translation.x) * sh,
       cy + translation.y * sv,
       cz + (-0.5 + translation.z) * sh,

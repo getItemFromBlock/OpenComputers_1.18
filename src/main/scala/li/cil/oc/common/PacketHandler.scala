@@ -13,7 +13,7 @@ import li.cil.oc.util.BlockPosition
 import li.cil.oc.util.ExtendedWorld._
 import li.cil.oc.util.RotationHelper
 import net.minecraft.world.entity.player.Player
-import net.minecraft.entity.player.ServerPlayerEntity
+import net.minecraft.server.level.ServerPlayer
 import net.minecraft.world.item.ItemStack
 import net.minecraft.nbt.CompressedStreamTools
 import net.minecraft.nbt.CompoundTag
@@ -23,7 +23,7 @@ import net.minecraft.resources.ResourceLocation
 import net.minecraft.core.BlockPos
 import net.minecraft.world.level.Level
 import net.minecraftforge.fml.network.NetworkDirection
-import net.minecraftforge.fml.server.ServerLifecycleHooks
+import net.minecraftforge.server.ServerLifecycleHooks
 import net.minecraftforge.registries._
 
 import scala.collection.mutable.ArrayBuffer
@@ -63,7 +63,7 @@ object PacketHandler {
     // Avoid AFK kicks by marking players as non-idle when they send packets.
     // This will usually be stuff like typing while in screen GUIs.
     player match {
-      case mp: ServerPlayerEntity => mp.resetLastActionTime()
+      case mp: ServerPlayer => mp.resetLastActionTime()
       case _ =>
     }
   }

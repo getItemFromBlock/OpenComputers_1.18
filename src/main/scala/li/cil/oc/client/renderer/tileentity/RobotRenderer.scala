@@ -20,7 +20,7 @@ import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer._
 import net.minecraft.client.renderer.model.ItemCameraTransforms.TransformType
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer
-import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats
 import net.minecraft.item.Items
 import net.minecraft.item.BlockItem
@@ -37,8 +37,8 @@ import scala.collection.mutable
 import scala.jdk.CollectionConverters._
 import scala.language.implicitConversions
 
-object RobotRenderer extends Function[TileEntityRendererDispatcher, RobotRenderer] {
-  override def apply(dispatch: TileEntityRendererDispatcher) = new RobotRenderer(dispatch)
+object RobotRenderer extends Function[BlockEntityRenderDispatcher, RobotRenderer] {
+  override def apply(dispatch: BlockEntityRenderDispatcher) = new RobotRenderer(dispatch)
 
   private val instance = new RobotRenderer(null)
 
@@ -46,7 +46,7 @@ object RobotRenderer extends Function[TileEntityRendererDispatcher, RobotRendere
     instance.renderChassis(stack, buffer, light, null, offset, isRunningOverride)
 }
 
-class RobotRenderer(dispatch: TileEntityRendererDispatcher) extends TileEntityRenderer[tileentity.RobotProxy](dispatch) {
+class RobotRenderer(dispatch: BlockEntityRenderDispatcher) extends TileEntityRenderer[tileentity.RobotProxy](dispatch) {
   private val mountPoints = new Array[RobotRenderEvent.MountPoint](7)
 
   private val slotNameMapping = Map(

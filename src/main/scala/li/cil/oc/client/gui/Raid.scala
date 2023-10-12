@@ -4,10 +4,10 @@ import com.mojang.blaze3d.matrix.MatrixStack
 import com.mojang.blaze3d.systems.RenderSystem
 import li.cil.oc.client.Textures
 import li.cil.oc.common.container
-import net.minecraft.entity.player.PlayerInventory
+import net.minecraft.world.entity.player.Inventory
 import net.minecraft.network.chat.Component
 
-class Raid(state: container.Raid, playerInventory: PlayerInventory, name: Component)
+class Raid(state: container.Raid, playerInventory: Inventory, name: Component)
   extends DynamicGuiContainer(state, playerInventory, name) {
 
   override def renderBg(stack: MatrixStack, dt: Float, mouseX: Int, mouseY: Int) {

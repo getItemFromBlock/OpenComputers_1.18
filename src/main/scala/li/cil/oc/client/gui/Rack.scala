@@ -10,7 +10,7 @@ import li.cil.oc.util.RenderState
 import net.minecraft.client.gui.widget.button.Button
 import net.minecraft.client.renderer.Tessellator
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats
-import net.minecraft.entity.player.PlayerInventory
+import net.minecraft.world.entity.player.Inventory
 import net.minecraft.core.Direction
 import net.minecraft.network.chat.Component
 import net.minecraft.network.chat.TextComponent
@@ -18,7 +18,7 @@ import org.lwjgl.opengl.GL11
 
 import scala.collection.JavaConverters.asJavaCollection
 
-class Rack(state: container.Rack, playerInventory: PlayerInventory, name: Component)
+class Rack(state: container.Rack, playerInventory: Inventory, name: Component)
   extends DynamicGuiContainer(state, playerInventory, name) {
 
   imageHeight = 210

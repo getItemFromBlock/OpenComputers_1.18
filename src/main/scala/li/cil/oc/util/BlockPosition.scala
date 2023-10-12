@@ -4,7 +4,7 @@ import com.google.common.hash.Hashing
 import li.cil.oc.api.network.EnvironmentHost
 import net.minecraft.world.entity.Entity
 import net.minecraft.core.Direction
-import net.minecraft.util.math.AxisAlignedBB
+import net.minecraft.world.phys.AABB
 import net.minecraft.core.BlockPos
 import com.mojang.math.Vector3d
 import net.minecraft.world.level.Level
@@ -28,7 +28,7 @@ class BlockPosition(val x: Int, val y: Int, val z: Int, val world: Option[Level]
 
   def offset(x: Double, y: Double, z: Double) = new Vector3d(this.x + x, this.y + y, this.z + z)
 
-  def bounds = new AxisAlignedBB(x, y, z, x + 1, y + 1, z + 1)
+  def bounds = new AABB(x, y, z, x + 1, y + 1, z + 1)
 
   def toBlockPos = new BlockPos(x, y, z)
 
