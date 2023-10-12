@@ -34,7 +34,7 @@ import net.minecraft.nbt.CompoundTag
 import net.minecraft.core.Direction
 import net.minecraft.world.level.Level
 import net.minecraft.world.biome.Biome.RainType
-import net.minecraft.world.server.ServerWorld
+import net.minecraft.server.level.ServerLevel
 import net.minecraftforge.common.MinecraftForge
 
 import scala.collection.JavaConverters.mapAsJavaMap
@@ -177,7 +177,7 @@ class Geolyzer(val host: EnvironmentHost) extends AbstractManagedEnvironment wit
     val item = blockState.getBlock().asItem()
     if (item == null) result((), "block has no registered item representation")
     else {
-      val stacks = Block.getDrops(blockState, host.world.asInstanceOf[ServerWorld], blockPos.toBlockPos, host.world.getBlockEntity(blockPos.toBlockPos))
+      val stacks = Block.getDrops(blockState, host.world.asInstanceOf[ServerLevel], blockPos.toBlockPos, host.world.getBlockEntity(blockPos.toBlockPos))
       val stack = if (!stacks.isEmpty) {
         val drop = stacks.find(s => s.getItem == item).getOrElse(stacks.get(0))
         drop.setCount(1)

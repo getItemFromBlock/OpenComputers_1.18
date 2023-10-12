@@ -31,7 +31,7 @@ import li.cil.oc.util.ExtendedNBT._
 import li.cil.oc.util.ExtendedWorld._
 import li.cil.oc.util.InventoryUtils
 import net.minecraft.world.level.block.Block
-import net.minecraft.block.FlowingFluidBlock
+import net.minecraft.world.level.block.LiquidBlock
 import net.minecraft.command.CommandSource
 import net.minecraft.command.ICommandSource
 import net.minecraft.entity.item.minecart.MinecartEntity
@@ -46,7 +46,7 @@ import net.minecraft.world.level.block.entity.BlockEntity
 import net.minecraft.core.Direction
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.util.RegistryKey
-import net.minecraft.util.SoundCategory
+import net.minecraft.sounds.SoundSource
 import net.minecraft.core.BlockPos
 import net.minecraft.util.math.shapes.ISelectionContext
 import net.minecraft.util.math.vector.Vector2f
@@ -55,7 +55,7 @@ import net.minecraft.util.registry.Registry
 import net.minecraft.network.chat.Component
 import net.minecraft.network.chat.TextComponent
 import net.minecraft.world.{GameType, World, WorldSettings}
-import net.minecraft.world.server.ServerWorld
+import net.minecraft.server.level.ServerLevel
 import net.minecraft.world.storage.IServerWorldInfo
 import net.minecraftforge.common.MinecraftForge
 import net.minecraftforge.common.util.FakePlayer
@@ -217,7 +217,7 @@ class DebugCard(host: EnvironmentHost) extends AbstractManagedEnvironment with D
         if (block.isAir(state, world, position.toBlockPos)) {
           result(false, "air", block)
         }
-        else if (block.isInstanceOf[FlowingFluidBlock] || block.isInstanceOf[IFluidBlock]) {
+        else if (block.isInstanceOf[LiquidBlock] || block.isInstanceOf[IFluidBlock]) {
           val event = new BlockEvent.BreakEvent(world, position.toBlockPos, state, fakePlayer)
           MinecraftForge.EVENT_BUS.post(event)
           result(event.isCanceled, "liquid", block)
@@ -768,7 +768,7 @@ object DebugCard {
       val (x, y, z) = (args.checkInteger(0), args.checkInteger(1), args.checkInteger(2))
       val sound = args.checkString(3)
       val range = args.checkInteger(4)
-      PacketSender.sendSound(world, x, y, z, new ResourceLocation(sound), SoundCategory.MASTER, range)
+      PacketSender.sendSound(world, x, y, z, new ResourceLocation(sound), SoundSource.MASTER, range)
       null
     }
 

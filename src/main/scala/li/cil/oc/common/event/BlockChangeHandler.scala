@@ -5,7 +5,7 @@ import li.cil.oc.util.BlockPosition
 import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.world.entity.Entity
 import net.minecraft.world.entity.player.Player
-import net.minecraft.util.SoundCategory
+import net.minecraft.sounds.SoundSource
 import net.minecraft.util.SoundEvent
 import net.minecraft.core.BlockPos
 import net.minecraft.world.level.Level

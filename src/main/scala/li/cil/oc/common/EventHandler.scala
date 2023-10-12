@@ -38,15 +38,15 @@ import li.cil.oc.util.StackOption._
 import li.cil.oc.util._
 import net.minecraft.world.entity.player.Player
 import net.minecraft.server.level.ServerPlayer
-import net.minecraft.util.SoundEvents
+import net.minecraft.sounds.SoundEvents
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.block.entity.BlockEntity
-import net.minecraft.util.SoundCategory
+import net.minecraft.sounds.SoundSource
 import net.minecraft.Util
 import net.minecraft.world.chunk.Chunk
 import net.minecraft.world.server.ChunkHolder
 import net.minecraft.world.server.ChunkManager
-import net.minecraft.world.server.ServerWorld
+import net.minecraft.server.level.ServerLevel
 import net.minecraftforge.api.distmarker.Dist
 import net.minecraftforge.api.distmarker.OnlyIn
 import net.minecraftforge.client.event.ClientPlayerNetworkEvent
@@ -382,7 +382,7 @@ object EventHandler {
           e.getPlayer.getRandom.nextFloat() < Settings.get.presentChance && timeForPresents) {
           // Presents!
           val present = api.Items.get(Constants.ItemName.Present).createItemStack(1)
-          e.getPlayer.level.playSound(e.getPlayer, e.getPlayer.getX, e.getPlayer.getY, e.getPlayer.getZ, SoundEvents.NOTE_BLOCK_PLING, SoundCategory.MASTER, 0.2f, 1f)
+          e.getPlayer.level.playSound(e.getPlayer, e.getPlayer.getX, e.getPlayer.getY, e.getPlayer.getZ, SoundEvents.NOTE_BLOCK_PLING, SoundSource.MASTER, 0.2f, 1f)
           InventoryUtils.addToPlayerInventory(present, e.getPlayer)
         }
       case _ => // Nope.
@@ -438,7 +438,7 @@ object EventHandler {
 
   private val getChunks = ObfuscationReflectionHelper.findMethod(classOf[ChunkManager], "func_223491_f")
 
-  private def getChunks(world: ServerWorld): Iterable[ChunkHolder] = try {
+  private def getChunks(world: ServerLevel): Iterable[ChunkHolder] = try {
     getChunks.invoke(world.getChunkSource.chunkMap).asInstanceOf[java.lang.Iterable[ChunkHolder]]
   }
   catch {
@@ -453,7 +453,7 @@ object EventHandler {
   @SubscribeEvent
   def onWorldUnload(e: WorldEvent.Unload): Unit = this.synchronized {
     if (!e.getWorld.isClientSide) {
-      val world = e.getWorld.asInstanceOf[ServerWorld]
+      val world = e.getWorld.asInstanceOf[ServerLevel]
       world.blockEntityList.collect {
         case te: tileentity.traits.TileEntity => te.dispose()
       }

@@ -18,7 +18,7 @@ import li.cil.oc.util.BlockPosition
 import li.cil.oc.util.ExtendedArguments._
 import net.minecraft.block.Blocks
 import net.minecraft.block.PistonBlock
-import net.minecraft.util.SoundEvents
+import net.minecraft.sounds.SoundEvents
 import net.minecraft.util.{Direction, SoundCategory}
 import net.minecraft.core.BlockPos
 import li.cil.oc.server.{PacketSender => ServerPacketSender}

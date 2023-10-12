@@ -1,6 +1,6 @@
 package li.cil.oc.common.event
 
-import com.mojang.blaze3d.matrix.MatrixStack
+import com.mojang.blaze3d.vertex.PoseStack
 import li.cil.oc.Settings
 import li.cil.oc.common.item.HoverBoots
 import net.minecraft.world.entity.player.Player

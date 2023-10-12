@@ -2,7 +2,7 @@ package li.cil.oc.client.renderer.tileentity
 
 import java.util.function.Function
 
-import com.mojang.blaze3d.matrix.MatrixStack
+import com.mojang.blaze3d.vertex.PoseStack
 import com.mojang.blaze3d.systems.RenderSystem
 import com.mojang.blaze3d.vertex.IVertexBuilder
 import li.cil.oc.Constants
@@ -15,7 +15,7 @@ import li.cil.oc.common.tileentity.Screen
 import li.cil.oc.integration.util.Wrench
 import li.cil.oc.util.RenderState
 import net.minecraft.client.Minecraft
-import net.minecraft.client.renderer.IRenderTypeBuffer
+import net.minecraft.client.renderer.MultiBufferSource
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher
 import net.minecraft.world.item.ItemStack
@@ -40,7 +40,7 @@ class ScreenRenderer(dispatch: BlockEntityRenderDispatcher) extends TileEntityRe
   // Rendering
   // ----------------------------------------------------------------------- //
 
-  override def render(screen: Screen, dt: Float, stack: MatrixStack, buffer: IRenderTypeBuffer, light: Int, overlay: Int) {
+  override def render(screen: Screen, dt: Float, stack: PoseStack, buffer: MultiBufferSource, light: Int, overlay: Int) {
     RenderState.checkError(getClass.getName + ".render: entering (aka: wasntme)")
 
     this.screen = screen
@@ -93,7 +93,7 @@ class ScreenRenderer(dispatch: BlockEntityRenderDispatcher) extends TileEntityRe
     RenderState.checkError(getClass.getName + ".render: leaving")
   }
 
-  private def transform(stack: MatrixStack) {
+  private def transform(stack: PoseStack) {
     screen.yaw match {
       case Direction.WEST => stack.mulPose(Vector3f.YP.rotationDegrees(-90))
       case Direction.NORTH => stack.mulPose(Vector3f.YP.rotationDegrees(180))
@@ -122,7 +122,7 @@ class ScreenRenderer(dispatch: BlockEntityRenderDispatcher) extends TileEntityRe
     case _ => false
   }
 
-  private def drawOverlay(matrix: MatrixStack, r: IVertexBuilder) = if (screen.facing == Direction.UP || screen.facing == Direction.DOWN) {
+  private def drawOverlay(matrix: PoseStack, r: IVertexBuilder) = if (screen.facing == Direction.UP || screen.facing == Direction.DOWN) {
     // Show up vector overlay when holding same screen block.
     val stack = Minecraft.getInstance.player.getItemInHand(Hand.MAIN_HAND)
     if (!stack.isEmpty) {
@@ -142,7 +142,7 @@ class ScreenRenderer(dispatch: BlockEntityRenderDispatcher) extends TileEntityRe
     }
   }
 
-  private def draw(stack: MatrixStack, alpha: Float, buffer: IRenderTypeBuffer) {
+  private def draw(stack: PoseStack, alpha: Float, buffer: MultiBufferSource) {
     RenderState.checkError(getClass.getName + ".draw: entering (aka: wasntme)")
 
     val sx = screen.width

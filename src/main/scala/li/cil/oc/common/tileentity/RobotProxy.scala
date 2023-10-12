@@ -25,7 +25,7 @@ import net.minecraftforge.api.distmarker.Dist
 import net.minecraftforge.api.distmarker.OnlyIn
 import net.minecraft.world.entity.Entity
 import net.minecraft.world.entity.player.Player
-import net.minecraft.fluid.Fluid
+import net.minecraft.world.level.material.Fluid
 import net.minecraft.world.WorldlyContainer
 import net.minecraft.world.item.ItemStack
 import net.minecraft.nbt.CompoundTag

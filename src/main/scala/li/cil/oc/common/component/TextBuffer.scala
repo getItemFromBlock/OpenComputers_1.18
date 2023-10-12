@@ -1,7 +1,7 @@
 package li.cil.oc.common.component
 
 import com.google.common.base.Strings
-import com.mojang.blaze3d.matrix.MatrixStack
+import com.mojang.blaze3d.vertex.PoseStack
 import li.cil.oc.Constants
 import li.cil.oc.api.driver.DeviceInfo.DeviceAttribute
 import li.cil.oc.api.driver.DeviceInfo.DeviceClass
@@ -363,7 +363,7 @@ class TextBuffer(val host: EnvironmentHost) extends AbstractManagedEnvironment w
   }
 
   @OnlyIn(Dist.CLIENT)
-  override def renderText(stack: MatrixStack): Boolean = relativeLitArea != 0 && proxy.render(stack)
+  override def renderText(stack: PoseStack): Boolean = relativeLitArea != 0 && proxy.render(stack)
 
   @OnlyIn(Dist.CLIENT)
   override def renderWidth: Int = TextBufferRenderCache.renderer.charRenderWidth * getViewportWidth
@@ -547,7 +547,7 @@ object TextBuffer {
     }
 
     @OnlyIn(Dist.CLIENT)
-    def render(stack: MatrixStack) = false
+    def render(stack: PoseStack) = false
 
     def onBufferColorChange(): Unit
 
@@ -633,7 +633,7 @@ object TextBuffer {
     }
 
     @OnlyIn(Dist.CLIENT)
-    override def render(stack: MatrixStack) = {
+    override def render(stack: PoseStack) = {
       val wasDirty = dirty
       TextBufferRenderCache.render(stack, renderer)
       wasDirty

@@ -6,7 +6,7 @@ import li.cil.oc.util.BlockPosition
 import li.cil.oc.util.ExtendedWorld._
 import net.minecraft.world.level.block.Block
 import net.minecraft.block.CropsBlock
-import net.minecraft.block.FlowingFluidBlock
+import net.minecraft.world.level.block.LiquidBlock
 import net.minecraft.block.StemBlock
 import net.minecraft.state.IntegerProperty
 import net.minecraft.world.level.block.state.BlockState
@@ -39,7 +39,7 @@ object EventHandlerVanilla {
       if (world.isLoaded(pos) && !world.isEmptyBlock(pos)) {
         val blockState = world.getBlockState(pos)
         val block = blockState.getBlock
-        val isFluid = block.isInstanceOf[FlowingFluidBlock] || block.isInstanceOf[IFluidBlock]
+        val isFluid = block.isInstanceOf[LiquidBlock] || block.isInstanceOf[IFluidBlock]
         if (!blockState.getBlock.isAir(blockState, world, pos) && (includeReplaceable || isFluid || !blockState.getMaterial.isReplaceable)) {
           val distance = math.sqrt(rx * rx + ry * ry + rz * rz).toFloat
           e.data(index) = e.data(index) * distance * Settings.get.geolyzerNoise + blockState.getDestroySpeed(world, pos)

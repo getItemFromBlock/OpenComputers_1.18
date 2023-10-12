@@ -28,7 +28,7 @@ import net.minecraft.state.StateContainer
 import net.minecraft.world.level.BlockGetter
 import net.minecraft.world.IWorldReader
 import net.minecraft.world.level.Level
-import net.minecraft.world.server.ServerWorld
+import net.minecraft.server.level.ServerLevel
 import net.minecraftforge.api.distmarker.Dist
 import net.minecraftforge.api.distmarker.OnlyIn
 
@@ -66,11 +66,11 @@ class Keyboard(props: Properties) extends SimpleBlock(props) {
 
   override def onPlace(state: BlockState, world: World, pos: BlockPos, prevState: BlockState, moved: Boolean): Unit = {
     if (!world.isClientSide) {
-      world.asInstanceOf[ServerWorld].getBlockTicks.scheduleTick(pos, this, 10)
+      world.asInstanceOf[ServerLevel].getBlockTicks.scheduleTick(pos, this, 10)
     }
   }
 
-  override def tick(state: BlockState, world: ServerWorld, pos: BlockPos, rand: Random) = {
+  override def tick(state: BlockState, world: ServerLevel, pos: BlockPos, rand: Random) = {
     world.getBlockEntity(pos) match {
       case keyboard: tileentity.Keyboard => api.Network.joinOrCreateNetwork(keyboard)
       case _ =>

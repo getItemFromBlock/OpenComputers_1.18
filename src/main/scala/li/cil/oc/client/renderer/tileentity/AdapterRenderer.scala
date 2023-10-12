@@ -2,14 +2,14 @@ package li.cil.oc.client.renderer.tileentity
 
 import java.util.function.Function
 
-import com.mojang.blaze3d.matrix.MatrixStack
+import com.mojang.blaze3d.vertex.PoseStack
 import com.mojang.blaze3d.systems.RenderSystem
 import li.cil.oc.client.Textures
 import li.cil.oc.client.renderer.RenderTypes
 import li.cil.oc.common.tileentity
 import li.cil.oc.util.RenderState
 import net.minecraft.client.Minecraft
-import net.minecraft.client.renderer.IRenderTypeBuffer
+import net.minecraft.client.renderer.MultiBufferSource
 import net.minecraft.client.renderer.texture.AtlasTexture
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher
@@ -20,7 +20,7 @@ object AdapterRenderer extends Function[BlockEntityRenderDispatcher, AdapterRend
 }
 
 class AdapterRenderer(dispatch: BlockEntityRenderDispatcher) extends TileEntityRenderer[tileentity.Adapter](dispatch) {
-  override def render(adapter: tileentity.Adapter, dt: Float, stack: MatrixStack, buffer: IRenderTypeBuffer, light: Int, overlay: Int) {
+  override def render(adapter: tileentity.Adapter, dt: Float, stack: PoseStack, buffer: MultiBufferSource, light: Int, overlay: Int) {
     RenderState.checkError(getClass.getName + ".render: entering (aka: wasntme)")
 
     RenderSystem.color4f(1, 1, 1, 1)

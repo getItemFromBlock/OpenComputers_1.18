@@ -14,7 +14,7 @@ import net.minecraft.world.inventory.MenuType
 import net.minecraft.world.item.ItemStack
 import net.minecraft.network.PacketBuffer
 import net.minecraft.world.level.Level
-import net.minecraft.util.IntReferenceHolder
+import net.minecraft.world.inventory.DataSlot
 import net.minecraft.resources.ResourceLocation
 import net.minecraftforge.api.distmarker.Dist
 import net.minecraftforge.api.distmarker.OnlyIn
@@ -122,49 +122,49 @@ class Robot(selfType: MenuType[_ <: Robot], id: Int, playerInventory: Inventory,
 
   private val globalBufferData = robot match {
     case te: tileentity.Robot => {
-      addDataSlot(new IntReferenceHolder {
+      addDataSlot(new DataSlot {
         override def get(): Int = te.globalBuffer.toInt / factor
 
         override def set(value: Int): Unit = te.globalBuffer = value * factor
       })
     }
-    case _ => addDataSlot(IntReferenceHolder.standalone)
+    case _ => addDataSlot(DataSlot.standalone)
   }
   def globalBuffer = globalBufferData.get * factor
 
   private val globalBufferSizeData = robot match {
     case te: tileentity.Robot => {
-      addDataSlot(new IntReferenceHolder {
+      addDataSlot(new DataSlot {
         override def get(): Int = te.globalBufferSize.toInt / factor
 
         override def set(value: Int): Unit = te.globalBufferSize = value * factor
       })
     }
-    case _ => addDataSlot(IntReferenceHolder.standalone)
+    case _ => addDataSlot(DataSlot.standalone)
   }
   def globalBufferSize = globalBufferSizeData.get * factor
 
   private val runningData = robot match {
     case te: tileentity.Robot => {
-      addDataSlot(new IntReferenceHolder {
+      addDataSlot(new DataSlot {
         override def get(): Int = if (te.isRunning) 1 else 0
 
         override def set(value: Int): Unit = te.setRunning(value != 0)
       })
     }
-    case _ => addDataSlot(IntReferenceHolder.standalone)
+    case _ => addDataSlot(DataSlot.standalone)
   }
   def isRunning = runningData.get != 0
 
   private val selectedSlotData = robot match {
     case te: tileentity.Robot => {
-      addDataSlot(new IntReferenceHolder {
+      addDataSlot(new DataSlot {
         override def get(): Int = te.selectedSlot
 
         override def set(value: Int): Unit = te.setSelectedSlot(value)
       })
     }
-    case _ => addDataSlot(IntReferenceHolder.standalone)
+    case _ => addDataSlot(DataSlot.standalone)
   }
   def selectedSlot = selectedSlotData.get
 

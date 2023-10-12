@@ -2,14 +2,14 @@ package li.cil.oc.client.renderer.tileentity
 
 import java.util.function.Function
 
-import com.mojang.blaze3d.matrix.MatrixStack
+import com.mojang.blaze3d.vertex.PoseStack
 import com.mojang.blaze3d.systems.RenderSystem
 import li.cil.oc.client.Textures
 import li.cil.oc.common.tileentity.Printer
 import li.cil.oc.util.RenderState
 import net.minecraft.client.Minecraft
-import net.minecraft.client.renderer.IRenderTypeBuffer
-import net.minecraft.client.renderer.RenderHelper
+import net.minecraft.client.renderer.MultiBufferSource
+import com.mojang.blaze3d.platform.Lighting
 import net.minecraft.client.renderer.model.ItemCameraTransforms
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher
@@ -21,7 +21,7 @@ object PrinterRenderer extends Function[BlockEntityRenderDispatcher, PrinterRend
 }
 
 class PrinterRenderer(dispatch: BlockEntityRenderDispatcher) extends TileEntityRenderer[Printer](dispatch) {
-  override def render(printer: Printer, dt: Float, matrix: MatrixStack, buffer: IRenderTypeBuffer, light: Int, overlay: Int) {
+  override def render(printer: Printer, dt: Float, matrix: PoseStack, buffer: MultiBufferSource, light: Int, overlay: Int) {
     RenderState.checkError(getClass.getName + ".render: entering (aka: wasntme)")
 
     if (printer.data.stateOff.nonEmpty) {

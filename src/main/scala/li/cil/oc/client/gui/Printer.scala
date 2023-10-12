@@ -1,6 +1,6 @@
 package li.cil.oc.client.gui
 
-import com.mojang.blaze3d.matrix.MatrixStack
+import com.mojang.blaze3d.vertex.PoseStack
 import com.mojang.blaze3d.systems.RenderSystem
 import li.cil.oc.client.Textures
 import li.cil.oc.client.gui.widget.ProgressBar
@@ -38,7 +38,7 @@ class Printer(state: container.Printer, playerInventory: Inventory, name: Compon
     override def barTexture = Textures.GUI.PrinterProgress
   })
 
-  override def drawSecondaryForegroundLayer(stack: MatrixStack, mouseX: Int, mouseY: Int) = {
+  override def drawSecondaryForegroundLayer(stack: PoseStack, mouseX: Int, mouseY: Int) = {
     super.drawSecondaryForegroundLayer(stack, mouseX, mouseY)
     RenderState.pushAttrib()
     if (isPointInRegion(materialBar.x, materialBar.y, materialBar.width, materialBar.height, mouseX - leftPos, mouseY - topPos)) {
@@ -54,7 +54,7 @@ class Printer(state: container.Printer, playerInventory: Inventory, name: Compon
     RenderState.popAttrib()
   }
 
-  override def renderBg(stack: MatrixStack, dt: Float, mouseX: Int, mouseY: Int) {
+  override def renderBg(stack: PoseStack, dt: Float, mouseX: Int, mouseY: Int) {
     RenderSystem.color3f(1, 1, 1)
     Textures.bind(Textures.GUI.Printer)
     blit(stack, leftPos, topPos, 0, 0, imageWidth, imageHeight)
@@ -65,5 +65,5 @@ class Printer(state: container.Printer, playerInventory: Inventory, name: Compon
     drawInventorySlots(stack)
   }
 
-  override protected def drawDisabledSlot(stack: MatrixStack, slot: ComponentSlot) {}
+  override protected def drawDisabledSlot(stack: PoseStack, slot: ComponentSlot) {}
 }

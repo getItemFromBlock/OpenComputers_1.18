@@ -3,7 +3,7 @@ package li.cil.oc.integration.jei
 import java.util
 
 import com.google.common.base.Strings
-import com.mojang.blaze3d.matrix.MatrixStack
+import com.mojang.blaze3d.vertex.PoseStack
 import li.cil.oc.OpenComputers
 import li.cil.oc.Settings
 import li.cil.oc.api
@@ -113,7 +113,7 @@ object CallbackDocHandler {
     override def setRecipe(recipeLayout: IRecipeLayout, recipeWrapper: CallbackDocRecipe, ingredients: IIngredients) {
     }
 
-    override def draw(recipeWrapper: CallbackDocRecipe, stack: MatrixStack, mouseX: Double, mouseY: Double): Unit = {
+    override def draw(recipeWrapper: CallbackDocRecipe, stack: PoseStack, mouseX: Double, mouseY: Double): Unit = {
       val minecraft = Minecraft.getInstance
       for ((text, line) <- recipeWrapper.page.linesIterator.zipWithIndex) {
         minecraft.font.draw(stack, text, 4, 4 + line * (minecraft.font.lineHeight + 1), 0x333333)

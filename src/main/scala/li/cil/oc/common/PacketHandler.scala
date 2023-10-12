@@ -15,7 +15,7 @@ import li.cil.oc.util.RotationHelper
 import net.minecraft.world.entity.player.Player
 import net.minecraft.server.level.ServerPlayer
 import net.minecraft.world.item.ItemStack
-import net.minecraft.nbt.CompressedStreamTools
+import net.minecraft.nbt.NbtIo
 import net.minecraft.nbt.CompoundTag
 import net.minecraft.network.INetHandler
 import net.minecraft.core.Direction
@@ -154,7 +154,7 @@ abstract class PacketHandler {
     def readNBT(): CompoundTag = {
       val haveNbt = readBoolean()
       if (haveNbt) {
-        CompressedStreamTools.read(this)
+        NbtIo.read(this)
       }
       else null
     }

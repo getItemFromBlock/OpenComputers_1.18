@@ -1,6 +1,6 @@
 package li.cil.oc.client
 
-import com.mojang.blaze3d.systems.IRenderCall
+import com.mojang.blaze3d.systems.RenderCall
 import com.mojang.blaze3d.systems.RenderSystem
 import li.cil.oc.OpenComputers
 import li.cil.oc.api
@@ -26,11 +26,14 @@ import li.cil.oc.common.event.RackMountableRenderHandler
 import li.cil.oc.common.tileentity
 import li.cil.oc.util.Audio
 import net.minecraft.world.level.block.Block
-import net.minecraft.client.renderer.entity.{EntityRenderer, EntityRendererManager}
+import net.minecraft.client.renderer.entity.EntityRenderer
+import net.minecraft.client.renderer.entity.EntityRenderDispatcher
 import net.minecraft.world.item.Item
 import net.minecraft.world.level.Level
 import net.minecraftforge.common.MinecraftForge
-import net.minecraftforge.fml.client.registry.{ClientRegistry, IRenderFactory, RenderingRegistry}
+import net.minecraftforge.client.ClientRegistry
+import net.minecraftforge.fml.client.registry.IRenderFactory
+import net.minecraftforge.fml.client.registry.RenderingRegistry
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent
 import net.minecraftforge.fml.network.NetworkRegistry
 
@@ -57,7 +60,7 @@ private[oc] class Proxy extends CommonProxy {
       ColorHandler.init()
 
       RenderingRegistry.registerEntityRenderingHandler(EntityTypes.DRONE, new IRenderFactory[Drone] {
-        override def createRenderFor(manager: EntityRendererManager): EntityRenderer[_ >: Drone] = new DroneRenderer(manager)
+        override def createRenderFor(manager: EntityRenderDispatcher): EntityRenderer[_ >: Drone] = new DroneRenderer(manager)
       })
 
       ClientRegistry.bindTileEntityRenderer(tileentity.TileEntityTypes.ADAPTER, AdapterRenderer)

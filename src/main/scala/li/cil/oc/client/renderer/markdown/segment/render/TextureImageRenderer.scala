@@ -3,7 +3,7 @@ package li.cil.oc.client.renderer.markdown.segment.render
 import java.io.InputStream
 import javax.imageio.ImageIO
 
-import com.mojang.blaze3d.matrix.MatrixStack
+import com.mojang.blaze3d.vertex.PoseStack
 import com.mojang.blaze3d.systems.RenderSystem
 import li.cil.oc.api.manual.ImageRenderer
 import li.cil.oc.client.Textures
@@ -34,7 +34,7 @@ class TextureImageRenderer(val location: ResourceLocation) extends ImageRenderer
 
   override def getHeight: Int = texture.height
 
-  override def render(stack: MatrixStack, mouseX: Int, mouseY: Int): Unit = {
+  override def render(stack: PoseStack, mouseX: Int, mouseY: Int): Unit = {
     Textures.bind(location)
     RenderSystem.color4f(1, 1, 1, 1)
     GL11.glBegin(GL11.GL_QUADS)

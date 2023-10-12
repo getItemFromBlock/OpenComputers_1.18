@@ -17,7 +17,7 @@ import net.minecraft.nbt.CompoundTag
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.network.chat.TextComponent
 import net.minecraft.world.level.Level
-import net.minecraft.world.server.ServerWorld
+import net.minecraft.server.level.ServerLevel
 import net.minecraft.world.storage.FolderName
 import net.minecraftforge.common.util.Constants.NBT
 import net.minecraftforge.event.world.WorldEvent
@@ -101,7 +101,7 @@ object Loot {
 
   @SubscribeEvent
   def initForWorld(e: WorldEvent.Load): Unit = e.getWorld match {
-    case world: ServerWorld if world.dimension == World.OVERWORLD => {
+    case world: ServerLevel if world.dimension == World.OVERWORLD => {
       worldDisks.clear()
       disksForSampling.clear()
       val path = world.getServer.getWorldPath(new FolderName(Settings.savePath)).toFile

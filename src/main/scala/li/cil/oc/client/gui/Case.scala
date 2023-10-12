@@ -1,12 +1,12 @@
 package li.cil.oc.client.gui
 
-import com.mojang.blaze3d.matrix.MatrixStack
+import com.mojang.blaze3d.vertex.PoseStack
 import com.mojang.blaze3d.systems.RenderSystem
 import li.cil.oc.Localization
 import li.cil.oc.client.Textures
 import li.cil.oc.client.{PacketSender => ClientPacketSender}
 import li.cil.oc.common.container
-import net.minecraft.client.gui.widget.button.Button
+import net.minecraft.client.gui.components.Button
 import net.minecraft.world.entity.player.Inventory
 import net.minecraft.network.chat.Component
 
@@ -18,7 +18,7 @@ class Case(state: container.Case, playerInventory: Inventory, name: Component)
 
   protected var powerButton: ImageButton = _
 
-  override def render(stack: MatrixStack, mouseX: Int, mouseY: Int, dt: Float) {
+  override def render(stack: PoseStack, mouseX: Int, mouseY: Int, dt: Float) {
     powerButton.toggled = inventoryContainer.isRunning
     super.render(stack, mouseX, mouseY, dt)
   }
@@ -31,7 +31,7 @@ class Case(state: container.Case, playerInventory: Inventory, name: Component)
     addButton(powerButton)
   }
 
-  override protected def drawSecondaryForegroundLayer(stack: MatrixStack, mouseX: Int, mouseY: Int) = {
+  override protected def drawSecondaryForegroundLayer(stack: PoseStack, mouseX: Int, mouseY: Int) = {
     super.drawSecondaryForegroundLayer(stack, mouseX, mouseY)
     if (powerButton.isMouseOver(mouseX, mouseY)) {
       val tooltip = new java.util.ArrayList[String]
@@ -40,7 +40,7 @@ class Case(state: container.Case, playerInventory: Inventory, name: Component)
     }
   }
 
-  override def drawSecondaryBackgroundLayer(stack: MatrixStack) {
+  override def drawSecondaryBackgroundLayer(stack: PoseStack) {
     RenderSystem.color3f(1, 1, 1)
     Textures.bind(Textures.GUI.Computer)
     blit(stack, leftPos, topPos, 0, 0, imageWidth, imageHeight)

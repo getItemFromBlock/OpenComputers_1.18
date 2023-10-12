@@ -2,13 +2,13 @@ package li.cil.oc.client.gui
 
 import java.text.DecimalFormat
 
-import com.mojang.blaze3d.matrix.MatrixStack
+import com.mojang.blaze3d.vertex.PoseStack
 import com.mojang.blaze3d.systems.RenderSystem
 import li.cil.oc.Localization
 import li.cil.oc.client.Textures
 import li.cil.oc.common.container
 import net.minecraft.client.Minecraft
-import net.minecraft.client.renderer.Tessellator
+import com.mojang.blaze3d.vertex.Tesselator
 import net.minecraft.client.renderer.Rectangle2d
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats
 import net.minecraft.world.entity.player.Inventory
@@ -22,7 +22,7 @@ class Relay(state: container.Relay, playerInventory: Inventory, name: Component)
 
   val tabPosition = new Rectangle2d(imageWidth, 10, 23, 26)
 
-  override protected def drawSecondaryBackgroundLayer(stack: MatrixStack): Unit = {
+  override protected def drawSecondaryBackgroundLayer(stack: PoseStack): Unit = {
     super.drawSecondaryBackgroundLayer(stack)
 
     // Tab background.
@@ -32,7 +32,7 @@ class Relay(state: container.Relay, playerInventory: Inventory, name: Component)
     val y = windowY + tabPosition.getY
     val w = tabPosition.getWidth
     val h = tabPosition.getHeight
-    val t = Tessellator.getInstance
+    val t = Tesselator.getInstance
     val r = t.getBuilder
     r.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX)
     r.vertex(stack.last.pose, x, y + h, getBlitOffset).uv(0, 1).endVertex()
@@ -66,7 +66,7 @@ class Relay(state: container.Relay, playerInventory: Inventory, name: Component)
     }
   }
 
-  override def drawSecondaryForegroundLayer(stack: MatrixStack, mouseX: Int, mouseY: Int): Unit = {
+  override def drawSecondaryForegroundLayer(stack: PoseStack, mouseX: Int, mouseY: Int): Unit = {
     super.drawSecondaryForegroundLayer(stack, mouseX, mouseY)
 
     font.draw(stack,

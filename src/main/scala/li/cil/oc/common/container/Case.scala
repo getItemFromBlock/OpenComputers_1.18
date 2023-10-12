@@ -7,7 +7,7 @@ import net.minecraft.world.entity.player.Player
 import net.minecraft.world.entity.player.Inventory
 import net.minecraft.world.Container
 import net.minecraft.world.inventory.MenuType
-import net.minecraft.util.IntReferenceHolder
+import net.minecraft.world.inventory.DataSlot
 import net.minecraft.network.chat.Component
 
 class Case(selfType: MenuType[_ <: Case], id: Int, playerInventory: Inventory, computer: Container, tier: Int)
@@ -55,13 +55,13 @@ class Case(selfType: MenuType[_ <: Case], id: Int, playerInventory: Inventory, c
 
   private val runningData = computer match {
     case te: tileentity.Case => {
-      addDataSlot(new IntReferenceHolder {
+      addDataSlot(new DataSlot {
         override def get(): Int = if (te.isRunning) 1 else 0
 
         override def set(value: Int): Unit = te.setRunning(value != 0)
       })
     }
-    case _ => addDataSlot(IntReferenceHolder.standalone)
+    case _ => addDataSlot(DataSlot.standalone)
   }
   def isRunning = runningData.get != 0
 

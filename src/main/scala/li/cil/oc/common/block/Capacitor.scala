@@ -9,7 +9,7 @@ import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.core.BlockPos
 import net.minecraft.world.level.BlockGetter
 import net.minecraft.world.level.Level
-import net.minecraft.world.server.ServerWorld
+import net.minecraft.server.level.ServerLevel
 
 class Capacitor(props: Properties) extends SimpleBlock(props) {
   @Deprecated
@@ -30,7 +30,7 @@ class Capacitor(props: Properties) extends SimpleBlock(props) {
       case _ => 0
     }
 
-  override def tick(state: BlockState, world: ServerWorld, pos: BlockPos, rand: Random): Unit = {
+  override def tick(state: BlockState, world: ServerLevel, pos: BlockPos, rand: Random): Unit = {
     world.updateNeighborsAt(pos, this)
   }
 

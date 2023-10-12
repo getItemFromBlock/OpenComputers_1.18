@@ -47,7 +47,7 @@ import com.mojang.math.Vector3d
 import net.minecraft.network.chat.Component
 import net.minecraft.network.chat.TextComponent
 import net.minecraft.world.level.Level
-import net.minecraft.world.server.ServerWorld
+import net.minecraft.server.level.ServerLevel
 import net.minecraftforge.common.MinecraftForge
 import net.minecraftforge.common.util.FakePlayer
 import net.minecraftforge.common.util.LazyOptional
@@ -150,7 +150,7 @@ object Player {
   }
 }
 
-class Player(val agent: internal.Agent) extends FakePlayer(agent.world.asInstanceOf[ServerWorld], Player.profileFor(agent)) {
+class Player(val agent: internal.Agent) extends FakePlayer(agent.world.asInstanceOf[ServerLevel], Player.profileFor(agent)) {
   connection= new ServerPlayNetHandler(server, FakeNetworkManager, this)
 
   abilities.mayfly = true

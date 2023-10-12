@@ -4,7 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem
 import li.cil.oc.OpenComputers
 import li.cil.oc.Settings
 import net.minecraft.client.Minecraft
-import net.minecraft.client.renderer.RenderHelper
+import com.mojang.blaze3d.platform.Lighting
 import org.lwjgl.opengl._
 
 // This class has evolved into a wrapper for RenderSystem that basically does

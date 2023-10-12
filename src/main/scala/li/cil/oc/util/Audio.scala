@@ -5,10 +5,10 @@ import java.nio.ByteBuffer
 import li.cil.oc.OpenComputers
 import li.cil.oc.Settings
 import net.minecraft.client.Minecraft
-import net.minecraft.client.audio.SimpleSound
-import net.minecraft.util.SoundEvents
+import net.minecraft.client.resources.sounds.SimpleSoundInstance
+import net.minecraft.sounds.SoundEvents
 import net.minecraft.resources.ResourceLocation
-import net.minecraft.util.SoundCategory
+import net.minecraft.sounds.SoundSource
 import net.minecraft.util.SoundEvent
 import net.minecraft.core.BlockPos
 import com.mojang.math.Vector3d
@@ -35,7 +35,7 @@ object Audio {
 
   private val sources = mutable.Set.empty[Source]
 
-  private def volume = Minecraft.getInstance.options.getSoundSourceVolume(SoundCategory.BLOCKS)
+  private def volume = Minecraft.getInstance.options.getSoundSourceVolume(SoundSource.BLOCKS)
 
   private var disableAudio = false
 
@@ -59,7 +59,7 @@ object Audio {
       val clampedFrequency = ((frequencyInHz - 20) max 0 min 1980) / 1980f + 0.5f
       var delay = 0
       for (ch <- pattern) {
-        val record = new SimpleSound(SoundEvents.NOTE_BLOCK_HARP, SoundCategory.BLOCKS, gain, clampedFrequency, new BlockPos(x, y, z))
+        val record = new SimpleSound(SoundEvents.NOTE_BLOCK_HARP, SoundSource.BLOCKS, gain, clampedFrequency, new BlockPos(x, y, z))
         if (delay == 0) mc.getSoundManager.play(record)
         else mc.getSoundManager.playDelayed(record, delay)
         delay += ((if (ch == '.') durationInMilliseconds else 2 * durationInMilliseconds) * 20 / 1000) max 1

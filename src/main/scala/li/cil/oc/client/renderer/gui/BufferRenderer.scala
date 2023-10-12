@@ -1,12 +1,12 @@
 package li.cil.oc.client.renderer.gui
 
-import com.mojang.blaze3d.matrix.MatrixStack
+import com.mojang.blaze3d.vertex.PoseStack
 import com.mojang.blaze3d.vertex.IVertexBuilder
 import li.cil.oc.api
 import li.cil.oc.client.Textures
 import li.cil.oc.util.RenderState
-import net.minecraft.client.renderer.IRenderTypeBuffer
-import net.minecraft.client.renderer.Tessellator
+import net.minecraft.client.renderer.MultiBufferSource
+import com.mojang.blaze3d.vertex.Tesselator
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats
 import net.minecraft.util.math.vector.Matrix4f
 import org.lwjgl.opengl.GL11
@@ -16,13 +16,13 @@ object BufferRenderer {
 
   val innerMargin = 1
 
-  def drawBackground(stack: MatrixStack, bufferWidth: Int, bufferHeight: Int, forRobot: Boolean = false) = {
+  def drawBackground(stack: PoseStack, bufferWidth: Int, bufferHeight: Int, forRobot: Boolean = false) = {
     RenderState.checkError(getClass.getName + ".drawBackground: entering (aka: wasntme)")
 
     val innerWidth = innerMargin * 2 + bufferWidth
     val innerHeight = innerMargin * 2 + bufferHeight
 
-    val t = Tessellator.getInstance
+    val t = Tesselator.getInstance
     val r = t.getBuilder
     Textures.bind(Textures.GUI.Borders)
     r.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
@@ -79,5 +79,5 @@ object BufferRenderer {
     builder.vertex(matrix, x, y, 0).uv(u1f, v1f).endVertex()
   }
 
-  def drawText(stack: MatrixStack, screen: api.internal.TextBuffer) = screen.renderText(stack)
+  def drawText(stack: PoseStack, screen: api.internal.TextBuffer) = screen.renderText(stack)
 }

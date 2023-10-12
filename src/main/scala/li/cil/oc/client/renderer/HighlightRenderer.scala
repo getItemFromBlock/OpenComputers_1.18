@@ -1,6 +1,6 @@
 package li.cil.oc.client.renderer
 
-import com.mojang.blaze3d.matrix.MatrixStack
+import com.mojang.blaze3d.vertex.PoseStack
 import li.cil.oc.client.Textures
 import li.cil.oc.util.ExtendedWorld._
 import li.cil.oc.util.BlockPosition

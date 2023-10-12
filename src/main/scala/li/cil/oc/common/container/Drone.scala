@@ -8,7 +8,7 @@ import net.minecraft.world.Container
 import net.minecraft.world.inventory.MenuType
 import net.minecraft.world.item.ItemStack
 import net.minecraft.nbt.CompoundTag
-import net.minecraft.util.IntReferenceHolder
+import net.minecraft.world.inventory.DataSlot
 import net.minecraftforge.api.distmarker.Dist
 import net.minecraftforge.api.distmarker.OnlyIn
 
@@ -36,49 +36,49 @@ class Drone(selfType: MenuType[_ <: Drone], id: Int, playerInventory: Inventory,
 
   private val globalBufferData = droneInv match {
     case droneInv: entity.DroneInventory => {
-      addDataSlot(new IntReferenceHolder {
+      addDataSlot(new DataSlot {
         override def get(): Int = droneInv.drone.globalBuffer / factor
 
         override def set(value: Int): Unit = droneInv.drone.globalBuffer = value * factor
       })
     }
-    case _ => addDataSlot(IntReferenceHolder.standalone)
+    case _ => addDataSlot(DataSlot.standalone)
   }
   def globalBuffer = globalBufferData.get * factor
 
   private val globalBufferSizeData = droneInv match {
     case droneInv: entity.DroneInventory => {
-      addDataSlot(new IntReferenceHolder {
+      addDataSlot(new DataSlot {
         override def get(): Int = droneInv.drone.globalBufferSize / factor
 
         override def set(value: Int): Unit = droneInv.drone.globalBufferSize = value * factor
       })
     }
-    case _ => addDataSlot(IntReferenceHolder.standalone)
+    case _ => addDataSlot(DataSlot.standalone)
   }
   def globalBufferSize = globalBufferSizeData.get * factor
 
   private val runningData = droneInv match {
     case droneInv: entity.DroneInventory => {
-      addDataSlot(new IntReferenceHolder {
+      addDataSlot(new DataSlot {
         override def get(): Int = if (droneInv.drone.isRunning) 1 else 0
 
         override def set(value: Int): Unit = droneInv.drone.setRunning(value != 0)
       })
     }
-    case _ => addDataSlot(IntReferenceHolder.standalone)
+    case _ => addDataSlot(DataSlot.standalone)
   }
   def isRunning = runningData.get != 0
 
   private val selectedSlotData = droneInv match {
     case droneInv: entity.DroneInventory => {
-      addDataSlot(new IntReferenceHolder {
+      addDataSlot(new DataSlot {
         override def get(): Int = droneInv.drone.selectedSlot
 
         override def set(value: Int): Unit = droneInv.drone.setSelectedSlot(value)
       })
     }
-    case _ => addDataSlot(IntReferenceHolder.standalone)
+    case _ => addDataSlot(DataSlot.standalone)
   }
   def selectedSlot = selectedSlotData.get
 

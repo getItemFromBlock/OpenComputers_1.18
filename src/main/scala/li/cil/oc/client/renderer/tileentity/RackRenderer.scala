@@ -2,12 +2,12 @@ package li.cil.oc.client.renderer.tileentity
 
 import java.util.function.Function
 
-import com.mojang.blaze3d.matrix.MatrixStack
+import com.mojang.blaze3d.vertex.PoseStack
 import com.mojang.blaze3d.systems.RenderSystem
 import li.cil.oc.api.event.RackMountableRenderEvent
 import li.cil.oc.common.tileentity.Rack
 import li.cil.oc.util.RenderState
-import net.minecraft.client.renderer.IRenderTypeBuffer
+import net.minecraft.client.renderer.MultiBufferSource
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher
 import net.minecraft.core.Direction
@@ -23,7 +23,7 @@ class RackRenderer(dispatch: BlockEntityRenderDispatcher) extends TileEntityRend
   private final val vOffset = 2 / 16f
   private final val vSize = 3 / 16f
 
-  override def render(rack: Rack, dt: Float, stack: MatrixStack, buffer: IRenderTypeBuffer, light: Int, overlay: Int) {
+  override def render(rack: Rack, dt: Float, stack: PoseStack, buffer: MultiBufferSource, light: Int, overlay: Int) {
     RenderState.checkError(getClass.getName + ".render: entering (aka: wasntme)")
 
     RenderSystem.color4f(1, 1, 1, 1)

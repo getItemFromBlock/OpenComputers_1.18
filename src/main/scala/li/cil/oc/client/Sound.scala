@@ -12,12 +12,12 @@ import com.google.common.base.Charsets
 import li.cil.oc.OpenComputers
 import li.cil.oc.Settings
 import net.minecraft.client.Minecraft
-import net.minecraft.client.audio.ITickableSound
-import net.minecraft.client.audio.LocatableSound
-import net.minecraft.client.audio.SoundEngine
+import net.minecraft.client.resources.sounds.TickableSoundInstance
+import net.minecraft.client.resources.sounds.AbstractSoundInstance
+import net.minecraft.client.sounds.SoundEngine
 import net.minecraft.world.level.block.entity.BlockEntity
 import net.minecraft.resources.ResourceLocation
-import net.minecraft.util.SoundCategory
+import net.minecraft.sounds.SoundSource
 import net.minecraftforge.eventbus.api.SubscribeEvent
 import net.minecraftforge.event.TickEvent.ClientTickEvent
 import net.minecraftforge.event.world.WorldEvent
@@ -140,7 +140,7 @@ object Sound {
   }
 
   private class PseudoLoopingStream(val tileEntity: BlockEntity, val subVolume: Float, name: String)
-    extends LocatableSound(new ResourceLocation(OpenComputers.ID, name), SoundCategory.BLOCKS) with ITickableSound {
+    extends AbstractSoundInstance(new ResourceLocation(OpenComputers.ID, name), SoundSource.BLOCKS) with TickableSoundInstance {
 
     var stopped = false
     volume = subVolume * Settings.get.soundVolume
@@ -161,7 +161,7 @@ object Sound {
 
     override def isStopped() = stopped
 
-    // Required by ITickableSound, which is required to update position while playing
+    // Required by TickableSoundInstance, which is required to update position while playing
     override def tick() = ()
 
     def stop(): Unit = {

@@ -1,6 +1,6 @@
 package li.cil.oc.client.gui.traits
 
-import net.minecraft.client.gui.screen.inventory.ContainerScreen
+import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen
 import net.minecraft.world.inventory.ClickType
 import net.minecraft.world.inventory.AbstractContainerMenu
 import net.minecraft.world.inventory.Slot

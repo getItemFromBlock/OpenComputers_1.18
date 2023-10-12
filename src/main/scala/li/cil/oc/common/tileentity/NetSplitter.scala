@@ -11,12 +11,12 @@ import li.cil.oc.common.EventHandler
 import li.cil.oc.common.tileentity.traits.RedstoneChangedEventArgs
 import li.cil.oc.server.{PacketSender => ServerPacketSender}
 import li.cil.oc.util.RotationHelper
-import net.minecraft.util.SoundEvents
+import net.minecraft.sounds.SoundEvents
 import net.minecraft.nbt.CompoundTag
 import net.minecraft.world.level.block.entity.BlockEntity
 import net.minecraft.world.level.block.entity.BlockEntityType
 import net.minecraft.core.Direction
-import net.minecraft.util.SoundCategory
+import net.minecraft.sounds.SoundSource
 import net.minecraftforge.api.distmarker.Dist
 import net.minecraftforge.api.distmarker.OnlyIn
 
@@ -53,7 +53,7 @@ class NetSplitter(selfType: BlockEntityType[_ <: NetSplitter]) extends BlockEnti
         node.remove()
         api.Network.joinOrCreateNetwork(this)
         ServerPacketSender.sendNetSplitterState(this)
-        getLevel.playSound(null, getBlockPos, SoundEvents.PISTON_EXTEND, SoundCategory.BLOCKS, 0.5f, getLevel.random.nextFloat() * 0.25f + 0.7f)
+        getLevel.playSound(null, getBlockPos, SoundEvents.PISTON_EXTEND, SoundSource.BLOCKS, 0.5f, getLevel.random.nextFloat() * 0.25f + 0.7f)
         getLevel.updateNeighborsAt(getBlockPos, getBlockState.getBlock)
       }
       else {
@@ -87,7 +87,7 @@ class NetSplitter(selfType: BlockEntityType[_ <: NetSplitter]) extends BlockEnti
         node.remove()
         api.Network.joinOrCreateNetwork(this)
         ServerPacketSender.sendNetSplitterState(this)
-        getLevel.playSound(null, getBlockPos, SoundEvents.PISTON_CONTRACT, SoundCategory.BLOCKS, 0.5f, getLevel.random.nextFloat() * 0.25f + 0.7f)
+        getLevel.playSound(null, getBlockPos, SoundEvents.PISTON_CONTRACT, SoundSource.BLOCKS, 0.5f, getLevel.random.nextFloat() * 0.25f + 0.7f)
       }
       else {
         getLevel.sendBlockUpdated(getBlockPos, getLevel.getBlockState(getBlockPos), getLevel.getBlockState(getBlockPos), 3)

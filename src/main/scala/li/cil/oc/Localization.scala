@@ -1,11 +1,14 @@
 package li.cil.oc
 
 import net.minecraft.network.chat._
+import net.minecraft.locale.Language
 
 import scala.util.matching.Regex
 
 object Localization {
-  private def resolveKey(key: String) = Settings.namespace + key
+  private def resolveKey(key: String) = if (canLocalize(Settings.namespace + key)) Settings.namespace + key else key
+
+  def canLocalize(key: String): Boolean = Language.getInstance.has(key)
 
   def localizeLater(formatKey: String, values: AnyRef*) = new TranslatableComponent(resolveKey(formatKey), values: _*)
 
@@ -13,14 +16,16 @@ object Localization {
 
   def localizeImmediately(formatKey: String, values: AnyRef*): String = {
     val k = resolveKey(formatKey)
-    val t = new TranslatableComponent(k)
-    String.format(t.getString(), values: _*).linesIterator.map(_.trim).mkString("\n")
+    var lm = Language.getInstance
+    if (!lm.has(k)) return k
+    String.format(lm.getOrDefault(k), values: _*).linesIterator.map(_.trim).mkString("\n")
   }
 
   def localizeImmediately(key: String): String = {
     val k = resolveKey(key)
-    val t = new TranslatableComponent(k)
-    t.getString().linesIterator.map(_.trim).mkString("\n")
+    var lm = Language.getInstance
+    if (!lm.has(k)) return k
+    lm.getOrDefault(k).linesIterator.map(_.trim).mkString("\n")
   }
 
   object Analyzer {

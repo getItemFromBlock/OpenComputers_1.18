@@ -16,12 +16,12 @@ import li.cil.oc.api.network.EnvironmentHost
 import li.cil.oc.util.BlockPosition
 import li.cil.oc.util.SafeThreadPool
 import li.cil.oc.util.ThreadPoolFactory
-import net.minecraft.nbt.CompressedStreamTools
+import net.minecraft.nbt.NbtIo
 import net.minecraft.nbt.CompoundTag
 import net.minecraft.resources.ResourceLocation
-import net.minecraft.util.math.ChunkPos
+import net.minecraft.world.level.ChunkPos
 import net.minecraft.world.level.Level
-import net.minecraft.world.server.ServerWorld
+import net.minecraft.server.level.ServerLevel
 import net.minecraft.world.storage.FolderName
 import net.minecraftforge.event.world.WorldEvent
 import net.minecraftforge.eventbus.api.EventPriority
@@ -104,7 +104,7 @@ object SaveHandler {
   def scheduleSave(position: BlockPosition, nbt: CompoundTag, name: String, data: Array[Byte]) {
     val world = position.world.get
     // Try to exclude wrapped/client-side worlds.
-    if (world.isInstanceOf[ServerWorld]) {
+    if (world.isInstanceOf[ServerLevel]) {
       val dimension = world.dimension.location
       val chunk = new ChunkPos(position.x >> 4, position.z >> 4)
 
@@ -123,7 +123,7 @@ object SaveHandler {
     save(tmpNbt)
     val baos = new ByteArrayOutputStream()
     val dos = new DataOutputStream(baos)
-    CompressedStreamTools.write(tmpNbt, dos)
+    NbtIo.write(tmpNbt, dos)
     baos.toByteArray
   }
 
@@ -132,7 +132,7 @@ object SaveHandler {
     if (data.length > 0) try {
       val bais = new ByteArrayInputStream(data)
       val dis = new DataInputStream(bais)
-      CompressedStreamTools.read(dis)
+      NbtIo.read(dis)
     }
     catch {
       case t: Throwable =>

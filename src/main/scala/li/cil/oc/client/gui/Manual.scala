@@ -1,6 +1,6 @@
 package li.cil.oc.client.gui
 
-import com.mojang.blaze3d.matrix.MatrixStack
+import com.mojang.blaze3d.vertex.PoseStack
 import com.mojang.blaze3d.systems.RenderSystem
 import li.cil.oc.Localization
 import li.cil.oc.api
@@ -11,10 +11,10 @@ import li.cil.oc.client.renderer.markdown.segment.Segment
 import li.cil.oc.client.{Manual => ManualAPI}
 import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.screens.Screen
-import net.minecraft.client.gui.widget.button.Button
+import net.minecraft.client.gui.components.Button
 import net.minecraft.client.util.InputMappings
 import net.minecraft.client.settings.KeyBinding
-import net.minecraft.util.text.ITextProperties
+import net.minecraft.network.chat.FormattedText
 import net.minecraft.network.chat.TextComponent
 import org.lwjgl.glfw.GLFW
 
@@ -105,7 +105,7 @@ class Manual extends Screen(TextComponent.EMPTY) with traits.Window {
     refreshPage()
   }
 
-  override def render(stack: MatrixStack, mouseX: Int, mouseY: Int, dt: Float): Unit = {
+  override def render(stack: PoseStack, mouseX: Int, mouseY: Int, dt: Float): Unit = {
     super.render(stack, mouseX, mouseY, dt)
 
     scrollButton.active = canScroll
@@ -120,7 +120,7 @@ class Manual extends Screen(TextComponent.EMPTY) with traits.Window {
     }
 
     currentSegment = Document.render(stack, document, leftPos + 8, topPos + 8, documentMaxWidth, documentMaxHeight, offset, font, mouseX, mouseY)
-    def localizeAndWrap(text: String): java.util.List[_ <: ITextProperties] = {
+    def localizeAndWrap(text: String): java.util.List[_ <: FormattedText] = {
       val lines = Localization.localizeImmediately(text).linesIterator.map(new TextComponent(_))
       seqAsJavaList(lines.toSeq)
     }

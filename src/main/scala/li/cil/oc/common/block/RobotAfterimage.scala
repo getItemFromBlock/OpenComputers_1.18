@@ -22,7 +22,7 @@ import net.minecraft.util.math.shapes.ISelectionContext
 import net.minecraft.util.math.shapes.VoxelShape
 import net.minecraft.world.level.BlockGetter
 import net.minecraft.world.level.Level
-import net.minecraft.world.server.ServerWorld
+import net.minecraft.server.level.ServerLevel
 
 class RobotAfterimage(props: Properties) extends SimpleBlock(props) {
   override def getPickBlock(state: BlockState, target: RayTraceResult, world: BlockGetter, pos: BlockPos, player: Player): ItemStack =
@@ -49,11 +49,11 @@ class RobotAfterimage(props: Properties) extends SimpleBlock(props) {
 
   override def onPlace(state: BlockState, world: World, pos: BlockPos, prevState: BlockState, moved: Boolean): Unit = {
     if (!world.isClientSide) {
-      world.asInstanceOf[ServerWorld].getBlockTicks.scheduleTick(pos, this, Math.max((Settings.get.moveDelay * 20).toInt, 1) - 1)
+      world.asInstanceOf[ServerLevel].getBlockTicks.scheduleTick(pos, this, Math.max((Settings.get.moveDelay * 20).toInt, 1) - 1)
     }
   }
 
-  override def tick(state: BlockState, world: ServerWorld, pos: BlockPos, rand: Random) {
+  override def tick(state: BlockState, world: ServerLevel, pos: BlockPos, rand: Random) {
     world.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState)
   }
 

@@ -16,8 +16,8 @@ import net.minecraft.item.crafting.RecipeManager
 import net.minecraft.world.InteractionResultHolder
 import net.minecraft.world.InteractionResult
 import net.minecraft.core.NonNullList
-import net.minecraft.util.SoundCategory
-import net.minecraft.util.SoundEvents
+import net.minecraft.sounds.SoundSource
+import net.minecraft.sounds.SoundEvents
 import net.minecraft.world.level.Level
 import net.minecraftforge.common.extensions.IForgeItem
 
@@ -30,7 +30,7 @@ class Present(props: Properties) extends Item(props) with IForgeItem with traits
     if (stack.getCount > 0) {
       stack.shrink(1)
       if (!world.isClientSide) {
-        world.playSound(player, player.getX, player.getY, player.getZ, SoundEvents.PLAYER_LEVELUP, SoundCategory.MASTER, 0.2f, 1f)
+        world.playSound(player, player.getX, player.getY, player.getZ, SoundEvents.PLAYER_LEVELUP, SoundSource.MASTER, 0.2f, 1f)
         Present.recipeManager = world.getRecipeManager
         val present = Present.nextPresent()
         InventoryUtils.addToPlayerInventory(present, player)

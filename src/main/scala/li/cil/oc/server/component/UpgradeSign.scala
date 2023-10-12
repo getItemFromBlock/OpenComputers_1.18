@@ -22,7 +22,7 @@ import net.minecraft.nbt.CompoundTag
 import net.minecraft.tileentity.SignTileEntity
 import net.minecraft.core.Direction
 import net.minecraft.network.chat.TextComponent
-import net.minecraft.world.server.ServerWorld
+import net.minecraft.server.level.ServerLevel
 import net.minecraftforge.common.MinecraftForge
 import net.minecraftforge.common.util.FakePlayerFactory
 import net.minecraftforge.event.world.BlockEvent
@@ -54,7 +54,7 @@ abstract class UpgradeSign extends AbstractManagedEnvironment with DeviceInfo {
       case Some(sign) =>
         val player = host match {
           case robot: internal.Robot => robot.player
-          case _ => FakePlayerFactory.get(host.world.asInstanceOf[ServerWorld], Settings.get.fakePlayerProfile)
+          case _ => FakePlayerFactory.get(host.world.asInstanceOf[ServerLevel], Settings.get.fakePlayerProfile)
         }
 
         val lines = text.linesIterator.padTo(4, "").map(line => if (line.length > 15) line.substring(0, 15) else line).toArray

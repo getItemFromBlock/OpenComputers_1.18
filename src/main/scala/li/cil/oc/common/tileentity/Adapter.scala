@@ -26,8 +26,8 @@ import net.minecraft.nbt.ListNBT
 import net.minecraft.world.level.block.entity.BlockEntity
 import net.minecraft.world.level.block.entity.BlockEntityType
 import net.minecraft.core.Direction
-import net.minecraft.util.SoundCategory
-import net.minecraft.util.SoundEvents
+import net.minecraft.sounds.SoundSource
+import net.minecraft.sounds.SoundEvents
 import net.minecraftforge.common.util.Constants.NBT
 
 import scala.collection.convert.ImplicitConversionsToJava._
@@ -61,7 +61,7 @@ class Adapter(selfType: BlockEntityType[_ <: Adapter]) extends BlockEntity(selfT
     super.setSideOpen(side, value)
     if (isServer) {
       ServerPacketSender.sendAdapterState(this)
-      getLevel.playSound(null, getBlockPos, SoundEvents.PISTON_EXTEND, SoundCategory.BLOCKS, 0.5f, getLevel.random.nextFloat() * 0.25f + 0.7f)
+      getLevel.playSound(null, getBlockPos, SoundEvents.PISTON_EXTEND, SoundSource.BLOCKS, 0.5f, getLevel.random.nextFloat() * 0.25f + 0.7f)
       getLevel.updateNeighborsAt(getBlockPos, getBlockState.getBlock)
       neighborChanged(side)
     } else {

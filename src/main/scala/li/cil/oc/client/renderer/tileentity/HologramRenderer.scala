@@ -9,14 +9,14 @@ import java.util.concurrent.TimeUnit
 import com.google.common.cache.CacheBuilder
 import com.google.common.cache.RemovalListener
 import com.google.common.cache.RemovalNotification
-import com.mojang.blaze3d.matrix.MatrixStack
+import com.mojang.blaze3d.vertex.PoseStack
 import com.mojang.blaze3d.systems.RenderSystem
 import li.cil.oc.Settings
 import li.cil.oc.client.Textures
 import li.cil.oc.common.tileentity.Hologram
 import li.cil.oc.util.RenderState
 import net.minecraft.client.Minecraft
-import net.minecraft.client.renderer.IRenderTypeBuffer
+import net.minecraft.client.renderer.MultiBufferSource
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher
 import net.minecraft.world.level.block.entity.BlockEntity
@@ -404,7 +404,7 @@ object HologramRenderer extends Function[BlockEntityRenderDispatcher, HologramRe
 }
 
 class HologramRenderer(dispatch: BlockEntityRenderDispatcher) extends TileEntityRenderer[Hologram](dispatch) {
-  override def render(hologram: Hologram, f: Float, stack: MatrixStack, buffer: IRenderTypeBuffer, light: Int, overlay: Int) {
+  override def render(hologram: Hologram, f: Float, stack: MatrixStack, buffer: MultiBufferSource, light: Int, overlay: Int) {
     if (HologramRenderer.failed) {
       HologramRendererFallback.render(hologram, f, stack, buffer, light, overlay)
       return

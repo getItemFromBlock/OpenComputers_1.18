@@ -17,7 +17,7 @@ import net.minecraft.item.MusicDiscItem
 import net.minecraft.tileentity.JukeboxTileEntity
 import net.minecraft.core.Direction
 import net.minecraft.core.BlockPos
-import net.minecraft.util.text.LanguageMap
+import net.minecraft.locale.Language
 import net.minecraft.world.level.Level
 
 object DriverRecordPlayer extends DriverSidedTileEntity {
@@ -35,7 +35,7 @@ object DriverRecordPlayer extends DriverSidedTileEntity {
     def getRecord(context: Context, args: Arguments): Array[AnyRef] = {
       val record = tileEntity.getRecord
       if (!record.isEmpty && record.getItem.isInstanceOf[MusicDiscItem]) {
-        result(LanguageMap.getInstance.getOrDefault(record.getItem.asInstanceOf[MusicDiscItem].getDescriptionId))
+        result(Language.getInstance.getOrDefault(record.getItem.asInstanceOf[MusicDiscItem].getDescriptionId))
       }
       else null
     }

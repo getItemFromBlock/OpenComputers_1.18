@@ -24,7 +24,7 @@ import net.minecraft.util.math.shapes.VoxelShapes
 import net.minecraft.world.level.BlockGetter
 import net.minecraft.world.IWorld
 import net.minecraft.world.level.Level
-import net.minecraft.world.server.ServerWorld
+import net.minecraft.server.level.ServerLevel
 import net.minecraftforge.common.extensions.IForgeBlock
 
 import scala.collection.JavaConverters._

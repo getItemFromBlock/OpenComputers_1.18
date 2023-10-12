@@ -8,7 +8,7 @@ import li.cil.oc.util.ItemColorizer
 import net.minecraft.block.Blocks
 import net.minecraft.block.CauldronBlock
 import net.minecraft.client.renderer.entity.model.BipedModel
-import net.minecraft.inventory.EquipmentSlotType
+import net.minecraft.world.entity.EquipmentSlot
 import net.minecraft.item.ArmorItem
 import net.minecraft.item.ArmorMaterial
 import net.minecraft.world.item.Item
@@ -29,7 +29,7 @@ import net.minecraftforge.api.distmarker.Dist
 import net.minecraftforge.api.distmarker.OnlyIn
 import net.minecraftforge.common.extensions.IForgeItem
 
-class HoverBoots(props: Properties) extends ArmorItem(ArmorMaterial.DIAMOND, EquipmentSlotType.FEET, props) with IForgeItem with traits.SimpleItem with traits.Chargeable {
+class HoverBoots(props: Properties) extends ArmorItem(ArmorMaterial.DIAMOND, EquipmentSlot.FEET, props) with IForgeItem with traits.SimpleItem with traits.Chargeable {
   override def maxCharge(stack: ItemStack): Double = Settings.get.bufferHoverBoots
 
   override def getCharge(stack: ItemStack): Double =
@@ -57,7 +57,7 @@ class HoverBoots(props: Properties) extends ArmorItem(ArmorMaterial.DIAMOND, Equ
   }
 
   @OnlyIn(Dist.CLIENT)
-  override def getArmorModel[A <: BipedModel[_]](entityLiving: LivingEntity, itemStack: ItemStack, armorSlot: EquipmentSlotType, _default: A): A = {
+  override def getArmorModel[A <: BipedModel[_]](entityLiving: LivingEntity, itemStack: ItemStack, armorSlot: EquipmentSlot, _default: A): A = {
     if (armorSlot == slot) {
       HoverBootRenderer.lightColor = if (ItemColorizer.hasColor(itemStack)) ItemColorizer.getColor(itemStack) else 0x66DD55
       HoverBootRenderer.asInstanceOf[A]
@@ -65,7 +65,7 @@ class HoverBoots(props: Properties) extends ArmorItem(ArmorMaterial.DIAMOND, Equ
     else super.getArmorModel(entityLiving, itemStack, armorSlot, _default)
   }
 
-  override def getArmorTexture(stack: ItemStack, entity: Entity, slot: EquipmentSlotType, subType: String): String = {
+  override def getArmorTexture(stack: ItemStack, entity: Entity, slot: EquipmentSlot, subType: String): String = {
     if (entity.level.isClientSide) HoverBootRenderer.texture.toString
     else null
   }

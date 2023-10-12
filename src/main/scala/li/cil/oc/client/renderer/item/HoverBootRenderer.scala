@@ -1,6 +1,6 @@
 package li.cil.oc.client.renderer.item
 
-import com.mojang.blaze3d.matrix.MatrixStack
+import com.mojang.blaze3d.vertex.PoseStack
 import com.mojang.blaze3d.vertex.IVertexBuilder
 import li.cil.oc.Settings
 import net.minecraft.client.renderer.LightTexture
@@ -86,7 +86,7 @@ object HoverBootRenderer extends BipedModel[LivingEntity](0.5f) {
   }
 
   class LightModelRenderer(modelBase: Model) extends ModelRenderer(modelBase) {
-    override def render(stack: MatrixStack, builder: IVertexBuilder, light: Int, overlay: Int, r: Float, g: Float, b: Float, a: Float): Unit = {
+    override def render(stack: PoseStack, builder: IVertexBuilder, light: Int, overlay: Int, r: Float, g: Float, b: Float, a: Float): Unit = {
       val rm = ((lightColor >>> 16) & 0xFF) / 255f
       val gm = ((lightColor >>> 8) & 0xFF) / 255f
       val bm = ((lightColor >>> 0) & 0xFF) / 255f

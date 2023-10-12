@@ -36,19 +36,19 @@ import li.cil.oc.util.StackOption
 import li.cil.oc.util.StackOption._
 import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.Blocks
-import net.minecraft.world.level.block.FlowingFluidBlock
+import net.minecraft.world.level.block.LiquidBlock
 import net.minecraft.client.Minecraft
 import net.minecraft.world.entity.player.Player
 import net.minecraft.world.entity.player.Inventory
-import net.minecraft.fluid.Fluid
-import net.minecraft.inventory.EquipmentSlotType
+import net.minecraft.world.level.material.Fluid
+import net.minecraft.world.entity.EquipmentSlot
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity
 import net.minecraft.world.item.ItemStack
 import net.minecraft.nbt.CompoundTag
 import net.minecraft.world.level.block.entity.BlockEntity
 import net.minecraft.core.Direction
-import net.minecraft.util.SoundCategory
-import net.minecraft.util.SoundEvents
+import net.minecraft.sounds.SoundSource
+import net.minecraft.sounds.SoundEvents
 import net.minecraft.Util
 import net.minecraft.core.BlockPos
 import net.minecraft.network.chat.TextComponent
@@ -267,10 +267,10 @@ class Robot extends BlockEntity(TileEntityTypes.ROBOT) with traits.Computer with
           if (!wasAir) {
             if (block != Blocks.AIR && block != blockRobotAfterImage) {
               if (!state.getFluidState.isEmpty) {
-                getLevel.playLocalSound(newPosition.getX + 0.5, newPosition.getY + 0.5, newPosition.getZ + 0.5, SoundEvents.WATER_AMBIENT, SoundCategory.BLOCKS,
+                getLevel.playLocalSound(newPosition.getX + 0.5, newPosition.getY + 0.5, newPosition.getZ + 0.5, SoundEvents.WATER_AMBIENT, SoundSource.BLOCKS,
                   getLevel.random.nextFloat * 0.25f + 0.75f, getLevel.random.nextFloat * 1.0f + 0.5f, false)
               }
-              if (!block.isInstanceOf[FlowingFluidBlock]) {
+              if (!block.isInstanceOf[LiquidBlock]) {
                 getLevel.levelEvent(2001, newPosition, Block.getId(state))
               }
             }
@@ -359,7 +359,7 @@ class Robot extends BlockEntity(TileEntityTypes.ROBOT) with traits.Computer with
       if (!appliedToolEnchantments) {
         appliedToolEnchantments = true
         StackOption(getItem(0)) match {
-          case SomeStack(item) => player_.getAttributes.addTransientAttributeModifiers(item.getAttributeModifiers(EquipmentSlotType.MAINHAND))
+          case SomeStack(item) => player_.getAttributes.addTransientAttributeModifiers(item.getAttributeModifiers(EquipmentSlot.MAINHAND))
           case _ =>
         }
       }
@@ -554,7 +554,7 @@ class Robot extends BlockEntity(TileEntityTypes.ROBOT) with traits.Computer with
   override protected def onItemAdded(slot: Int, stack: ItemStack) {
     if (isServer) {
       if (isToolSlot(slot)) {
-        player_.getAttributes.addTransientAttributeModifiers(stack.getAttributeModifiers(EquipmentSlotType.MAINHAND))
+        player_.getAttributes.addTransientAttributeModifiers(stack.getAttributeModifiers(EquipmentSlot.MAINHAND))
         ServerPacketSender.sendRobotInventory(this, slot, stack)
       }
       if (isUpgradeSlot(slot)) {
@@ -578,7 +578,7 @@ class Robot extends BlockEntity(TileEntityTypes.ROBOT) with traits.Computer with
     super.onItemRemoved(slot, stack)
     if (isServer) {
       if (isToolSlot(slot)) {
-        player_.getAttributes.removeAttributeModifiers(stack.getAttributeModifiers(EquipmentSlotType.MAINHAND))
+        player_.getAttributes.removeAttributeModifiers(stack.getAttributeModifiers(EquipmentSlot.MAINHAND))
         ServerPacketSender.sendRobotInventory(this, slot, ItemStack.EMPTY)
       }
       if (isUpgradeSlot(slot)) {

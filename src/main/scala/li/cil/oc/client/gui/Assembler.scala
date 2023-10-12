@@ -1,6 +1,6 @@
 package li.cil.oc.client.gui
 
-import com.mojang.blaze3d.matrix.MatrixStack
+import com.mojang.blaze3d.vertex.PoseStack
 import com.mojang.blaze3d.systems.RenderSystem
 import li.cil.oc.Localization
 import li.cil.oc.client.Textures
@@ -10,7 +10,7 @@ import li.cil.oc.common.container
 import li.cil.oc.common.container.ComponentSlot
 import li.cil.oc.common.template.AssemblerTemplates
 import li.cil.oc.util.RenderState
-import net.minecraft.client.gui.widget.button.Button
+import net.minecraft.client.gui.components.Button
 import net.minecraft.world.entity.player.Inventory
 import net.minecraft.world.inventory.Slot
 import net.minecraft.network.chat.Component
@@ -53,7 +53,7 @@ class Assembler(state: container.Assembler, playerInventory: Inventory, name: Co
     addButton(runButton)
   }
 
-  override protected def renderLabels(stack: MatrixStack, mouseX: Int, mouseY: Int): Unit = {
+  override protected def renderLabels(stack: PoseStack, mouseX: Int, mouseY: Int): Unit = {
     drawSecondaryForegroundLayer(stack, mouseX, mouseY)
 
     for (slot <- 0 until menu.slots.size()) {
@@ -61,7 +61,7 @@ class Assembler(state: container.Assembler, playerInventory: Inventory, name: Co
     }
   }
 
-  override def drawSecondaryForegroundLayer(stack: MatrixStack, mouseX: Int, mouseY: Int): Unit = {
+  override def drawSecondaryForegroundLayer(stack: PoseStack, mouseX: Int, mouseY: Int): Unit = {
     RenderState.pushAttrib()
     if (!inventoryContainer.isAssembling) {
       val message =
@@ -100,7 +100,7 @@ class Assembler(state: container.Assembler, playerInventory: Inventory, name: Co
     else f"${seconds / 60}:${seconds % 60}%02d"
   }
 
-  override protected def renderBg(stack: MatrixStack, dt: Float, mouseX: Int, mouseY: Int): Unit = {
+  override protected def renderBg(stack: PoseStack, dt: Float, mouseX: Int, mouseY: Int): Unit = {
     RenderSystem.color3f(1, 1, 1) // Required under Linux.
     Textures.bind(Textures.GUI.RobotAssembler)
     blit(stack, leftPos, topPos, 0, 0, imageWidth, imageHeight)
@@ -110,5 +110,5 @@ class Assembler(state: container.Assembler, playerInventory: Inventory, name: Co
     drawInventorySlots(stack)
   }
 
-  override protected def drawDisabledSlot(stack: MatrixStack, slot: ComponentSlot): Unit = {}
+  override protected def drawDisabledSlot(stack: PoseStack, slot: ComponentSlot): Unit = {}
 }

@@ -4,7 +4,7 @@ import li.cil.oc.Localization
 import li.cil.oc.Settings
 import li.cil.oc.client.KeyBindings
 import net.minecraft.client.Minecraft
-import net.minecraft.client.gui.FontRenderer
+import net.minecraft.client.gui.Font
 import net.minecraft.util.text.CharacterManager.ISliceAcceptor
 import net.minecraft.util.text.Style
 import net.minecraft.util.text.TextFormatting
@@ -48,7 +48,7 @@ object Tooltip {
     }
     else Seq.empty[String]
 
-  private def wrap(font: FontRenderer, line: String, width: Int): java.util.List[String] = {
+  private def wrap(font: Font, line: String, width: Int): java.util.List[String] = {
     val list = new java.util.ArrayList[String]
     font.getSplitter.splitLines(line, width, net.minecraft.util.text.Style.EMPTY, true, new ISliceAcceptor {
       override def accept(style: Style, start: Int, end: Int) = list.add(line.substring(start, end))

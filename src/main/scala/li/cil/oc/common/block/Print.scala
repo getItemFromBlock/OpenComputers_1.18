@@ -29,7 +29,7 @@ import net.minecraft.network.chat.Component
 import net.minecraft.network.chat.TextComponent
 import net.minecraft.world.level.BlockGetter
 import net.minecraft.world.level.Level
-import net.minecraft.world.server.ServerWorld
+import net.minecraft.server.level.ServerLevel
 import net.minecraftforge.common.extensions.IForgeBlock
 
 import scala.collection.convert.ImplicitConversionsToJava._
@@ -96,7 +96,7 @@ class Print(props: Properties) extends RedstoneAware(props) with IForgeBlock {
 
   def tickRate(world: World) = 20
 
-  override def tick(state: BlockState, world: ServerWorld, pos: BlockPos, rand: Random): Unit = {
+  override def tick(state: BlockState, world: ServerLevel, pos: BlockPos, rand: Random): Unit = {
     if (!world.isClientSide) world.getBlockEntity(pos) match {
       case print: tileentity.Print =>
         if (print.state) print.toggleState()

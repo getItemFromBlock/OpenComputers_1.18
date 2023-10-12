@@ -13,7 +13,7 @@ import net.minecraft.core.Direction
 import net.minecraft.util.RegistryKey
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.util.registry.Registry
-import net.minecraft.world.server.ServerWorld
+import net.minecraft.server.level.ServerLevel
 import net.minecraftforge.server.ServerLifecycleHooks
 
 /**
@@ -37,7 +37,7 @@ object DriverUpgradeMF extends Item with HostAware {
           case Array(x, y, z, side) => {
             val dimension = new ResourceLocation(stack.getTag.getString(Settings.namespace + "dimension"))
             ServerLifecycleHooks.getCurrentServer.getLevel(RegistryKey.create(Registry.DIMENSION_REGISTRY, dimension)) match {
-              case world: ServerWorld => return new component.UpgradeMF(host, BlockPosition(x, y, z, world), Direction.from3DDataValue(side))
+              case world: ServerLevel => return new component.UpgradeMF(host, BlockPosition(x, y, z, world), Direction.from3DDataValue(side))
               case _ => // Invalid dimension ID
             }
           }

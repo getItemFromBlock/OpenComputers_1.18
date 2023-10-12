@@ -14,14 +14,14 @@ import li.cil.oc.api.network.EnvironmentHost
 import net.minecraft.world.entity.Entity
 import net.minecraft.server.level.ServerPlayer
 import net.minecraft.world.item.ItemStack
-import net.minecraft.nbt.CompressedStreamTools
+import net.minecraft.nbt.NbtIo
 import net.minecraft.nbt.CompoundTag
 import net.minecraft.world.level.block.entity.BlockEntity
 import net.minecraft.core.Direction
-import net.minecraft.util.math.ChunkPos
+import net.minecraft.world.level.ChunkPos
 import net.minecraft.world.level.Level
-import net.minecraft.world.server.ServerWorld
-import net.minecraftforge.fml.network.PacketDistributor
+import net.minecraft.server.level.ServerLevel
+import net.minecraftforge.network.PacketDistributor
 import net.minecraftforge.server.ServerLifecycleHooks
 import net.minecraftforge.registries._
 
@@ -60,7 +60,7 @@ abstract class PacketBuilder(stream: OutputStream) extends DataOutputStream(stre
     val haveNbt = nbt != null
     writeBoolean(haveNbt)
     if (haveNbt) {
-      CompressedStreamTools.write(nbt, this)
+      NbtIo.write(nbt, this)
     }
   }
 
@@ -85,7 +85,7 @@ abstract class PacketBuilder(stream: OutputStream) extends DataOutputStream(stre
 
   def sendToPlayersNearTileEntity(t: TileEntity, range: Option[Double] = None) {
     t.getLevel match {
-      case w: ServerWorld =>
+      case w: ServerLevel =>
         val chunk = new ChunkPos(t.getBlockPos)
 
         val manager = ServerLifecycleHooks.getCurrentServer.getPlayerList

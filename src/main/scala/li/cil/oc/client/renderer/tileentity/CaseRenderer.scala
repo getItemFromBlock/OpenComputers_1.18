@@ -2,13 +2,13 @@ package li.cil.oc.client.renderer.tileentity
 
 import java.util.function.Function
 
-import com.mojang.blaze3d.matrix.MatrixStack
+import com.mojang.blaze3d.vertex.PoseStack
 import com.mojang.blaze3d.vertex.IVertexBuilder
 import li.cil.oc.client.Textures
 import li.cil.oc.client.renderer.RenderTypes
 import li.cil.oc.common.tileentity.Case
 import li.cil.oc.util.RenderState
-import net.minecraft.client.renderer.IRenderTypeBuffer
+import net.minecraft.client.renderer.MultiBufferSource
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher
 import net.minecraft.core.Direction
@@ -20,7 +20,7 @@ object CaseRenderer extends Function[BlockEntityRenderDispatcher, CaseRenderer] 
 }
 
 class CaseRenderer(dispatch: BlockEntityRenderDispatcher) extends TileEntityRenderer[Case](dispatch) {
-  override def render(computer: Case, dt: Float, stack: MatrixStack, buffer: IRenderTypeBuffer, light: Int, overlay: Int) {
+  override def render(computer: Case, dt: Float, stack: PoseStack, buffer: MultiBufferSource, light: Int, overlay: Int) {
     RenderState.checkError(getClass.getName + ".render: entering (aka: wasntme)")
 
     stack.pushPose()
@@ -52,7 +52,7 @@ class CaseRenderer(dispatch: BlockEntityRenderDispatcher) extends TileEntityRend
     RenderState.checkError(getClass.getName + ".render: leaving")
   }
 
-  private def renderFrontOverlay(stack: MatrixStack, texture: ResourceLocation, r: IVertexBuilder): Unit = {
+  private def renderFrontOverlay(stack: PoseStack, texture: ResourceLocation, r: IVertexBuilder): Unit = {
     val icon = Textures.getSprite(texture)
     r.vertex(stack.last.pose, 0, 1, 0).uv(icon.getU0, icon.getV1).endVertex()
     r.vertex(stack.last.pose, 1, 1, 0).uv(icon.getU1, icon.getV1).endVertex()

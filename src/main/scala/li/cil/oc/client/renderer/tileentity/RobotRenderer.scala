@@ -3,7 +3,7 @@ package li.cil.oc.client.renderer.tileentity
 import java.util.function.Function
 
 import com.google.common.base.Strings
-import com.mojang.blaze3d.matrix.MatrixStack
+import com.mojang.blaze3d.vertex.PoseStack
 import com.mojang.blaze3d.vertex.IVertexBuilder
 import li.cil.oc.OpenComputers
 import li.cil.oc.Settings
@@ -42,7 +42,7 @@ object RobotRenderer extends Function[BlockEntityRenderDispatcher, RobotRenderer
 
   private val instance = new RobotRenderer(null)
 
-  def renderChassis(stack: MatrixStack, buffer: IRenderTypeBuffer, light: Int, offset: Double = 0, isRunningOverride: Boolean = false) =
+  def renderChassis(stack: PoseStack, buffer: IRenderTypeBuffer, light: Int, offset: Double = 0, isRunningOverride: Boolean = false) =
     instance.renderChassis(stack, buffer, light, null, offset, isRunningOverride)
 }
 
@@ -79,7 +79,7 @@ class RobotRenderer(dispatch: BlockEntityRenderDispatcher) extends TileEntityRen
     }
   }
 
-  private def drawTop(stack: MatrixStack, buffer: IRenderTypeBuffer, light: Int, red: Int, green: Int, blue: Int): Unit = {
+  private def drawTop(stack: PoseStack, buffer: IRenderTypeBuffer, light: Int, red: Int, green: Int, blue: Int): Unit = {
     val r = buffer.getBuffer(RenderTypes.ROBOT_CHASSIS)
 
     r.vertex(stack.last.pose, 0.5f, 1, 0.5f).color(red, green, blue, 0xFF).uv(0.25f, 0.25f).uv2(light).normal(stack.last.normal, new Vector3d(0, 0.2, 1)).endVertex()
@@ -107,7 +107,7 @@ class RobotRenderer(dispatch: BlockEntityRenderDispatcher) extends TileEntityRen
     r.vertex(stack.last.pose, h, gt, h).color(red, green, blue, 0xFF).uv(0.5f, 1).uv2(light).normal(stack.last.normal, 0, -1, 0).endVertex()
   }
 
-  private def drawBottom(stack: MatrixStack, buffer: IRenderTypeBuffer, light: Int, red: Int, green: Int, blue: Int): Unit = {
+  private def drawBottom(stack: PoseStack, buffer: IRenderTypeBuffer, light: Int, red: Int, green: Int, blue: Int): Unit = {
     val r = buffer.getBuffer(RenderTypes.ROBOT_CHASSIS)
 
     r.vertex(stack.last.pose, 0.5f, 0.03f, 0.5f).color(red, green, blue, 0xFF).uv(0.75f, 0.25f).uv2(light).normal(stack.last.normal, new Vector3d(0, -0.2, 1)).endVertex()
@@ -202,7 +202,7 @@ class RobotRenderer(dispatch: BlockEntityRenderDispatcher) extends TileEntityRen
     mountPoints(6).rotation.setW(0)
   }
 
-  def renderChassis(stack: MatrixStack, buffer: IRenderTypeBuffer, light: Int, robot: tileentity.Robot = null, offset: Double = 0, isRunningOverride: Boolean = false) {
+  def renderChassis(stack: PoseStack, buffer: IRenderTypeBuffer, light: Int, robot: tileentity.Robot = null, offset: Double = 0, isRunningOverride: Boolean = false) {
     val isRunning = if (robot == null) isRunningOverride else robot.isRunning
 
     val size = 0.3f
@@ -266,7 +266,7 @@ class RobotRenderer(dispatch: BlockEntityRenderDispatcher) extends TileEntityRen
     }
   }
 
-  override def render(proxy: tileentity.RobotProxy, f: Float, matrix: MatrixStack, buffer: IRenderTypeBuffer, light: Int, overlay: Int) {
+  override def render(proxy: tileentity.RobotProxy, f: Float, matrix: PoseStack, buffer: IRenderTypeBuffer, light: Int, overlay: Int) {
     RenderState.checkError(getClass.getName + ".render: entering (aka: wasntme)")
 
     val robot = proxy.robot

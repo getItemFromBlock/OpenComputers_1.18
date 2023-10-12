@@ -15,12 +15,12 @@ import net.minecraft.world.entity.player.Player
 import net.minecraft.server.level.ServerPlayer
 import net.minecraft.world.inventory.AbstractContainerMenu
 import net.minecraft.world.item.ItemStack
-import net.minecraft.nbt.CompressedStreamTools
+import net.minecraft.nbt.NbtIo
 import net.minecraft.nbt.CompoundTag
 import net.minecraft.particles.IParticleData
 import net.minecraft.core.Direction
 import net.minecraft.resources.ResourceLocation
-import net.minecraft.util.SoundCategory
+import net.minecraft.sounds.SoundSource
 import net.minecraft.core.BlockPos
 import net.minecraft.world.level.Level
 import net.minecraftforge.common.MinecraftForge
@@ -154,7 +154,7 @@ object PacketSender {
           val pb = new SimplePacketBuilder(PacketType.FileSystemActivity)
 
           pb.writeUTF(event.getSound)
-          CompressedStreamTools.write(event.getData, pb)
+          NbtIo.write(event.getData, pb)
           event.getBlockEntity match {
             case t: net.minecraft.tileentity.TileEntity =>
               pb.writeBoolean(true)
@@ -184,7 +184,7 @@ object PacketSender {
 
       val pb = new SimplePacketBuilder(PacketType.NetworkActivity)
 
-      CompressedStreamTools.write(event.getData, pb)
+      NbtIo.write(event.getData, pb)
       event.getBlockEntity match {
         case t: net.minecraft.tileentity.TileEntity =>
           pb.writeBoolean(true)
@@ -318,7 +318,7 @@ object PacketSender {
   }
 
   def sendLootDisks(p: ServerPlayer): Unit = {
-    // Sending as separate packets, because CompressedStreamTools hiccups otherwise...
+    // Sending as separate packets, because NbtIo hiccups otherwise...
     val stacks = Loot.worldDisks.map(_._1)
     for (stack <- stacks) {
       val pb = new SimplePacketBuilder(PacketType.LootDisk)
@@ -777,7 +777,7 @@ object PacketSender {
     pb.sendToPlayersNearTileEntity(t)
   }
 
-  def sendSound(world: World, x: Double, y: Double, z: Double, sound: ResourceLocation, category: SoundCategory, range: Double) {
+  def sendSound(world: World, x: Double, y: Double, z: Double, sound: ResourceLocation, category: SoundSource, range: Double) {
     val pb = new SimplePacketBuilder(PacketType.SoundEffect)
 
     pb.writeUTF(world.dimension.location.toString)

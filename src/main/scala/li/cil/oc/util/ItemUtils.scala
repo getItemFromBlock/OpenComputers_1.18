@@ -22,7 +22,7 @@ import net.minecraft.world.item.crafting.Ingredient
 import net.minecraft.world.item.crafting.ShapedRecipe
 import net.minecraft.world.item.crafting.ShapelessRecipe
 import net.minecraft.inventory.CraftingInventory
-import net.minecraft.nbt.CompressedStreamTools
+import net.minecraft.nbt.NbtIo
 import net.minecraft.nbt.CompoundTag
 import net.minecraftforge.registries.ForgeRegistries
 
@@ -72,7 +72,7 @@ object ItemUtils {
 
   def loadTag(data: Array[Byte]): CompoundTag = {
     val bais = new ByteArrayInputStream(data)
-    CompressedStreamTools.readCompressed(bais)
+    NbtIo.readCompressed(bais)
   }
 
   def saveStack(stack: ItemStack): Array[Byte] = {
@@ -83,7 +83,7 @@ object ItemUtils {
 
   def saveTag(tag: CompoundTag): Array[Byte] = {
     val baos = new ByteArrayOutputStream()
-    CompressedStreamTools.writeCompressed(tag, baos)
+    NbtIo.writeCompressed(tag, baos)
     baos.toByteArray
   }
 

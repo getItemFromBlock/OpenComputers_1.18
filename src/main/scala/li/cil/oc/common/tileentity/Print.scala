@@ -12,19 +12,19 @@ import li.cil.oc.common.tileentity.traits.RedstoneChangedEventArgs
 import li.cil.oc.util.ExtendedAABB
 import li.cil.oc.util.ExtendedAABB._
 import li.cil.oc.util.ExtendedNBT._
-import net.minecraft.util.SoundEvents
+import net.minecraft.sounds.SoundEvents
 import net.minecraft.nbt.CompoundTag
 import net.minecraft.world.level.block.entity.BlockEntity
 import net.minecraft.world.level.block.entity.BlockEntityType
 import net.minecraft.core.Direction
-import net.minecraft.util.SoundCategory
+import net.minecraft.sounds.SoundSource
 import net.minecraft.core.BlockPos
 import net.minecraft.util.math.RayTraceResult
 import net.minecraft.util.math.shapes.IBooleanFunction
 import net.minecraft.util.math.shapes.VoxelShape
 import net.minecraft.util.math.shapes.VoxelShapes
 import com.mojang.math.Vector3d
-import net.minecraft.world.server.ServerWorld
+import net.minecraft.server.level.ServerLevel
 import net.minecraftforge.api.distmarker.Dist
 import net.minecraftforge.api.distmarker.OnlyIn
 import net.minecraftforge.client.model.data.IModelData
@@ -72,7 +72,7 @@ class Print(selfType: BlockEntityType[_ <: Print], val canToggle: Option[() => B
   def toggleState(): Unit = {
     if (canToggle.fold(true)(_.apply())) {
       state = !state
-      getLevel.playSound(null, getBlockPos, SoundEvents.LEVER_CLICK, SoundCategory.BLOCKS, 0.3F, if (state) 0.6F else 0.5F)
+      getLevel.playSound(null, getBlockPos, SoundEvents.LEVER_CLICK, SoundSource.BLOCKS, 0.3F, if (state) 0.6F else 0.5F)
       getLevel.sendBlockUpdated(getBlockPos, getLevel.getBlockState(getBlockPos), getLevel.getBlockState(getBlockPos), 3)
       updateRedstone()
       if (state && data.isButtonMode) {
@@ -80,7 +80,7 @@ class Print(selfType: BlockEntityType[_ <: Print], val canToggle: Option[() => B
         val delay = block.tickRate(getLevel)
         scheduleUpdate match {
           case Some(callback) => callback(delay)
-          case _ if !getLevel.isClientSide => getLevel.asInstanceOf[ServerWorld].getBlockTicks.scheduleTick(getBlockPos, block, delay)
+          case _ if !getLevel.isClientSide => getLevel.asInstanceOf[ServerLevel].getBlockTicks.scheduleTick(getBlockPos, block, delay)
           case _ =>
         }
       }
