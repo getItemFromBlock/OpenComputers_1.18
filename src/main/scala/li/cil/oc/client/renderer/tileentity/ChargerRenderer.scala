@@ -9,7 +9,7 @@ import li.cil.oc.client.renderer.RenderTypes
 import li.cil.oc.common.tileentity.Charger
 import li.cil.oc.util.RenderState
 import net.minecraft.client.renderer.MultiBufferSource
-import net.minecraft.client.renderer.tileentity.TileEntityRenderer
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderer
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher
 import net.minecraft.core.Direction
 import net.minecraft.util.math.vector.Vector3f
@@ -18,7 +18,7 @@ object ChargerRenderer extends Function[BlockEntityRenderDispatcher, ChargerRend
   override def apply(dispatch: BlockEntityRenderDispatcher) = new ChargerRenderer(dispatch)
 }
 
-class ChargerRenderer(dispatch: BlockEntityRenderDispatcher) extends TileEntityRenderer[Charger](dispatch) {
+class ChargerRenderer(dispatch: BlockEntityRenderDispatcher) extends BlockEntityRenderer[Charger](dispatch) {
   override def render(charger: Charger, dt: Float, stack: PoseStack, buffer: MultiBufferSource, light: Int, overlay: Int) {
     RenderState.checkError(getClass.getName + ".render: entering (aka: wasntme)")
 

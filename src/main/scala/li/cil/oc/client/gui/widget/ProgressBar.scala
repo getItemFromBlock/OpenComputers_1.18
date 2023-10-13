@@ -1,12 +1,14 @@
 package li.cil.oc.client.gui.widget
 
 import com.mojang.blaze3d.vertex.PoseStack
+import net.minecraft.client.gui.components.Widget
 import li.cil.oc.client.Textures
 import com.mojang.blaze3d.vertex.Tesselator
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats
 import org.lwjgl.opengl.GL11
 
-class ProgressBar(val x: Int, val y: Int) extends Widget {
+class ProgressBar(val x: Int, val y: Int) extends net.minecraft.client.gui.components.AbstractWidget {
+
   override def width = 140
 
   override def height = 12
@@ -15,7 +17,7 @@ class ProgressBar(val x: Int, val y: Int) extends Widget {
 
   var level = 0.0
 
-  def draw(stack: PoseStack) {
+  override def render(stack: PoseStack, mouseX: Int, mouseY: Int, partialTicks: Float) {
     if (level > 0) {
       val u0 = 0
       val u1 = level.toFloat

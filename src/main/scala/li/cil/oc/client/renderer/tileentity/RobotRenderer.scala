@@ -19,7 +19,7 @@ import li.cil.oc.util.StackOption._
 import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer._
 import net.minecraft.client.renderer.model.ItemCameraTransforms.TransformType
-import net.minecraft.client.renderer.tileentity.TileEntityRenderer
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderer
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats
 import net.minecraft.item.Items
@@ -46,7 +46,7 @@ object RobotRenderer extends Function[BlockEntityRenderDispatcher, RobotRenderer
     instance.renderChassis(stack, buffer, light, null, offset, isRunningOverride)
 }
 
-class RobotRenderer(dispatch: BlockEntityRenderDispatcher) extends TileEntityRenderer[tileentity.RobotProxy](dispatch) {
+class RobotRenderer(dispatch: BlockEntityRenderDispatcher) extends BlockEntityRenderer[tileentity.RobotProxy](dispatch) {
   private val mountPoints = new Array[RobotRenderEvent.MountPoint](7)
 
   private val slotNameMapping = Map(

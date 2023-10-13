@@ -34,7 +34,7 @@ abstract class CustomGuiContainer[C <: AbstractContainerMenu](val inventoryConta
 
   override def windowY = topPos
 
-  override def windowZ = getBlitOffset
+  override def windowZ = getBlitOffset.toFloat
 
   override def isPauseScreen = false
 

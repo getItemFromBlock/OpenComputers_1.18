@@ -11,7 +11,7 @@ import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.MultiBufferSource
 import com.mojang.blaze3d.platform.Lighting
 import net.minecraft.client.renderer.model.ItemCameraTransforms
-import net.minecraft.client.renderer.tileentity.TileEntityRenderer
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderer
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher
 import net.minecraft.util.math.vector.Vector3f
 import org.lwjgl.opengl.GL13
@@ -20,7 +20,7 @@ object PrinterRenderer extends Function[BlockEntityRenderDispatcher, PrinterRend
   override def apply(dispatch: BlockEntityRenderDispatcher) = new PrinterRenderer(dispatch)
 }
 
-class PrinterRenderer(dispatch: BlockEntityRenderDispatcher) extends TileEntityRenderer[Printer](dispatch) {
+class PrinterRenderer(dispatch: BlockEntityRenderDispatcher) extends BlockEntityRenderer[Printer](dispatch) {
   override def render(printer: Printer, dt: Float, matrix: PoseStack, buffer: MultiBufferSource, light: Int, overlay: Int) {
     RenderState.checkError(getClass.getName + ".render: entering (aka: wasntme)")
 

@@ -14,7 +14,7 @@ import net.minecraft.world.Container
 import net.minecraft.world.item.ItemStack
 import net.minecraft.nbt.CompoundTag
 import net.minecraft.network.chat.Component
-import net.minecraftforge.common.util.Constants.NBT
+import net.minecraft.nbt.Tag
 
 import scala.collection.mutable
 import scala.language.existentials
@@ -31,9 +31,9 @@ object AssemblerTemplates {
     val validator = IMC.getStaticMethod(template.getString("validate"), classOf[Container])
     val assembler = IMC.getStaticMethod(template.getString("assemble"), classOf[Container])
     val hostClass = tryGetHostClass(template.getString("hostClass"))
-    val containerSlots = template.getList("containerSlots", NBT.TAG_COMPOUND).map((tag: CompoundTag) => parseSlot(tag, Some(Slot.Container), hostClass)).take(3).padTo(3, NoSlot).toArray
-    val upgradeSlots = template.getList("upgradeSlots", NBT.TAG_COMPOUND).map((tag: CompoundTag) => parseSlot(tag, Some(Slot.Upgrade), hostClass)).take(9).padTo(9, NoSlot).toArray
-    val componentSlots = template.getList("componentSlots", NBT.TAG_COMPOUND).map((tag: CompoundTag) => parseSlot(tag, None, hostClass)).take(9).padTo(9, NoSlot).toArray
+    val containerSlots = template.getList("containerSlots", Tag.TAG_COMPOUND).map((tag: CompoundTag) => parseSlot(tag, Some(Slot.Container), hostClass)).take(3).padTo(3, NoSlot).toArray
+    val upgradeSlots = template.getList("upgradeSlots", Tag.TAG_COMPOUND).map((tag: CompoundTag) => parseSlot(tag, Some(Slot.Upgrade), hostClass)).take(9).padTo(9, NoSlot).toArray
+    val componentSlots = template.getList("componentSlots", Tag.TAG_COMPOUND).map((tag: CompoundTag) => parseSlot(tag, None, hostClass)).take(9).padTo(9, NoSlot).toArray
 
     templates += new Template(selector, validator, assembler, containerSlots, upgradeSlots, componentSlots)
   }

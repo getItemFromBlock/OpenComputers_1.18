@@ -42,9 +42,9 @@ abstract class Player(selfType: MenuType[_ <: Player], id: Int, val playerInvent
 
   protected val playerListeners = mutable.ArrayBuffer.empty[ServerPlayer]
 
-  override def stillValid(player: Player) = otherInventory.stillValid(player)
+  override def stillValid(player: player.Player) = otherInventory.stillValid(player)
 
-  override def clicked(slot: Int, dragType: Int, clickType: ClickType, player: Player): ItemStack = {
+  override def clicked(slot: Int, dragType: Int, clickType: ClickType, player: player.Player): ItemStack = {
     val result = super.clicked(slot, dragType, clickType, player)
     if (SideTracker.isServer) {
       broadcastChanges() // We have to enforce this more than MC does itself
@@ -54,7 +54,7 @@ abstract class Player(selfType: MenuType[_ <: Player], id: Int, val playerInvent
     result
   }
 
-  override def quickMoveStack(player: Player, index: Int): ItemStack = {
+  override def quickMoveStack(player: player.Player, index: Int): ItemStack = {
     val slot = Option(slots.get(index)).orNull
     if (slot != null && slot.hasItem) {
       tryTransferStackInSlot(slot, slot.container == otherInventory)

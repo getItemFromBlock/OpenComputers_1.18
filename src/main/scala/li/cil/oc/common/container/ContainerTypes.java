@@ -6,10 +6,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraftforge.common.extensions.IForgeContainerType;
+import net.minecraftforge.common.extensions.IForgeMenuType;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.network.IContainerFactory;
+import net.minecraftforge.network.IContainerFactory;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.ObjectHolder;
@@ -79,7 +79,7 @@ public final class ContainerTypes {
     }
 
     private static void register(IForgeRegistry<MenuType<?>> registry, String name, IContainerFactory<?> factory) {
-        MenuType<?> type = IForgeContainerType.create(factory);
+        MenuType<?> type = IForgeMenuType.create(factory);
         type.setRegistryName(new ResourceLocation(OpenComputers.ID(), name));
         registry.register(type);
     }

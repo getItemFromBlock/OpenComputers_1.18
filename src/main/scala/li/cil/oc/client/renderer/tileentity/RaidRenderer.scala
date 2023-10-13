@@ -12,7 +12,7 @@ import li.cil.oc.util.RenderState
 import net.minecraft.client.renderer.BufferBuilder
 import net.minecraft.client.renderer.MultiBufferSource
 import net.minecraft.client.renderer.texture.TextureAtlasSprite
-import net.minecraft.client.renderer.tileentity.TileEntityRenderer
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderer
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher
 import net.minecraft.core.Direction
 import net.minecraft.util.math.vector.Vector3f
@@ -21,7 +21,7 @@ object RaidRenderer extends Function[BlockEntityRenderDispatcher, RaidRenderer] 
   override def apply(dispatch: BlockEntityRenderDispatcher) = new RaidRenderer(dispatch)
 }
 
-class RaidRenderer(dispatch: BlockEntityRenderDispatcher) extends TileEntityRenderer[Raid](dispatch) {
+class RaidRenderer(dispatch: BlockEntityRenderDispatcher) extends BlockEntityRenderer[Raid](dispatch) {
   override def render(raid: Raid, dt: Float, stack: PoseStack, buffer: MultiBufferSource, light: Int, overlay: Int) {
     RenderState.checkError(getClass.getName + ".render: entering (aka: wasntme)")
 

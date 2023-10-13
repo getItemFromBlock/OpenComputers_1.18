@@ -13,7 +13,7 @@ import net.minecraft.resources.ResourceLocation
 import net.minecraftforge.api.distmarker.Dist
 import net.minecraftforge.api.distmarker.OnlyIn
 
-class DynamicComponentSlot(val agentContainer: Player, inventory: Container, index: Int, x: Int, y: Int, host: Class[_ <: EnvironmentHost],
+class DynamicComponentSlot(val agentContainer: li.cil.oc.common.container.Player, inventory: Container, index: Int, x: Int, y: Int, host: Class[_ <: EnvironmentHost],
     val info: DynamicComponentSlot => InventorySlot, val containerTierGetter: () => Int)
   extends ComponentSlot(inventory, index, x, y, host) {
 

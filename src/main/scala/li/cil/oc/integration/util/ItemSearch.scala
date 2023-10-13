@@ -9,7 +9,7 @@ import scala.collection.mutable
 object ItemSearch {
 
   val focusedInput = mutable.Set.empty[() => Boolean]
-  val stackFocusing = mutable.Set.empty[(ContainerScreen[_], Int, Int) => StackOption]
+  val stackFocusing = mutable.Set.empty[(AbstractContainerScreen[_], Int, Int) => StackOption]
 
   def isInputFocused: Boolean = {
     for (f <- focusedInput) {
@@ -18,7 +18,7 @@ object ItemSearch {
     false
   }
 
-  def hoveredStack(container: ContainerScreen[_], mouseX: Int, mouseY: Int): StackOption = {
+  def hoveredStack(container: AbstractContainerScreen[_], mouseX: Int, mouseY: Int): StackOption = {
     for (f <- stackFocusing) {
       f(container, mouseX, mouseY).foreach(stack => return StackOption(stack))
     }

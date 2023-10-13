@@ -9,7 +9,7 @@ import li.cil.oc.client.renderer.RenderTypes
 import li.cil.oc.common.tileentity.Case
 import li.cil.oc.util.RenderState
 import net.minecraft.client.renderer.MultiBufferSource
-import net.minecraft.client.renderer.tileentity.TileEntityRenderer
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderer
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher
 import net.minecraft.core.Direction
 import net.minecraft.resources.ResourceLocation
@@ -19,7 +19,7 @@ object CaseRenderer extends Function[BlockEntityRenderDispatcher, CaseRenderer] 
   override def apply(dispatch: BlockEntityRenderDispatcher) = new CaseRenderer(dispatch)
 }
 
-class CaseRenderer(dispatch: BlockEntityRenderDispatcher) extends TileEntityRenderer[Case](dispatch) {
+class CaseRenderer(dispatch: BlockEntityRenderDispatcher) extends BlockEntityRenderer[Case](dispatch) {
   override def render(computer: Case, dt: Float, stack: PoseStack, buffer: MultiBufferSource, light: Int, overlay: Int) {
     RenderState.checkError(getClass.getName + ".render: entering (aka: wasntme)")
 

@@ -8,7 +8,7 @@ import li.cil.oc.api.event.RackMountableRenderEvent
 import li.cil.oc.common.tileentity.Rack
 import li.cil.oc.util.RenderState
 import net.minecraft.client.renderer.MultiBufferSource
-import net.minecraft.client.renderer.tileentity.TileEntityRenderer
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderer
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher
 import net.minecraft.core.Direction
 import net.minecraft.util.math.vector.Vector3f
@@ -19,7 +19,7 @@ object RackRenderer extends Function[BlockEntityRenderDispatcher, RackRenderer] 
   override def apply(dispatch: BlockEntityRenderDispatcher) = new RackRenderer(dispatch)
 }
 
-class RackRenderer(dispatch: BlockEntityRenderDispatcher) extends TileEntityRenderer[Rack](dispatch) {
+class RackRenderer(dispatch: BlockEntityRenderDispatcher) extends BlockEntityRenderer[Rack](dispatch) {
   private final val vOffset = 2 / 16f
   private final val vSize = 3 / 16f
 

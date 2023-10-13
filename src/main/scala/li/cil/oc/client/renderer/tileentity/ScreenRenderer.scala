@@ -16,7 +16,7 @@ import li.cil.oc.integration.util.Wrench
 import li.cil.oc.util.RenderState
 import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.MultiBufferSource
-import net.minecraft.client.renderer.tileentity.TileEntityRenderer
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderer
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher
 import net.minecraft.world.item.ItemStack
 import net.minecraft.core.Direction
@@ -27,7 +27,7 @@ object ScreenRenderer extends Function[BlockEntityRenderDispatcher, ScreenRender
   override def apply(dispatch: BlockEntityRenderDispatcher) = new ScreenRenderer(dispatch)
 }
 
-class ScreenRenderer(dispatch: BlockEntityRenderDispatcher) extends TileEntityRenderer[Screen](dispatch) {
+class ScreenRenderer(dispatch: BlockEntityRenderDispatcher) extends BlockEntityRenderer[Screen](dispatch) {
   private val maxRenderDistanceSq = Settings.get.maxScreenTextRenderDistance * Settings.get.maxScreenTextRenderDistance
 
   private val fadeDistanceSq = Settings.get.screenTextFadeStartDistance * Settings.get.screenTextFadeStartDistance

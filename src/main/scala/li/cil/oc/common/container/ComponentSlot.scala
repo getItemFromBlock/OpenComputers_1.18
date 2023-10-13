@@ -14,7 +14,7 @@ import net.minecraftforge.api.distmarker.OnlyIn
 import scala.collection.convert.ImplicitConversionsToScala._
 
 abstract class ComponentSlot(inventory: Container, index: Int, x: Int, y: Int, host: Class[_ <: EnvironmentHost]) extends Slot(inventory, index, x, y) {
-  def agentContainer: Player
+  def agentContainer: li.cil.oc.common.container.Player
 
   def slot: String
 

@@ -39,7 +39,7 @@ class Assembler(state: container.Assembler, playerInventory: Inventory, name: Co
 
   protected var runButton: ImageButton = _
 
-  private val progress = addCustomWidget(new ProgressBar(28, 92))
+  private val progress = addRenderableWidget(new ProgressBar(28, 92))
 
   private def validate = AssemblerTemplates.select(inventoryContainer.getSlot(0).getItem).map(_.validate(inventoryContainer.otherInventory))
 
@@ -47,10 +47,10 @@ class Assembler(state: container.Assembler, playerInventory: Inventory, name: Co
 
   override protected def init(): Unit = {
     super.init()
-    runButton = new ImageButton(leftPos + 7, topPos + 89, 18, 18, new Button.IPressable {
+    runButton = new ImageButton(leftPos + 7, topPos + 89, 18, 18, new Button.OnPress {
       override def onPress(b: Button) = if (canBuild) ClientPacketSender.sendRobotAssemblerStart(inventoryContainer)
     }, Textures.GUI.ButtonRun, canToggle = true)
-    addButton(runButton)
+    addRenderableWidget(runButton)
   }
 
   override protected def renderLabels(stack: PoseStack, mouseX: Int, mouseY: Int): Unit = {
@@ -101,12 +101,13 @@ class Assembler(state: container.Assembler, playerInventory: Inventory, name: Co
   }
 
   override protected def renderBg(stack: PoseStack, dt: Float, mouseX: Int, mouseY: Int): Unit = {
-    RenderSystem.color3f(1, 1, 1) // Required under Linux.
+    // getItemFromBlock's note : color3f does not exist anymore, need to test on Linux or remake that part
+    // RenderSystem.color3f(1, 1, 1) // Required under Linux.
     Textures.bind(Textures.GUI.RobotAssembler)
     blit(stack, leftPos, topPos, 0, 0, imageWidth, imageHeight)
     if (inventoryContainer.isAssembling) progress.level = inventoryContainer.assemblyProgress / 100.0
     else progress.level = 0
-    drawWidgets(stack)
+    //drawWidgets(stack)
     drawInventorySlots(stack)
   }
 

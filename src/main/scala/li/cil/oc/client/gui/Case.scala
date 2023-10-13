@@ -18,17 +18,17 @@ class Case(state: container.Case, playerInventory: Inventory, name: Component)
 
   protected var powerButton: ImageButton = _
 
-  override def render(stack: PoseStack, mouseX: Int, mouseY: Int, dt: Float) {
+  override def render(stack: PoseStack, mouseX: Int, mouseY: Int, dt: Float): Unit = {
     powerButton.toggled = inventoryContainer.isRunning
     super.render(stack, mouseX, mouseY, dt)
   }
 
-  override protected def init() {
+  override protected def init(): Unit = {
     super.init()
-    powerButton = new ImageButton(leftPos + 70, topPos + 33, 18, 18, new Button.IPressable {
+    powerButton = new ImageButton(leftPos + 70, topPos + 33, 18, 18, new Button.OnPress {
       override def onPress(b: Button) = ClientPacketSender.sendComputerPower(inventoryContainer, !inventoryContainer.isRunning)
     }, Textures.GUI.ButtonPower, canToggle = true)
-    addButton(powerButton)
+    addRenderableWidget(powerButton)
   }
 
   override protected def drawSecondaryForegroundLayer(stack: PoseStack, mouseX: Int, mouseY: Int) = {
@@ -40,8 +40,8 @@ class Case(state: container.Case, playerInventory: Inventory, name: Component)
     }
   }
 
-  override def drawSecondaryBackgroundLayer(stack: PoseStack) {
-    RenderSystem.color3f(1, 1, 1)
+  override def drawSecondaryBackgroundLayer(stack: PoseStack): Unit = {
+    // RenderSystem.color3f(1, 1, 1)
     Textures.bind(Textures.GUI.Computer)
     blit(stack, leftPos, topPos, 0, 0, imageWidth, imageHeight)
   }

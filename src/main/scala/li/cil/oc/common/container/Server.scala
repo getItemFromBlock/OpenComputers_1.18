@@ -11,7 +11,7 @@ import net.minecraft.world.item.ItemStack
 import net.minecraft.nbt.CompoundTag
 
 class Server(selfType: MenuType[_ <: Server], id: Int, playerInventory: Inventory, val stack: ItemStack, serverInventory: Container, tier: Int, val rackSlot: Int)
-  extends Player(selfType, id, playerInventory, serverInventory) {
+  extends li.cil.oc.common.container.Player(selfType, id, playerInventory, serverInventory) {
 
   override protected def getHostClass = classOf[component.Server]
 
@@ -49,7 +49,7 @@ class Server(selfType: MenuType[_ <: Server], id: Int, playerInventory: Inventor
   // Show the player's inventory.
   addPlayerInventorySlots(8, 84)
 
-  override def stillValid(player: Player) = {
+  override def stillValid(player: player.Player) = {
     otherInventory match {
       case _: component.Server => super.stillValid(player)
       case _ => player == playerInventory.player

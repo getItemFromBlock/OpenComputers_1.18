@@ -11,7 +11,7 @@ import net.minecraft.world.inventory.DataSlot
 import net.minecraft.network.chat.Component
 
 class Case(selfType: MenuType[_ <: Case], id: Int, playerInventory: Inventory, computer: Container, tier: Int)
-  extends Player(selfType, id, playerInventory, computer) {
+  extends li.cil.oc.common.container.Player(selfType, id, playerInventory, computer) {
 
   override protected def getHostClass = classOf[tileentity.Case]
 
@@ -65,7 +65,7 @@ class Case(selfType: MenuType[_ <: Case], id: Int, playerInventory: Inventory, c
   }
   def isRunning = runningData.get != 0
 
-  override def stillValid(player: Player) =
+  override def stillValid(player: player.Player) =
     super.stillValid(player) && (computer match {
       case te: tileentity.Case => te.canInteract(player.getName.getString)
       case _ => true

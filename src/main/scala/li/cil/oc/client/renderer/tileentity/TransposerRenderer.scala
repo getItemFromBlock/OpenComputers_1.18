@@ -9,14 +9,14 @@ import li.cil.oc.client.renderer.RenderTypes
 import li.cil.oc.common.tileentity
 import li.cil.oc.util.RenderState
 import net.minecraft.client.renderer.MultiBufferSource
-import net.minecraft.client.renderer.tileentity.TileEntityRenderer
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderer
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher
 
 object TransposerRenderer extends Function[BlockEntityRenderDispatcher, TransposerRenderer] {
   override def apply(dispatch: BlockEntityRenderDispatcher) = new TransposerRenderer(dispatch)
 }
 
-class TransposerRenderer(dispatch: BlockEntityRenderDispatcher) extends TileEntityRenderer[tileentity.Transposer](dispatch) {
+class TransposerRenderer(dispatch: BlockEntityRenderDispatcher) extends BlockEntityRenderer[tileentity.Transposer](dispatch) {
   override def render(transposer: tileentity.Transposer, dt: Float, stack: PoseStack, buffer: MultiBufferSource, light: Int, overlay: Int) {
     RenderState.checkError(getClass.getName + ".render: entering (aka: wasntme)")
 

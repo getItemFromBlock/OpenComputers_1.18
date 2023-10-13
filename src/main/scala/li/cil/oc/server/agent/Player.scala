@@ -27,7 +27,7 @@ import net.minecraft.block.Blocks
 import net.minecraft.item.Items
 import net.minecraft.inventory._
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity
-import net.minecraft.inventory.container.PlayerContainer
+import net.minecraft.world.inventory.InventoryMenu
 import net.minecraft.item.BlockItem
 import net.minecraft.item.ItemUseContext
 import net.minecraft.world.item.ItemStack
@@ -168,7 +168,7 @@ class Player(val agent: internal.Agent) extends FakePlayer(agent.world.asInstanc
   {
     this.inventory = new AgentInventory(this, agent)
     // because the inventory was just overwritten, the container is now detached
-    this.inventoryMenu = new PlayerContainer(inventory, !level.isClientSide, this)
+    this.inventoryMenu = new InventoryMenu(inventory, !level.isClientSide, this)
     this.containerMenu = this.inventoryMenu
 
     try {

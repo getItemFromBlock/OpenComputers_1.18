@@ -17,7 +17,7 @@ import li.cil.oc.common.tileentity.Hologram
 import li.cil.oc.util.RenderState
 import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.MultiBufferSource
-import net.minecraft.client.renderer.tileentity.TileEntityRenderer
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderer
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher
 import net.minecraft.world.level.block.entity.BlockEntity
 import net.minecraft.core.Direction
@@ -32,7 +32,7 @@ import org.lwjgl.opengl.GL15
 import scala.util.Random
 
 object HologramRenderer extends Function[BlockEntityRenderDispatcher, HologramRenderer]
-  with Callable[Int] with RemovalListener[TileEntity, Int] {
+  with Callable[Int] with RemovalListener[BlockEntity, Int] {
 
   override def apply(dispatch: BlockEntityRenderDispatcher) = new HologramRenderer(dispatch)
 
@@ -393,7 +393,7 @@ object HologramRenderer extends Function[BlockEntityRenderDispatcher, HologramRe
     glBuffer
   }
 
-  def onRemoval(e: RemovalNotification[TileEntity, Int]) {
+  def onRemoval(e: RemovalNotification[BlockEntity, Int]) {
     val glBuffer = e.getValue
     GL15.glDeleteBuffers(glBuffer)
     dataBuffer.clear()
@@ -403,7 +403,7 @@ object HologramRenderer extends Function[BlockEntityRenderDispatcher, HologramRe
   def onTick(e: ClientTickEvent) = cache.cleanUp()
 }
 
-class HologramRenderer(dispatch: BlockEntityRenderDispatcher) extends TileEntityRenderer[Hologram](dispatch) {
+class HologramRenderer(dispatch: BlockEntityRenderDispatcher) extends BlockEntityRenderer[Hologram](dispatch) {
   override def render(hologram: Hologram, f: Float, stack: MatrixStack, buffer: MultiBufferSource, light: Int, overlay: Int) {
     if (HologramRenderer.failed) {
       HologramRendererFallback.render(hologram, f, stack, buffer, light, overlay)

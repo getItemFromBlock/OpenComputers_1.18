@@ -22,7 +22,6 @@ import li.cil.oc.common.EventHandler
 import li.cil.oc.common.container
 import li.cil.oc.common.container.ContainerTypes
 import li.cil.oc.common.inventory.ComponentInventory
-import li.cil.oc.common.inventory.Inventory
 import li.cil.oc.common.item.data.DroneData
 import li.cil.oc.integration.util.Wrench
 import li.cil.oc.server.agent
@@ -40,7 +39,6 @@ import net.minecraft.entity.MoverType
 import net.minecraft.entity.Pose
 import net.minecraft.entity.item.ItemEntity
 import net.minecraft.world.entity.player.Player
-import net.minecraft.world.entity.player.Inventory
 import net.minecraft.server.level.ServerPlayer
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity
 import net.minecraft.world.item.ItemStack
@@ -79,7 +77,7 @@ object Drone {
   val DataLightColor: DataParameter[Integer] = EntityDataManager.defineId(classOf[Drone], DataSerializers.INT)
 }
 
-abstract class DroneInventory(val drone: Drone) extends Inventory
+abstract class DroneInventory(val drone: Drone) extends li.cil.oc.common.inventory.Inventory
 
 // internal.Rotatable is also in internal.Drone, but it wasn't since the start
 // so this is to ensure it is implemented here, in the very unlikely case that
@@ -133,7 +131,7 @@ class Drone(selfType: EntityType[Drone], world: World) extends Entity(selfType, 
 
     override def onMessage(message: Message) {}
   }
-  val equipmentInventory = new Inventory {
+  val equipmentInventory = new li.cil.oc.common.inventory.Inventory {
     val items = Array.empty[ItemStack]
 
     override def getContainerSize = 0
@@ -495,7 +493,7 @@ class Drone(selfType: EntityType[Drone], world: World) extends Entity(selfType, 
   val containerProvider = new BaseContainerBlockEntity {
     override def getDisplayName = TextComponent.EMPTY
 
-    override def createMenu(id: Int, playerInventory: PlayerInventory, player: PlayerEntity) =
+    override def createMenu(id: Int, playerInventory: net.minecraft.world.entity.player.Inventory, player: PlayerEntity) =
       new container.Drone(ContainerTypes.DRONE, id, playerInventory, mainInventory, mainInventory.getContainerSize)
   }
 

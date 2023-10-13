@@ -11,9 +11,9 @@ import net.minecraft.network.chat.Component
 class Disassembler(state: container.Disassembler, playerInventory: Inventory, name: Component)
   extends DynamicGuiContainer(state, playerInventory, name) {
 
-  val progress = addCustomWidget(new ProgressBar(18, 65))
+  val progress = addRenderableWidget(new ProgressBar(18, 65))
 
-  override protected def renderLabels(stack: PoseStack, mouseX: Int, mouseY: Int) {
+  override protected def renderLabels(stack: PoseStack, mouseX: Int, mouseY: Int): Unit = {
     font.draw(stack, title, titleLabelX, titleLabelY, 0x404040)
     drawSecondaryForegroundLayer(stack, mouseX, mouseY)
 
@@ -22,11 +22,11 @@ class Disassembler(state: container.Disassembler, playerInventory: Inventory, na
     }
   }
 
-  override def renderBg(stack: PoseStack, dt: Float, mouseX: Int, mouseY: Int) {
-    RenderSystem.color3f(1, 1, 1)
+  override def renderBg(stack: PoseStack, dt: Float, mouseX: Int, mouseY: Int): Unit = {
+    // RenderSystem.color3f(1, 1, 1)
     Textures.bind(Textures.GUI.Disassembler)
     blit(stack, leftPos, topPos, 0, 0, imageWidth, imageHeight)
     progress.level = inventoryContainer.disassemblyProgress / 100.0
-    drawWidgets(stack)
+    //drawWidgets(stack)
   }
 }

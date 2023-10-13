@@ -17,7 +17,7 @@ import net.minecraft.client.renderer.texture.AtlasTexture
 import net.minecraft.client.renderer.texture.TextureAtlasSprite
 import net.minecraft.world.entity.LivingEntity
 import net.minecraft.world.item.ItemStack
-import net.minecraft.inventory.container.PlayerContainer
+import net.minecraft.world.inventory.InventoryMenu
 import net.minecraft.core.Direction
 import net.minecraft.resources.ResourceLocation
 import com.mojang.math.Vector3d
@@ -83,7 +83,7 @@ object NetSplitterModel extends SmartBlockModelBase {
 
   @SubscribeEvent
   def onTextureStitch(e: TextureStitchEvent.Post): Unit = {
-    if (e.getMap.location.equals(PlayerContainer.BLOCK_ATLAS)) BaseModel = GenerateBaseModel(e.getMap)
+    if (e.getMap.location.equals(InventoryMenu.BLOCK_ATLAS)) BaseModel = GenerateBaseModel(e.getMap)
   }
 
   protected def addSideQuads(faces: mutable.ArrayBuffer[BakedQuad], openSides: Array[Boolean]): Unit = {

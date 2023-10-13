@@ -9,7 +9,7 @@ import net.minecraft.world.inventory.MenuType
 import net.minecraft.world.item.ItemStack
 
 class Tablet(selfType: MenuType[_ <: Tablet], id: Int, playerInventory: Inventory, val stack: ItemStack, tablet: Container, slot1: String, tier1: Int)
-  extends Player(selfType, id, playerInventory, tablet) {
+  extends li.cil.oc.common.container.Player(selfType, id, playerInventory, tablet) {
 
   override protected def getHostClass = classOf[TabletWrapper]
 
@@ -22,5 +22,5 @@ class Tablet(selfType: MenuType[_ <: Tablet], id: Int, playerInventory: Inventor
 
   addPlayerInventorySlots(8, 84)
 
-  override def stillValid(player: Player) = player == playerInventory.player
+  override def stillValid(player: player.Player) = player == playerInventory.player
 }

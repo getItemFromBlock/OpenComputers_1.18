@@ -6,12 +6,13 @@ import li.cil.oc.common.Slot
 import li.cil.oc.common.Tier
 import li.cil.oc.util.RenderState
 import net.minecraft.client.Minecraft
-import net.minecraft.inventory.container.PlayerContainer
+import net.minecraft.world.inventory.InventoryMenu
 import net.minecraft.client.renderer.texture.SimpleTexture
 import net.minecraft.client.renderer.texture.TextureAtlasSprite
 import net.minecraft.resources.ResourceLocation
 import net.minecraftforge.client.event.TextureStitchEvent
 import net.minecraftforge.eventbus.api.SubscribeEvent
+import com.mojang.blaze3d.systems.RenderSystem;
 
 import scala.collection.mutable
 
@@ -527,12 +528,12 @@ object Textures {
       )
 
       // The hacks I do for namespacing...
-      private[Block] def makeSureThisIsInitialized() {}
+      private[Block] def makeSureThisIsInitialized(): Unit = {}
     }
 
     Screen.makeSureThisIsInitialized()
 
-    def bind(): Unit = Textures.bind(PlayerContainer.BLOCK_ATLAS)
+    def bind(): Unit = Textures.bind(InventoryMenu.BLOCK_ATLAS)
 
     override protected def basePath = "blocks/%s"
 
@@ -540,17 +541,15 @@ object Textures {
   }
 
   def bind(location: ResourceLocation): Unit = {
-    val texture = if (location != null) Minecraft.getInstance.textureManager.getTexture(location) else null
-    if (texture != null) texture.bind()
-    else RenderState.bindTexture(0)
+    RenderSystem.setShaderTexture(0, location);
   }
 
   def getSprite(location: ResourceLocation): TextureAtlasSprite =
-    Minecraft.getInstance.getModelManager.getAtlas(PlayerContainer.BLOCK_ATLAS).getSprite(location)
+    Minecraft.getInstance.getModelManager.getAtlas(InventoryMenu.BLOCK_ATLAS).getSprite(location)
 
   @SubscribeEvent
   def onTextureStitchPre(e: TextureStitchEvent.Pre): Unit = {
-    if (e.getMap.location.equals(PlayerContainer.BLOCK_ATLAS)) {
+    if (e.getAtlas().location().equals(InventoryMenu.BLOCK_ATLAS)) {
       Font.init(e)
       GUI.init(e)
       Icons.init(e)

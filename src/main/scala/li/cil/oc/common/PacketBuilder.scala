@@ -31,7 +31,7 @@ abstract class PacketBuilder(stream: OutputStream) extends DataOutputStream(stre
   def writeRegistryEntry[T <: IForgeRegistryEntry[T]](registry: IForgeRegistry[T], value: T): Unit =
     writeInt(registry.asInstanceOf[ForgeRegistry[T]].getID(value))
 
-  def writeTileEntity(t: TileEntity) {
+  def writeTileEntity(t: BlockEntity) {
     writeUTF(t.getLevel.dimension.location.toString)
     writeInt(t.getBlockPos.getX)
     writeInt(t.getBlockPos.getY)
@@ -78,12 +78,12 @@ abstract class PacketBuilder(stream: OutputStream) extends DataOutputStream(stre
 
   def sendToPlayersNearHost(host: EnvironmentHost, range: Option[Double] = None): Unit = {
     host match {
-      case t: TileEntity => sendToPlayersNearTileEntity(t, range)
+      case t: BlockEntity => sendToPlayersNearTileEntity(t, range)
       case _ => sendToNearbyPlayers(host.world, host.xPosition, host.yPosition, host.zPosition, range)
     }
   }
 
-  def sendToPlayersNearTileEntity(t: TileEntity, range: Option[Double] = None) {
+  def sendToPlayersNearTileEntity(t: BlockEntity, range: Option[Double] = None) {
     t.getLevel match {
       case w: ServerLevel =>
         val chunk = new ChunkPos(t.getBlockPos)

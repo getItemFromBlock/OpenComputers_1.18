@@ -9,14 +9,14 @@ import li.cil.oc.client.renderer.RenderTypes
 import li.cil.oc.common.tileentity
 import li.cil.oc.util.RenderState
 import net.minecraft.client.renderer.MultiBufferSource
-import net.minecraft.client.renderer.tileentity.TileEntityRenderer
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderer
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher
 
 object DisassemblerRenderer extends Function[BlockEntityRenderDispatcher, DisassemblerRenderer] {
   override def apply(dispatch: BlockEntityRenderDispatcher) = new DisassemblerRenderer(dispatch)
 }
 
-class DisassemblerRenderer(dispatch: BlockEntityRenderDispatcher) extends TileEntityRenderer[tileentity.Disassembler](dispatch) {
+class DisassemblerRenderer(dispatch: BlockEntityRenderDispatcher) extends BlockEntityRenderer[tileentity.Disassembler](dispatch) {
   override def render(disassembler: tileentity.Disassembler, dt: Float, stack: PoseStack, buffer: MultiBufferSource, light: Int, overlay: Int) {
     RenderState.checkError(getClass.getName + ".render: entering (aka: wasntme)")
 

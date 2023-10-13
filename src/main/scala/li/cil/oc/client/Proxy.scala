@@ -1,6 +1,6 @@
 package li.cil.oc.client
 
-import com.mojang.blaze3d.systems.RenderCall
+import com.mojang.blaze3d.pipeline.RenderCall
 import com.mojang.blaze3d.systems.RenderSystem
 import li.cil.oc.OpenComputers
 import li.cil.oc.api
@@ -43,13 +43,13 @@ private[oc] class Proxy extends CommonProxy {
   modBus.register(NetSplitterModel)
   modBus.register(Textures)
 
-  override def preInit() {
+  override def preInit(): Unit = {
     super.preInit()
 
     api.API.manual = client.Manual
   }
 
-  override def init(e: FMLCommonSetupEvent) {
+  override def init(e: FMLCommonSetupEvent): Unit = {
     super.init(e)
 
     CommonPacketHandler.clientHandler = PacketHandler

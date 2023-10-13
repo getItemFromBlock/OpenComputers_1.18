@@ -10,7 +10,7 @@ import li.cil.oc.client.renderer.RenderTypes
 import li.cil.oc.common.tileentity.Microcontroller
 import li.cil.oc.util.RenderState
 import net.minecraft.client.renderer.MultiBufferSource
-import net.minecraft.client.renderer.tileentity.TileEntityRenderer
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderer
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher
 import net.minecraft.core.Direction
 import net.minecraft.resources.ResourceLocation
@@ -20,7 +20,7 @@ object MicrocontrollerRenderer extends Function[BlockEntityRenderDispatcher, Mic
   override def apply(dispatch: BlockEntityRenderDispatcher) = new MicrocontrollerRenderer(dispatch)
 }
 
-class MicrocontrollerRenderer(dispatch: BlockEntityRenderDispatcher) extends TileEntityRenderer[Microcontroller](dispatch) {
+class MicrocontrollerRenderer(dispatch: BlockEntityRenderDispatcher) extends BlockEntityRenderer[Microcontroller](dispatch) {
   override def render(mcu: Microcontroller, dt: Float, stack: PoseStack, buffer: MultiBufferSource, light: Int, overlay: Int) {
     RenderState.checkError(getClass.getName + ".render: entering (aka: wasntme)")
 

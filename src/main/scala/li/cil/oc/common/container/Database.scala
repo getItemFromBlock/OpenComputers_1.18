@@ -10,7 +10,7 @@ import net.minecraft.world.inventory.Slot
 import net.minecraft.world.item.ItemStack
 
 class Database(selfType: MenuType[_ <: Database], id: Int, playerInventory: Inventory, val container: ItemStack, databaseInventory: Container, val tier: Int)
-  extends Player(selfType, id, playerInventory, databaseInventory) {
+  extends li.cil.oc.common.container.Player(selfType, id, playerInventory, databaseInventory) {
 
   override protected def getHostClass = null
 
@@ -24,9 +24,9 @@ class Database(selfType: MenuType[_ <: Database], id: Int, playerInventory: Inve
   // Show the player's inventory.
   addPlayerInventorySlots(8, 174)
 
-  override def stillValid(player: Player) = player == playerInventory.player
+  override def stillValid(player: player.Player) = player == playerInventory.player
 
-  override def clicked(slot: Int, dragType: Int, clickType: ClickType, player: Player): ItemStack = {
+  override def clicked(slot: Int, dragType: Int, clickType: ClickType, player: player.Player): ItemStack = {
     if (slot >= databaseInventory.getContainerSize() || slot < 0) {
       // if the slot interaction is with the user inventory use
       // default behavior
