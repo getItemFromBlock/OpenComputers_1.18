@@ -15,7 +15,7 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher
 import net.minecraft.core.Direction
-import net.minecraft.util.math.vector.Vector3f
+import com.mojang.math.Vector3f
 
 object RaidRenderer extends Function[BlockEntityRenderDispatcher, RaidRenderer] {
   override def apply(dispatch: BlockEntityRenderDispatcher) = new RaidRenderer(dispatch)
@@ -25,7 +25,7 @@ class RaidRenderer(dispatch: BlockEntityRenderDispatcher) extends BlockEntityRen
   override def render(raid: Raid, dt: Float, stack: PoseStack, buffer: MultiBufferSource, light: Int, overlay: Int) {
     RenderState.checkError(getClass.getName + ".render: entering (aka: wasntme)")
 
-    RenderSystem.color4f(1, 1, 1, 1)
+    // RenderSystem.color4f(1, 1, 1, 1)
 
     stack.pushPose()
 

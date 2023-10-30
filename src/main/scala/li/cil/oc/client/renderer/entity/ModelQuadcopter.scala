@@ -8,7 +8,7 @@ import net.minecraft.client.renderer.entity.model.EntityModel
 import net.minecraft.client.renderer.model.ModelRenderer
 import net.minecraft.client.renderer.texture.OverlayTexture
 import com.mojang.math.Vector3d
-import net.minecraft.util.math.vector.Vector3f
+import com.mojang.math.Vector3f
 
 final class ModelQuadcopter extends EntityModel[Drone] {
   val body = new ModelRenderer(this)

@@ -30,7 +30,7 @@ import org.lwjgl.opengl.GL11
 import scala.collection.convert.ImplicitConversionsToJava._
 import scala.collection.convert.ImplicitConversionsToScala._
 
-// getItemFromBlock's note : See CustomGuiContainer.scala for more infos
+// getItemFromBlock's note : I am going to assume that it is no longer relevant to have a custom GUI container implementation
 
 abstract class DynamicGuiContainer[C <: AbstractContainerMenu](val inventoryContainer: C, inv: Inventory, title: Component)
   extends AbstractContainerScreen(inventoryContainer, inv, title) {

@@ -6,7 +6,7 @@ import li.cil.oc.common.tileentity.Hologram
 import li.cil.oc.util.RenderState
 import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.MultiBufferSource
-import net.minecraft.util.math.vector.Vector3f
+import com.mojang.math.Vector3f
 
 object HologramRendererFallback {
   var text = "Requires OpenGL 1.5"
@@ -14,7 +14,7 @@ object HologramRendererFallback {
   def render(hologram: Hologram, f: Float, stack: PoseStack, buffer: MultiBufferSource, light: Int, overlay: Int) {
     RenderState.checkError(getClass.getName + ".render: entering (aka: wasntme)")
 
-    RenderSystem.color4f(1, 1, 1, 1)
+    // RenderSystem.color4f(1, 1, 1, 1)
 
     val fontRenderer = Minecraft.getInstance.font
 

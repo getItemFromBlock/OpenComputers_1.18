@@ -4,14 +4,13 @@ import com.mojang.blaze3d.vertex.PoseStack
 import li.cil.oc.api
 import li.cil.oc.client.renderer.TextBufferRenderCache
 import li.cil.oc.client.renderer.gui.BufferRenderer
-import net.minecraft.client.gui.INestedGuiEventHandler
-import net.minecraft.client.gui.screen
-import net.minecraft.client.settings.KeyBinding
+import net.minecraft.client.gui.components.events.ContainerEventHandler
+import net.minecraft.client.KeyMapping
 import net.minecraft.network.chat.TextComponent
 import org.lwjgl.glfw.GLFW
 
 class Screen(val buffer: api.internal.TextBuffer, val hasMouse: Boolean, val hasKeyboardCallback: () => Boolean, val hasPower: () => Boolean)
-  extends screen.Screen(TextComponent.EMPTY) with traits.InputBuffer with INestedGuiEventHandler {
+  extends net.minecraft.client.gui.screens.Screen(TextComponent.EMPTY) with traits.InputBuffer with ContainerEventHandler {
 
   override protected def hasKeyboard = hasKeyboardCallback()
 
@@ -78,7 +77,7 @@ class Screen(val buffer: api.internal.TextBuffer, val hasMouse: Boolean, val has
     super.mouseReleased(mouseX, mouseY, button)
   }
 
-  private def clickOrDrag(mouseX: Double, mouseY: Double, button: Int) {
+  private def clickOrDrag(mouseX: Double, mouseY: Double, button: Int): Unit = {
     toBufferCoordinates(mouseX, mouseY) match {
       case Some((bx, by)) if bx.toInt != mx || (by*2).toInt != my =>
         if (mx >= 0 && my >= 0) buffer.mouseDrag(bx, by, button, null)
@@ -102,7 +101,7 @@ class Screen(val buffer: api.internal.TextBuffer, val hasMouse: Boolean, val has
   override protected def init(): Unit = {
     super.init()
     minecraft.mouseHandler.releaseMouse()
-    KeyBinding.releaseAll()
+    KeyMapping.releaseAll()
   }
 
   override def render(stack: PoseStack, mouseX: Int, mouseY: Int, dt: Float): Unit = {
@@ -110,7 +109,7 @@ class Screen(val buffer: api.internal.TextBuffer, val hasMouse: Boolean, val has
     drawBufferLayer(stack)
   }
 
-  override def drawBuffer(stack: PoseStack) {
+  override def drawBuffer(stack: PoseStack): Unit = {
     stack.translate(x, y, 0)
     BufferRenderer.drawBackground(stack, innerWidth, innerHeight)
     if (hasPower()) {

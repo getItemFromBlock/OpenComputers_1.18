@@ -9,11 +9,12 @@ import li.cil.oc.client.Textures
 import li.cil.oc.integration.util.ItemSearch
 import li.cil.oc.util.RenderState
 import net.minecraft.client.Minecraft
-import net.minecraft.client.gui.screen.Screen
+import net.minecraft.client.gui.screens.Screen
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen
+import com.mojang.blaze3d.platform.InputConstants
 import com.mojang.blaze3d.vertex.Tesselator
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats
-import net.minecraft.client.util.InputMappings
+import com.mojang.blaze3d.vertex.DefaultVertexFormat
+import net.minecraft.client.KeyMapping
 import org.lwjgl.glfw.GLFW
 import org.lwjgl.opengl.GL11
 
@@ -83,7 +84,7 @@ trait InputBuffer extends DisplayBuffer {
     Minecraft.getInstance.keyboardHandler.setSendRepeatsToGui(true)
   }
 
-  override protected def drawBufferLayer(stack: PoseStack) {
+  override protected def drawBufferLayer(stack: PoseStack): Unit = {
     super.drawBufferLayer(stack)
 
     if (System.currentTimeMillis() - showKeyboardMissing < 1000) {
@@ -94,11 +95,11 @@ trait InputBuffer extends DisplayBuffer {
 
       val t = Tesselator.getInstance
       val r = t.getBuilder
-      r.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX)
-      r.vertex(stack.last.pose, x, y + 16, 0).uv(0, 1).endVertex()
-      r.vertex(stack.last.pose, x + 16, y + 16, 0).uv(1, 1).endVertex()
-      r.vertex(stack.last.pose, x + 16, y, 0).uv(1, 0).endVertex()
-      r.vertex(stack.last.pose, x, y, 0).uv(0, 0).endVertex()
+      r.begin(com.mojang.blaze3d.vertex.VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX)
+      r.vertex(stack.last.pose, x.toFloat, y.toFloat + 16, 0).uv(0, 1).endVertex()
+      r.vertex(stack.last.pose, x.toFloat + 16, y.toFloat + 16, 0).uv(1, 1).endVertex()
+      r.vertex(stack.last.pose, x.toFloat + 16, y.toFloat, 0).uv(1, 0).endVertex()
+      r.vertex(stack.last.pose, x.toFloat, y.toFloat, 0).uv(0, 0).endVertex()
       t.end()
 
       RenderState.checkError(getClass.getName + ".drawBufferLayer: keyboard icon")
@@ -123,7 +124,7 @@ trait InputBuffer extends DisplayBuffer {
     }
   }
 
-  def onInput(input: InputMappings.Input): Boolean = {
+  def onInput(input: InputConstants.Key): Boolean = {
     if (KeyBindings.clipboardPaste.isActiveAndMatches(input)) {
       if (buffer != null) {
         if (hasKeyboard) buffer.clipboard(Minecraft.getInstance.keyboardHandler.getClipboard, null)
@@ -135,7 +136,7 @@ trait InputBuffer extends DisplayBuffer {
   }
 
   override def charTyped(codePt: Char, mods: Int): Boolean = {
-    if (!this.isInstanceOf[ContainerScreen[_]] || !ItemSearch.isInputFocused) {
+    if (!this.isInstanceOf[AbstractContainerScreen[_]] || !ItemSearch.isInputFocused) {
       if (buffer != null) {
         if (hasKeyboard) pushQueuedChar(codePt)
         else showKeyboardMissing = System.currentTimeMillis()
@@ -146,12 +147,12 @@ trait InputBuffer extends DisplayBuffer {
   }
 
   override def keyPressed(keyCode: Int, scanCode: Int, mods: Int): Boolean = {
-    if (!this.isInstanceOf[ContainerScreen[_]] || !ItemSearch.isInputFocused) {
+    if (!this.isInstanceOf[AbstractContainerScreen[_]] || !ItemSearch.isInputFocused) {
       if (keyCode == GLFW.GLFW_KEY_ESCAPE && shouldCloseOnEsc) {
         onClose()
         return true
       }
-      if (onInput(InputMappings.getKey(keyCode, scanCode))) return true
+      if (onInput(InputConstants.getKey(keyCode, scanCode))) return true
       if (buffer != null && keyCode != GLFW.GLFW_KEY_UNKNOWN) {
         if (hasKeyboard) pushQueuedKey(keyCode)
         else showKeyboardMissing = System.currentTimeMillis()
@@ -162,7 +163,7 @@ trait InputBuffer extends DisplayBuffer {
   }
 
   override def keyReleased(keyCode: Int, scanCode: Int, mods: Int): Boolean = {
-    if (!this.isInstanceOf[ContainerScreen[_]] || !ItemSearch.isInputFocused) {
+    if (!this.isInstanceOf[AbstractContainerScreen[_]] || !ItemSearch.isInputFocused) {
       flushQueuedKey()
       pressedKeys.remove(keyCode) match {
         case Some(char) => {
@@ -184,7 +185,7 @@ trait InputBuffer extends DisplayBuffer {
   }
 
   override def mouseClicked(x: Double, y: Double, button: Int): Boolean = {
-    if (onInput(InputMappings.Type.MOUSE.getOrCreate(button))) return true
+    if (onInput(InputConstants.Type.MOUSE.getOrCreate(button))) return true
     if (buffer != null && button == GLFW.GLFW_MOUSE_BUTTON_MIDDLE) {
       if (hasKeyboard) buffer.clipboard(Minecraft.getInstance.keyboardHandler.getClipboard, null)
       else showKeyboardMissing = System.currentTimeMillis()

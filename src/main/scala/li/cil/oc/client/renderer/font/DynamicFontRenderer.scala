@@ -12,7 +12,7 @@ import net.minecraft.client.renderer.RenderType
 import net.minecraft.client.renderer.texture.TextureUtil
 import net.minecraft.resources.IReloadableResourceManager
 import net.minecraft.resources.IResourceManager
-import net.minecraft.resources.IResourceManagerReloadListener
+import net.minecraft.server.packs.resources.ResourceManagerReloadListener
 import net.minecraft.util.math.vector.Matrix4f
 import net.minecraft.util.math.vector.Vector4f
 import org.lwjgl.BufferUtils
@@ -24,7 +24,7 @@ import scala.collection.mutable
  * Font renderer that dynamically generates lookup textures by rendering a font
  * to it. It's pretty broken right now, and font rendering looks crappy as hell.
  */
-class DynamicFontRenderer extends TextureFontRenderer with IResourceManagerReloadListener {
+class DynamicFontRenderer extends TextureFontRenderer with ResourceManagerReloadListener {
   private val glyphProvider: IGlyphProvider = Settings.get.fontRenderer match {
     case _ => new FontParserHex()
   }

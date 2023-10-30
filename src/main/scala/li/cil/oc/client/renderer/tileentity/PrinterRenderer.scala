@@ -13,7 +13,7 @@ import com.mojang.blaze3d.platform.Lighting
 import net.minecraft.client.renderer.model.ItemCameraTransforms
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher
-import net.minecraft.util.math.vector.Vector3f
+import com.mojang.math.Vector3f
 import org.lwjgl.opengl.GL13
 
 object PrinterRenderer extends Function[BlockEntityRenderDispatcher, PrinterRenderer] {

@@ -21,13 +21,13 @@ import net.minecraft.client.renderer._
 import net.minecraft.client.renderer.model.ItemCameraTransforms.TransformType
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats
+import com.mojang.blaze3d.vertex.DefaultVertexFormat
 import net.minecraft.item.Items
 import net.minecraft.item.BlockItem
 import net.minecraft.world.item.ItemStack
 import net.minecraft.core.Direction
 import com.mojang.math.Vector3d
-import net.minecraft.util.math.vector.Vector3f
+import com.mojang.math.Vector3f
 import net.minecraft.util.math.vector.Matrix3f
 import net.minecraft.util.text.TextFormatting
 import net.minecraftforge.client.ForgeHooksClient

@@ -4,10 +4,12 @@ import com.mojang.blaze3d.vertex.PoseStack
 import net.minecraft.client.gui.components.Widget
 import li.cil.oc.client.Textures
 import com.mojang.blaze3d.vertex.Tesselator
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats
+import com.mojang.blaze3d.vertex.BufferUploader
+import com.mojang.blaze3d.vertex.DefaultVertexFormat
+import net.minecraft.network.chat.TextComponent
 import org.lwjgl.opengl.GL11
 
-class ProgressBar(val x: Int, val y: Int) extends net.minecraft.client.gui.components.AbstractWidget {
+class ProgressBar(val x: Int, val y: Int) extends net.minecraft.client.gui.components.AbstractWidget(x, y, 140, 12, TextComponent.EMPTY) {
 
   override def width = 140
 
@@ -17,25 +19,24 @@ class ProgressBar(val x: Int, val y: Int) extends net.minecraft.client.gui.compo
 
   var level = 0.0
 
-  override def render(stack: PoseStack, mouseX: Int, mouseY: Int, partialTicks: Float) {
+  override def render(stack: PoseStack, mouseX: Int, mouseY: Int, partialTicks: Float): Unit = {
     if (level > 0) {
       val u0 = 0
       val u1 = level.toFloat
       val v0 = 0
       val v1 = 1
-      val tx = owner.windowX + x
-      val ty = owner.windowY + y
       val w = (width * level).toFloat
 
       Textures.bind(barTexture)
       val t = Tesselator.getInstance
       val r = t.getBuilder
-      r.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX)
-      r.vertex(stack.last.pose, tx, ty, owner.windowZ).uv(u0, v0).endVertex()
-      r.vertex(stack.last.pose, tx, ty + height, owner.windowZ).uv(u0, v1).endVertex()
-      r.vertex(stack.last.pose, tx + w, ty + height, owner.windowZ).uv(u1, v1).endVertex()
-      r.vertex(stack.last.pose, tx + w, ty, owner.windowZ).uv(u1, v0).endVertex()
-      t.end()
+      r.begin(com.mojang.blaze3d.vertex.VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX)
+      r.vertex(stack.last.pose, x.toFloat, y.toFloat, 0).uv(u0.toFloat, v0.toFloat).endVertex()
+      r.vertex(stack.last.pose, x.toFloat, y.toFloat + height, 0).uv(u0.toFloat, v1.toFloat).endVertex()
+      r.vertex(stack.last.pose, x.toFloat + w, y.toFloat + height, 0).uv(u1.toFloat, v1.toFloat).endVertex()
+      r.vertex(stack.last.pose, x.toFloat + w, y.toFloat, 0).uv(u1.toFloat, v0.toFloat).endVertex()
+      r.end()
+      BufferUploader.end(r)
     }
   }
 }

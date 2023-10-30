@@ -16,7 +16,7 @@ import li.cil.oc.common.nanomachines.ControllerImpl
 import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.MultiBufferSource
 import com.mojang.blaze3d.vertex.Tesselator
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats
+import com.mojang.blaze3d.vertex.DefaultVertexFormat
 import net.minecraft.world.entity.player.Player
 import net.minecraft.nbt.NbtIo
 import net.minecraft.nbt.CompoundTag
@@ -30,8 +30,8 @@ import net.minecraftforge.event.entity.player.PlayerEvent.PlayerRespawnEvent
 object NanomachinesHandler {
 
   object Client {
-    val TexNanomachines = RenderTypes.createTexturedQuad("nanomachines", Textures.GUI.Nanomachines, DefaultVertexFormats.POSITION_TEX, false)
-    val TexNanomachinesBar = RenderTypes.createTexturedQuad("nanomachines_bar", Textures.GUI.NanomachinesBar, DefaultVertexFormats.POSITION_TEX, false)
+    val TexNanomachines = RenderTypes.createTexturedQuad("nanomachines", Textures.GUI.Nanomachines, DefaultVertexFormat.POSITION_TEX, false)
+    val TexNanomachinesBar = RenderTypes.createTexturedQuad("nanomachines_bar", Textures.GUI.NanomachinesBar, DefaultVertexFormat.POSITION_TEX, false)
 
     @SubscribeEvent
     def onRenderGameOverlay(e: RenderGameOverlayEvent.Post): Unit = {

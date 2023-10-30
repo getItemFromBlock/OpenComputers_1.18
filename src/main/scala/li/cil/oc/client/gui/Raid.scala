@@ -10,8 +10,8 @@ import net.minecraft.network.chat.Component
 class Raid(state: container.Raid, playerInventory: Inventory, name: Component)
   extends DynamicGuiContainer(state, playerInventory, name) {
 
-  override def renderBg(stack: PoseStack, dt: Float, mouseX: Int, mouseY: Int) {
-    RenderSystem.color3f(1, 1, 1) // Required under Linux.
+  override def renderBg(stack: PoseStack, dt: Float, mouseX: Int, mouseY: Int): Unit = {
+    // RenderSystem.color3f(1, 1, 1) // Required under Linux.
     Textures.bind(Textures.GUI.Raid)
     blit(stack, leftPos, topPos, 0, 0, imageWidth, imageHeight)
   }

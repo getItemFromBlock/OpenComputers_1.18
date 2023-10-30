@@ -15,7 +15,7 @@ import net.minecraft.client.renderer.model.ItemCameraTransforms
 import net.minecraft.entity.item.ItemEntity
 import net.minecraft.world.item.ItemStack
 import net.minecraft.resources.ResourceLocation
-import net.minecraft.util.math.vector.Vector3f
+import com.mojang.math.Vector3f
 import net.minecraftforge.common.util.Constants.NBT
 import net.minecraftforge.eventbus.api.SubscribeEvent
 import org.lwjgl.opengl.GL11

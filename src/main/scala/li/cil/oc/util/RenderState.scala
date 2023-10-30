@@ -76,7 +76,7 @@ object RenderState {
   }
 
   def setBlendAlpha(alpha: Float) = {
-    RenderSystem.color4f(1, 1, 1, alpha)
+    // RenderSystem.color4f(1, 1, 1, alpha)
     RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE)
   }
 

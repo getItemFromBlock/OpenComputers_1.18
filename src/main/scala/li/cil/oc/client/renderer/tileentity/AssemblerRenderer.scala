@@ -11,7 +11,7 @@ import li.cil.oc.util.RenderState
 import net.minecraft.client.renderer.MultiBufferSource
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher
-import net.minecraft.util.math.vector.Vector3f
+import com.mojang.math.Vector3f
 
 object AssemblerRenderer extends Function[BlockEntityRenderDispatcher, AssemblerRenderer] {
   override def apply(dispatch: BlockEntityRenderDispatcher) = new AssemblerRenderer(dispatch)
@@ -21,7 +21,7 @@ class AssemblerRenderer(dispatch: BlockEntityRenderDispatcher) extends BlockEnti
   override def render(assembler: Assembler, dt: Float, stack: PoseStack, buffer: MultiBufferSource, light: Int, overlay: Int) {
     RenderState.checkError(getClass.getName + ".render: entering (aka: wasntme)")
 
-    RenderSystem.color4f(1, 1, 1, 1)
+    // RenderSystem.color4f(1, 1, 1, 1)
 
     stack.pushPose()
 

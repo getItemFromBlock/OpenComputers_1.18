@@ -20,7 +20,7 @@ class TransposerRenderer(dispatch: BlockEntityRenderDispatcher) extends BlockEnt
   override def render(transposer: tileentity.Transposer, dt: Float, stack: PoseStack, buffer: MultiBufferSource, light: Int, overlay: Int) {
     RenderState.checkError(getClass.getName + ".render: entering (aka: wasntme)")
 
-    RenderSystem.color4f(1, 1, 1, 1)
+    // RenderSystem.color4f(1, 1, 1, 1)
 
     val activity = math.max(0, 1 - (System.currentTimeMillis() - transposer.lastOperation) / 1000.0f)
     if (activity > 0) {

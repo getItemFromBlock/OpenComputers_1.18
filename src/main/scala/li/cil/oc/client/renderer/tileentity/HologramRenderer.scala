@@ -21,7 +21,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderer
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher
 import net.minecraft.world.level.block.entity.BlockEntity
 import net.minecraft.core.Direction
-import net.minecraft.util.math.vector.Vector3f
+import com.mojang.math.Vector3f
 import net.minecraftforge.client.event.RenderWorldLastEvent
 import net.minecraftforge.event.TickEvent.ClientTickEvent
 import net.minecraftforge.eventbus.api.SubscribeEvent
@@ -167,10 +167,10 @@ object HologramRenderer extends Function[BlockEntityRenderDispatcher, HologramRe
     RenderSystem.multMatrix(stack.last.pose)
     val glBuffer = cache.get(hologram, this)
     GL11.glEnable(GL11.GL_DEPTH_TEST)
-    RenderSystem.colorMask(false, false, false, false)
+    // RenderSystem.colorMask(false, false, false, false)
     RenderSystem.depthMask(true)
     draw(glBuffer)
-    RenderSystem.colorMask(true, true, true, true)
+    // RenderSystem.colorMask(true, true, true, true)
     RenderSystem.depthFunc(GL11.GL_EQUAL)
     draw(glBuffer)
     RenderSystem.depthFunc(GL11.GL_LEQUAL)
@@ -377,7 +377,7 @@ object HologramRenderer extends Function[BlockEntityRenderDispatcher, HologramRe
     GL11.glColorPointer(3, GL11.GL_UNSIGNED_BYTE, 4, 0)
 
     GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, glBuffer)
-    GL11.glDrawElements(GL11.GL_QUADS, hologram.visibleQuads * 4, GL11.GL_UNSIGNED_INT, hologram.width * hologram.width * hologram.height * 6 * 4 * 4)
+    GL11.glDrawElements(com.mojang.blaze3d.vertex.VertexFormat.Mode.QUADS, hologram.visibleQuads * 4, GL11.GL_UNSIGNED_INT, hologram.width * hologram.width * hologram.height * 6 * 4 * 4)
   }
 
   // ----------------------------------------------------------------------- //

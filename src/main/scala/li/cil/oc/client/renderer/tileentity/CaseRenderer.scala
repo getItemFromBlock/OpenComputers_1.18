@@ -13,7 +13,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderer
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher
 import net.minecraft.core.Direction
 import net.minecraft.resources.ResourceLocation
-import net.minecraft.util.math.vector.Vector3f
+import com.mojang.math.Vector3f
 
 object CaseRenderer extends Function[BlockEntityRenderDispatcher, CaseRenderer] {
   override def apply(dispatch: BlockEntityRenderDispatcher) = new CaseRenderer(dispatch)

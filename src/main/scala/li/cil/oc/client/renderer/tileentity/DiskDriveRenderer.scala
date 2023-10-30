@@ -14,7 +14,7 @@ import net.minecraft.client.renderer.model.ItemCameraTransforms
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher
 import net.minecraft.core.Direction
-import net.minecraft.util.math.vector.Vector3f
+import com.mojang.math.Vector3f
 
 object DiskDriveRenderer extends Function[BlockEntityRenderDispatcher, DiskDriveRenderer] {
   override def apply(dispatch: BlockEntityRenderDispatcher) = new DiskDriveRenderer(dispatch)
@@ -24,7 +24,7 @@ class DiskDriveRenderer(dispatch: BlockEntityRenderDispatcher) extends BlockEnti
   override def render(drive: DiskDrive, dt: Float, matrix: PoseStack, buffer: MultiBufferSource, light: Int, overlay: Int) {
     RenderState.checkError(getClass.getName + ".render: entering (aka: wasntme)")
 
-    RenderSystem.color4f(1, 1, 1, 1)
+    // RenderSystem.color4f(1, 1, 1, 1)
 
     matrix.pushPose()
 

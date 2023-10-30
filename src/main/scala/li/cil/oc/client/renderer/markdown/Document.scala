@@ -74,7 +74,7 @@ object Document {
 
     RenderState.pushAttrib()
 
-    RenderSystem.color4f(1, 1, 1, 1)
+    // RenderSystem.color4f(1, 1, 1, 1)
     // Clip using the scissor test to not interfere with RenderType-maintained depth testing.
     GL11.glEnable(GL11.GL_SCISSOR_TEST)
     val (x0, y0, x1, y1) = {

@@ -12,7 +12,7 @@ import net.minecraft.client.renderer.MultiBufferSource
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher
 import net.minecraft.core.Direction
-import net.minecraft.util.math.vector.Vector3f
+import com.mojang.math.Vector3f
 
 object ChargerRenderer extends Function[BlockEntityRenderDispatcher, ChargerRenderer] {
   override def apply(dispatch: BlockEntityRenderDispatcher) = new ChargerRenderer(dispatch)
@@ -22,7 +22,7 @@ class ChargerRenderer(dispatch: BlockEntityRenderDispatcher) extends BlockEntity
   override def render(charger: Charger, dt: Float, stack: PoseStack, buffer: MultiBufferSource, light: Int, overlay: Int) {
     RenderState.checkError(getClass.getName + ".render: entering (aka: wasntme)")
 
-    RenderSystem.color4f(1, 1, 1, 1)
+    // RenderSystem.color4f(1, 1, 1, 1)
 
     if (charger.chargeSpeed > 0) {
       stack.pushPose()

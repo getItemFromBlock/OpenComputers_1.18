@@ -21,7 +21,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher
 import net.minecraft.world.item.ItemStack
 import net.minecraft.core.Direction
 import net.minecraft.world.InteractionHand
-import net.minecraft.util.math.vector.Vector3f
+import com.mojang.math.Vector3f
 
 object ScreenRenderer extends Function[BlockEntityRenderDispatcher, ScreenRenderer] {
   override def apply(dispatch: BlockEntityRenderDispatcher) = new ScreenRenderer(dispatch)
@@ -65,7 +65,7 @@ class ScreenRenderer(dispatch: BlockEntityRenderDispatcher) extends BlockEntityR
       return
     }
 
-    RenderSystem.color4f(1, 1, 1, 1)
+    // RenderSystem.color4f(1, 1, 1, 1)
 
     stack.pushPose()
 

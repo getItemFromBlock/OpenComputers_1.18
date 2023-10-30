@@ -10,7 +10,7 @@ import net.minecraft.client.renderer.model._
 import net.minecraft.client.renderer.texture.TextureAtlasSprite
 import net.minecraft.core.Direction
 import com.mojang.math.Vector3d
-import net.minecraft.util.math.vector.Vector3f
+import com.mojang.math.Vector3f
 
 trait SmartBlockModelBase extends IBakedModel {
   override def getOverrides: ItemOverrideList = ItemOverrideList.EMPTY

@@ -13,7 +13,7 @@ import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher
 import net.minecraft.world.entity.Entity
 import com.mojang.math.Vector3d
-import net.minecraft.util.math.vector.Vector3f
+import com.mojang.math.Vector3f
 import net.minecraftforge.client.event.RenderPlayerEvent
 import net.minecraftforge.eventbus.api.EventPriority
 import net.minecraftforge.eventbus.api.SubscribeEvent

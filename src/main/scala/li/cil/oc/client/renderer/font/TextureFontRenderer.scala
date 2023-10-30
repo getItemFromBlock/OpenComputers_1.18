@@ -107,7 +107,7 @@ abstract class TextureFontRenderer {
 
     for (i <- 0 until textureCount) {
       bindTexture(i)
-      GL11.glBegin(GL11.GL_QUADS)
+      GL11.glBegin(com.mojang.blaze3d.vertex.VertexFormat.Mode.QUADS)
       var tx = 0f
       var cx = 0
       for (n <- 0 until sLength) {
@@ -124,7 +124,7 @@ abstract class TextureFontRenderer {
 
     RenderState.popAttrib()
     stack.popPose()
-    RenderSystem.color3f(1, 1, 1)
+    // RenderSystem.color3f(1, 1, 1)
   }
 
   protected def charWidth: Int

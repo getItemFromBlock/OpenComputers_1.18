@@ -16,21 +16,21 @@ class Printer(state: container.Printer, playerInventory: Inventory, name: Compon
   imageWidth = 176
   imageHeight = 166
 
-  private val materialBar = addCustomWidget(new ProgressBar(40, 21) {
+  private val materialBar = addRenderableWidget(new ProgressBar(40, 21) {
     override def width = 62
 
     override def height = 12
 
     override def barTexture = Textures.GUI.PrinterMaterial
   })
-  private val inkBar = addCustomWidget(new ProgressBar(40, 53) {
+  private val inkBar = addRenderableWidget(new ProgressBar(40, 53) {
     override def width = 62
 
     override def height = 12
 
     override def barTexture = Textures.GUI.PrinterInk
   })
-  private val progressBar = addCustomWidget(new ProgressBar(105, 20) {
+  private val progressBar = addRenderableWidget(new ProgressBar(105, 20) {
     override def width = 46
 
     override def height = 46
@@ -54,16 +54,16 @@ class Printer(state: container.Printer, playerInventory: Inventory, name: Compon
     RenderState.popAttrib()
   }
 
-  override def renderBg(stack: PoseStack, dt: Float, mouseX: Int, mouseY: Int) {
-    RenderSystem.color3f(1, 1, 1)
+  override def renderBg(stack: PoseStack, dt: Float, mouseX: Int, mouseY: Int): Unit = {
+    //RenderSystem.color3f(1, 1, 1)
     Textures.bind(Textures.GUI.Printer)
     blit(stack, leftPos, topPos, 0, 0, imageWidth, imageHeight)
     materialBar.level = inventoryContainer.amountMaterial / inventoryContainer.maxAmountMaterial.toDouble
     inkBar.level = inventoryContainer.amountInk / inventoryContainer.maxAmountInk.toDouble
     progressBar.level = inventoryContainer.progress
-    drawWidgets(stack)
+    //drawWidgets(stack)
     drawInventorySlots(stack)
   }
 
-  override protected def drawDisabledSlot(stack: PoseStack, slot: ComponentSlot) {}
+  override protected def drawDisabledSlot(stack: PoseStack, slot: ComponentSlot): Unit = {}
 }

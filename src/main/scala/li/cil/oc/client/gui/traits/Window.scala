@@ -2,9 +2,10 @@ package li.cil.oc.client.gui.traits
 
 import java.util
 
+import li.cil.oc.client.Textures
 import com.mojang.blaze3d.vertex.PoseStack
 import net.minecraft.client.Minecraft
-import net.minecraft.client.gui.AbstractGui
+import net.minecraft.client.gui.GuiComponent
 import net.minecraft.client.gui.screens.Screen
 import net.minecraft.resources.ResourceLocation
 
@@ -31,9 +32,9 @@ trait Window extends Screen {
   }
 
   override def render(stack: PoseStack, mouseX: Int, mouseY: Int, dt: Float): Unit = {
-    Minecraft.getInstance.getTextureManager.bind(backgroundImage)
+    Textures.bind(backgroundImage)
     // Texture width and height are intentionally backwards.
-    AbstractGui.blit(stack, leftPos, topPos, getBlitOffset, 0, 0, imageWidth, imageHeight, windowHeight, windowWidth)
+    GuiComponent.blit(stack, leftPos, topPos, getBlitOffset, 0, 0, imageWidth, imageHeight, windowHeight, windowWidth)
 
     super.render(stack, mouseX, mouseY, dt)
   }

@@ -36,8 +36,8 @@ class TextureImageRenderer(val location: ResourceLocation) extends ImageRenderer
 
   override def render(stack: PoseStack, mouseX: Int, mouseY: Int): Unit = {
     Textures.bind(location)
-    RenderSystem.color4f(1, 1, 1, 1)
-    GL11.glBegin(GL11.GL_QUADS)
+    // RenderSystem.color4f(1, 1, 1, 1)
+    GL11.glBegin(com.mojang.blaze3d.vertex.VertexFormat.Mode.QUADS)
     GL11.glTexCoord2f(0, 0)
     val matrix = stack.last.pose
     val vec = new Vector4f(0, 0, 0, 1)

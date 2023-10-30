@@ -9,7 +9,7 @@ import li.cil.oc.common.container
 import li.cil.oc.util.RenderState
 import net.minecraft.client.gui.components.Button
 import com.mojang.blaze3d.vertex.Tesselator
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats
+import com.mojang.blaze3d.vertex.DefaultVertexFormat
 import net.minecraft.world.entity.player.Inventory
 import net.minecraft.core.Direction
 import net.minecraft.network.chat.Component
@@ -94,7 +94,7 @@ class Rack(state: container.Rack, playerInventory: Inventory, name: Component)
     case _ => Localization.Rack.None
   }
 
-  protected def onRackButton(mountable: Int, connectable: Int, bus: Int) {
+  protected def onRackButton(mountable: Int, connectable: Int, bus: Int): Unit = {
     if (inventoryContainer.nodeMapping(mountable)(connectable).contains(busToSide(bus))) {
       ClientPacketSender.sendRackMountableMapping(inventoryContainer, mountable, connectable, None)
     }
@@ -103,7 +103,7 @@ class Rack(state: container.Rack, playerInventory: Inventory, name: Component)
     }
   }
 
-  override def render(stack: PoseStack, mouseX: Int, mouseY: Int, dt: Float) {
+  override def render(stack: PoseStack, mouseX: Int, mouseY: Int, dt: Float): Unit = {
     for (bus <- 0 until 5) {
       for (mountable <- 0 until inventoryContainer.otherInventory.getContainerSize) {
         val presence = inventoryContainer.nodePresence(mountable)
@@ -117,13 +117,13 @@ class Rack(state: container.Rack, playerInventory: Inventory, name: Component)
     super.render(stack, mouseX, mouseY, dt)
   }
 
-  override protected def init() {
+  override protected def init(): Unit = {
     super.init()
 
-    relayButton = new ImageButton(leftPos + 101, topPos + 96, 65, 18, new Button.IPressable {
+    relayButton = new ImageButton(leftPos + 101, topPos + 96, 65, 18, new Button.OnPress {
       override def onPress(b: Button) = ClientPacketSender.sendRackRelayState(inventoryContainer, !inventoryContainer.isRelayEnabled)
     }, Textures.GUI.ButtonRelay, new TextComponent(Localization.Rack.RelayDisabled), textIndent = 18)
-    addButton(relayButton)
+    addRenderableWidget(relayButton)
 
     val (mw, mh) = hoverMasterSize
     val (sw, sh) = hoverSlaveSize
@@ -135,18 +135,18 @@ class Rack(state: container.Rack, playerInventory: Inventory, name: Component)
         val (bx, by) = busStart(bus)
 
         {
-          val button = new ImageButton(leftPos + bx, topPos + by + offset + 1, mw, mh, new Button.IPressable {
+          val button = new ImageButton(leftPos + bx, topPos + by + offset + 1, mw, mh, new Button.OnPress {
             override def onPress(b: Button) = onRackButton(mountable, 0, bus)
           })
-          addButton(button)
+          addRenderableWidget(button)
           wireButtons(mountable)(0)(bus) = button
         }
 
         for (connectable <- 0 until 3) {
-          val button = new ImageButton(leftPos + bx, topPos + by + offset + 1 + mbh + sbh * connectable, sw, sh, new Button.IPressable {
+          val button = new ImageButton(leftPos + bx, topPos + by + offset + 1 + mbh + sbh * connectable, sw, sh, new Button.OnPress {
             override def onPress(b: Button) = onRackButton(mountable, connectable + 1, bus)
           })
-          addButton(button)
+          addRenderableWidget(button)
           wireButtons(mountable)(connectable + 1)(bus) = button
         }
       }
@@ -157,9 +157,9 @@ class Rack(state: container.Rack, playerInventory: Inventory, name: Component)
     super.drawSecondaryForegroundLayer(stack, mouseX, mouseY)
     RenderState.pushAttrib() // Prevents NEI render glitch.
 
-    RenderSystem.color4f(1, 1, 1, 1)
+    // RenderSystem.color4f(1, 1, 1, 1)
     RenderState.makeItBlend()
-    minecraft.getTextureManager.bind(Textures.GUI.Rack)
+    Textures.bind(Textures.GUI.Rack)
 
     if (inventoryContainer.isRelayEnabled) {
       val (left, top, w, h) = relayModeUVs
@@ -251,9 +251,9 @@ class Rack(state: container.Rack, playerInventory: Inventory, name: Component)
     RenderState.popAttrib()
   }
 
-  override def drawSecondaryBackgroundLayer(stack: PoseStack) {
-    RenderSystem.color3f(1, 1, 1) // Required under Linux.
-    minecraft.getTextureManager.bind(Textures.GUI.Rack)
+  override def drawSecondaryBackgroundLayer(stack: PoseStack): Unit = {
+    // RenderSystem.color3f(1, 1, 1) // Required under Linux.
+    Textures.bind(Textures.GUI.Rack)
     blit(stack, leftPos, topPos, 0, 0, imageWidth, imageHeight)
   }
 
@@ -264,11 +264,11 @@ class Rack(state: container.Rack, playerInventory: Inventory, name: Component)
     val v1 = v0 + h / 256f
     val t = Tesselator.getInstance()
     val r = t.getBuilder
-    r.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX)
-    r.vertex(stack.last.pose, x, y, windowZ).uv(u0, v0).endVertex()
-    r.vertex(stack.last.pose, x, y + h, windowZ).uv(u0, v1).endVertex()
-    r.vertex(stack.last.pose, x + w, y + h, windowZ).uv(u1, v1).endVertex()
-    r.vertex(stack.last.pose, x + w, y, windowZ).uv(u1, v0).endVertex()
+    r.begin(com.mojang.blaze3d.vertex.VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX)
+    r.vertex(stack.last.pose, x.toFloat, y.toFloat, getBlitOffset.toFloat).uv(u0, v0).endVertex()
+    r.vertex(stack.last.pose, x.toFloat, y.toFloat + h, getBlitOffset.toFloat).uv(u0, v1).endVertex()
+    r.vertex(stack.last.pose, x.toFloat + w, y.toFloat + h, getBlitOffset.toFloat).uv(u1, v1).endVertex()
+    r.vertex(stack.last.pose, x.toFloat + w, y.toFloat, getBlitOffset.toFloat).uv(u1, v0).endVertex()
     t.end()
   }
 }

@@ -20,7 +20,7 @@ class DisassemblerRenderer(dispatch: BlockEntityRenderDispatcher) extends BlockE
   override def render(disassembler: tileentity.Disassembler, dt: Float, stack: PoseStack, buffer: MultiBufferSource, light: Int, overlay: Int) {
     RenderState.checkError(getClass.getName + ".render: entering (aka: wasntme)")
 
-    RenderSystem.color4f(1, 1, 1, 1)
+    // RenderSystem.color4f(1, 1, 1, 1)
 
     if (disassembler.isActive) {
       stack.pushPose()

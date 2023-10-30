@@ -7,7 +7,7 @@ import li.cil.oc.util.BlockPosition
 import li.cil.oc.{Constants, Settings, api}
 import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer._
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats
+import com.mojang.blaze3d.vertex.DefaultVertexFormat
 import net.minecraft.core.Direction
 import net.minecraft.world.InteractionHand
 import net.minecraft.util.math.shapes.ISelectionContext
@@ -21,7 +21,7 @@ object HighlightRenderer {
 
   lazy val tablet = api.Items.get(Constants.ItemName.Tablet)
 
-  val TexHologram = RenderTypes.createTexturedQuad("hologram_effect", Textures.Model.HologramEffect, DefaultVertexFormats.POSITION_TEX_COLOR, true)
+  val TexHologram = RenderTypes.createTexturedQuad("hologram_effect", Textures.Model.HologramEffect, DefaultVertexFormat.POSITION_TEX_COLOR, true)
 
   @SubscribeEvent
   def onDrawBlockHighlight(e: DrawHighlightEvent.HighlightBlock): Unit = if (e.getTarget != null && e.getTarget.getBlockPos != null) {

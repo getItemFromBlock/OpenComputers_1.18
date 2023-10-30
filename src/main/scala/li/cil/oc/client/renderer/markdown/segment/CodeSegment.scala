@@ -17,7 +17,7 @@ private[markdown] class CodeSegment(val parent: Segment, val text: String) exten
     var numChars = maxChars(chars, maxWidth - indent, maxWidth - wrapIndent, renderer)
     while (chars.length > 0) {
       val part = chars.take(numChars)
-      RenderSystem.color4f(0.75f, 0.8f, 1, 1)
+      // RenderSystem.color4f(0.75f, 0.8f, 1, 1)
       TextBufferRenderCache.renderer.drawString(stack, part, currentX, currentY)
       currentX = x + wrapIndent
       currentY += lineHeight(renderer)

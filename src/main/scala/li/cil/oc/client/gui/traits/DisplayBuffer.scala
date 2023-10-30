@@ -15,7 +15,7 @@ trait DisplayBuffer extends Screen {
 
   protected var scale = 0.0
 
-  protected def drawBufferLayer(stack: PoseStack) {
+  protected def drawBufferLayer(stack: PoseStack): Unit = {
     scale = changeSize(bufferColumns, bufferRows)
 
     RenderState.checkError(getClass.getName + ".drawBufferLayer: entering (aka: wasntme)")

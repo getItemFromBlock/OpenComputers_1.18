@@ -12,8 +12,8 @@ import li.cil.oc.client.{Manual => ManualAPI}
 import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.screens.Screen
 import net.minecraft.client.gui.components.Button
-import net.minecraft.client.util.InputMappings
-import net.minecraft.client.settings.KeyBinding
+import com.mojang.blaze3d.platform.InputConstants
+import net.minecraft.client.KeyMapping
 import net.minecraft.network.chat.FormattedText
 import net.minecraft.network.chat.TextComponent
 import org.lwjgl.glfw.GLFW
@@ -87,20 +87,20 @@ class Manual extends Screen(TextComponent.EMPTY) with traits.Window {
   override protected def init(): Unit = {
     super.init()
     minecraft.mouseHandler.releaseMouse()
-    KeyBinding.releaseAll()
+    KeyMapping.releaseAll()
 
     for ((tab, i) <- ManualAPI.tabs.zipWithIndex if i < maxTabsPerSide) {
       val x = leftPos + tabPosX
       val y = topPos + tabPosY + i * (tabHeight - 1)
-      addButton(new ImageButton(x, y, tabWidth, tabHeight, new Button.IPressable {
+      addRenderableWidget(new ImageButton(x, y, tabWidth, tabHeight, new Button.OnPress {
         override def onPress(b: Button) = api.Manual.navigate(tab.path)
       }, Textures.GUI.ManualTab))
     }
 
-    scrollButton = new ImageButton(leftPos + scrollPosX, topPos + scrollPosY, 6, 13, new Button.IPressable {
+    scrollButton = new ImageButton(leftPos + scrollPosX, topPos + scrollPosY, 6, 13, new Button.OnPress {
       override def onPress(b: Button) = ()
     }, Textures.GUI.ButtonScroll)
-    addButton(scrollButton)
+    addRenderableWidget(scrollButton)
 
     refreshPage()
   }
@@ -112,7 +112,7 @@ class Manual extends Screen(TextComponent.EMPTY) with traits.Window {
     scrollButton.hoverOverride = isScrolling
 
     for ((tab, i) <- ManualAPI.tabs.zipWithIndex if i < maxTabsPerSide) {
-      val button = buttons.get(i).asInstanceOf[ImageButton]
+      val button = renderables.get(i).asInstanceOf[ImageButton]
       stack.pushPose()
       stack.translate(button.x + 5, button.y + 5, getBlitOffset)
       tab.renderer.render(stack)
@@ -128,27 +128,27 @@ class Manual extends Screen(TextComponent.EMPTY) with traits.Window {
     if (!isScrolling) currentSegment match {
       case Some(segment) =>
         segment.tooltip match {
-          case Some(text) if text.nonEmpty => renderWrappedToolTip(stack, localizeAndWrap(text), mouseX, mouseY, font)
+          case Some(text) if text.nonEmpty => renderComponentTooltip(stack, localizeAndWrap(text), mouseX, mouseY, font)
           case _ =>
         }
       case _ =>
     }
 
     if (!isScrolling) for ((tab, i) <- ManualAPI.tabs.zipWithIndex if i < maxTabsPerSide) {
-      val button = buttons.get(i).asInstanceOf[ImageButton]
+      val button = renderables.get(i).asInstanceOf[ImageButton]
       if (mouseX > button.x && mouseX < button.x + tabWidth && mouseY > button.y && mouseY < button.y + tabHeight) tab.tooltip.foreach(text => {
-        renderWrappedToolTip(stack, localizeAndWrap(text), mouseX, mouseY, font)
+        renderComponentTooltip(stack, localizeAndWrap(text), mouseX, mouseY, font)
       })
     }
 
     if (canScroll && (isCoordinateOverScrollBar(mouseX - leftPos, mouseY - topPos) || isScrolling)) {
       val lines = seqAsJavaList(Seq(new TextComponent(s"${100 * offset / maxOffset}%")))
-      renderWrappedToolTip(stack, lines, leftPos + scrollPosX + scrollWidth, scrollButton.y + scrollButton.getHeight + 1, font)
+      renderComponentTooltip(stack, lines, leftPos + scrollPosX + scrollWidth, scrollButton.y + scrollButton.getHeight + 1, font)
     }
   }
 
   override def keyPressed(keyCode: Int, scanCode: Int, mods: Int): Boolean = {
-    val input = InputMappings.getKey(keyCode, scanCode)
+    val input = InputConstants.getKey(keyCode, scanCode)
     if (minecraft.options.keyJump.isActiveAndMatches(input)) {
       popPage()
       return true
@@ -206,7 +206,7 @@ class Manual extends Screen(TextComponent.EMPTY) with traits.Window {
     super.mouseReleased(mouseX, mouseY, button)
   }
 
-  private def scrollMouse(mouseY: Double) {
+  private def scrollMouse(mouseY: Double): Unit = {
     scrollTo(math.round((mouseY - topPos - scrollPosY - 6.5) * maxOffset / (scrollHeight - 13.0)).toInt)
   }
 

@@ -12,10 +12,10 @@ import li.cil.oc.client.renderer.RenderTypes
 import li.cil.oc.integration.opencomputers.Item
 import li.cil.oc.util.RenderState
 import net.minecraft.client.renderer.MultiBufferSource
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats
+import com.mojang.blaze3d.vertex.DefaultVertexFormat
 import net.minecraft.client.renderer.vertex.VertexFormat
 import net.minecraft.world.item.ItemStack
-import net.minecraft.util.math.vector.Vector3f
+import com.mojang.math.Vector3f
 import org.lwjgl.opengl.GL11
 
 object UpgradeRenderer {

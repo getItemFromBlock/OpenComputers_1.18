@@ -12,7 +12,7 @@ import net.minecraft.world.entity.player.Inventory
 import net.minecraft.world.Container
 import net.minecraft.world.inventory.MenuType
 import net.minecraft.world.item.ItemStack
-import net.minecraft.network.PacketBuffer
+import net.minecraft.network.FriendlyByteBuf
 import net.minecraft.world.level.Level
 import net.minecraft.world.inventory.DataSlot
 import net.minecraft.resources.ResourceLocation
@@ -26,7 +26,7 @@ object RobotInfo {
 
   def hasKeyboard(robot: tileentity.Robot) = robot.info.components.map(api.Driver.driverFor(_, robot.getClass)).contains(DriverKeyboard)
 
-  def readRobotInfo(buff: PacketBuffer): RobotInfo = {
+  def readRobotInfo(buff: FriendlyByteBuf): RobotInfo = {
     val mainInvSize = buff.readVarInt()
     val slot1 = buff.readUtf(32)
     val tier1 = buff.readVarInt()
@@ -42,7 +42,7 @@ object RobotInfo {
     new RobotInfo(mainInvSize, slot1, tier1, slot2, tier2, slot3, tier3, screenBuffer, hasKeyboard)
   }
   
-  def writeRobotInfo(buff: PacketBuffer, info: RobotInfo) {
+  def writeRobotInfo(buff: FriendlyByteBuf, info: RobotInfo) {
     buff.writeVarInt(info.mainInvSize)
     buff.writeUtf(info.slot1, 32)
     buff.writeVarInt(info.tier1)

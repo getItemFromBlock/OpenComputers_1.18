@@ -23,7 +23,7 @@ class NetSplitterRenderer(dispatch: BlockEntityRenderDispatcher) extends BlockEn
   override def render(splitter: tileentity.NetSplitter, dt: Float, stack: PoseStack, buffer: MultiBufferSource, light: Int, overlay: Int) {
     RenderState.checkError(getClass.getName + ".render: entering (aka: wasntme)")
 
-    RenderSystem.color4f(1, 1, 1, 1)
+    // RenderSystem.color4f(1, 1, 1, 1)
 
     if (splitter.openSides.contains(!splitter.isInverted)) {
       stack.pushPose()

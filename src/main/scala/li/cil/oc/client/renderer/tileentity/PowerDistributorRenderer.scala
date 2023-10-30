@@ -20,7 +20,7 @@ class PowerDistributorRenderer(dispatch: BlockEntityRenderDispatcher) extends Bl
   override def render(distributor: tileentity.PowerDistributor, dt: Float, stack: PoseStack, buffer: MultiBufferSource, light: Int, overlay: Int) {
     RenderState.checkError(getClass.getName + ".render: entering (aka: wasntme)")
 
-    RenderSystem.color4f(1, 1, 1, 1)
+    // RenderSystem.color4f(1, 1, 1, 1)
 
     if (distributor.globalBuffer > 0) {
       stack.pushPose()

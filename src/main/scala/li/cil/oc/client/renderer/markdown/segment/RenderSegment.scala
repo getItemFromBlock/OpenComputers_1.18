@@ -57,9 +57,9 @@ private[markdown] class RenderSegment(val parent: Segment, val title: String, va
     RenderSystem.enableDepthTest()
 
     if (hovered.isDefined) {
-      RenderSystem.color4f(1, 1, 1, 0.15f)
+      // RenderSystem.color4f(1, 1, 1, 0.15f)
       RenderSystem.disableTexture()
-      GL11.glBegin(GL11.GL_QUADS)
+      GL11.glBegin(com.mojang.blaze3d.vertex.VertexFormat.Mode.QUADS)
       val matrix = stack.last.pose
       val vec = new Vector4f(0, 0, 0, 1)
       vec.transform(matrix)
@@ -77,7 +77,7 @@ private[markdown] class RenderSegment(val parent: Segment, val title: String, va
       RenderSystem.enableTexture()
     }
 
-    RenderSystem.color4f(1, 1, 1, 1)
+    // RenderSystem.color4f(1, 1, 1, 1)
 
     imageRenderer.render(stack, mouseX - x, mouseY - y)
 
