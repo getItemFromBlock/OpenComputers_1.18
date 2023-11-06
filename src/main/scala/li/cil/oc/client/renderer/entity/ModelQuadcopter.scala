@@ -7,7 +7,7 @@ import net.minecraft.client.renderer.LightTexture
 import net.minecraft.client.renderer.entity.model.EntityModel
 import net.minecraft.client.renderer.model.ModelRenderer
 import net.minecraft.client.renderer.texture.OverlayTexture
-import com.mojang.math.Vector3d
+import net.minecraft.world.phys.Vec3
 import com.mojang.math.Vector3f
 
 final class ModelQuadcopter extends EntityModel[Drone] {
@@ -41,7 +41,7 @@ final class ModelQuadcopter extends EntityModel[Drone] {
   light2.texOffs(24, 0).addBox(-7, 0, 1, 6, 1, 6) // flap2
   light3.texOffs(24, 0).addBox(-7, 0, -7, 6, 1, 6) // flap3
 
-  private val up = new Vector3d(0, 1, 0)
+  private val up = new Vec3(0, 1, 0)
 
   private def doRender(drone: Drone, dt: Float, stack: PoseStack, builder: IVertexBuilder, light: Int, overlay: Int, r: Float, g: Float, b: Float, a: Float) {
     stack.pushPose()

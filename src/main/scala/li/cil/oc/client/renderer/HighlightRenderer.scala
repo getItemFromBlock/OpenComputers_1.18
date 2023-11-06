@@ -10,8 +10,8 @@ import net.minecraft.client.renderer._
 import com.mojang.blaze3d.vertex.DefaultVertexFormat
 import net.minecraft.core.Direction
 import net.minecraft.world.InteractionHand
-import net.minecraft.util.math.shapes.ISelectionContext
-import net.minecraftforge.client.event.DrawHighlightEvent
+import net.minecraft.world.phys.shapes.CollisionContext
+import net.minecraftforge.client.event.DrawSelectionEvent
 import net.minecraftforge.eventbus.api.SubscribeEvent
 
 import scala.util.Random
@@ -24,19 +24,19 @@ object HighlightRenderer {
   val TexHologram = RenderTypes.createTexturedQuad("hologram_effect", Textures.Model.HologramEffect, DefaultVertexFormat.POSITION_TEX_COLOR, true)
 
   @SubscribeEvent
-  def onDrawBlockHighlight(e: DrawHighlightEvent.HighlightBlock): Unit = if (e.getTarget != null && e.getTarget.getBlockPos != null) {
+  def onDrawBlockHighlight(e: DrawSelectionEvent.HighlightBlock): Unit = if (e.getTarget != null && e.getTarget.getBlockPos != null) {
     val hitInfo = e.getTarget
     val world = Minecraft.getInstance.level
     val blockPos = BlockPosition(hitInfo.getBlockPos, world)
-    val stack = e.getMatrix
-    if (api.Items.get(Minecraft.getInstance.player.getItemInHand(Hand.MAIN_HAND)) == tablet) {
+    val stack = e.getPoseStack
+    if (api.Items.get(Minecraft.getInstance.player.getItemInHand(InteractionHand.MAIN_HAND)) == tablet) {
       val isAir = world.isAirBlock(blockPos)
       if (!isAir) {
-        val shape = world.getBlockState(hitInfo.getBlockPos).getShape(world, hitInfo.getBlockPos, ISelectionContext.of(e.getInfo.getEntity))
+        val shape = world.getBlockState(hitInfo.getBlockPos).getShape(world, hitInfo.getBlockPos, CollisionContext.of(e.getCamera.getEntity))
         val (minX, minY, minZ) = (shape.min(Direction.Axis.X).toFloat, shape.min(Direction.Axis.Y).toFloat, shape.min(Direction.Axis.Z).toFloat)
         val (maxX, maxY, maxZ) = (shape.max(Direction.Axis.X).toFloat, shape.max(Direction.Axis.Y).toFloat, shape.max(Direction.Axis.Z).toFloat)
         val sideHit = hitInfo.getDirection
-        val view = e.getInfo.getPosition
+        val view = e.getCamera.getPosition
 
         stack.pushPose()
 
@@ -49,7 +49,7 @@ object HighlightRenderer {
           stack.translate((random.nextGaussian() * 0.01 * sx).toFloat, (random.nextGaussian() * 0.01 * sy).toFloat, (random.nextGaussian() * 0.01 * sz).toFloat)
         }
 
-        val r = e.getBuffers.getBuffer(TexHologram)
+        val r = e.getMultiBufferSource.getBuffer(TexHologram)
         sideHit match {
           case Direction.UP =>
             r.vertex(stack.last.pose, maxX, maxY + 0.002f, maxZ).uv(maxZ * 16, maxX * 16).color(0.0F, 1.0F, 0.0F, 0.4F).endVertex()

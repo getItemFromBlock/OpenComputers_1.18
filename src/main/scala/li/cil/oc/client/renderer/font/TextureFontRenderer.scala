@@ -8,8 +8,8 @@ import li.cil.oc.client.renderer.RenderTypes
 import li.cil.oc.util.{ExtendedUnicodeHelper, PackedColor, RenderState, TextBuffer}
 import net.minecraft.client.renderer.RenderType
 import net.minecraft.client.renderer.MultiBufferSource
-import net.minecraft.util.math.vector.Matrix4f
-import net.minecraft.util.math.vector.Vector4f
+import com.mojang.math.Matrix4f
+import com.mojang.math.Vector4f
 import org.lwjgl.opengl.GL11
 
 /**

@@ -6,7 +6,7 @@ import li.cil.oc.util.BlockPosition
 import li.cil.oc.util.ExtendedBlock._
 import li.cil.oc.util.ExtendedWorld._
 import li.cil.oc.util.RTree
-import net.minecraft.util.RegistryKey
+import net.minecraft.resources.ResourceKey
 import com.mojang.math.Vector3d
 import net.minecraft.world.level.Level
 import net.minecraftforge.event.world.ChunkEvent
@@ -17,7 +17,7 @@ import scala.collection.convert.ImplicitConversionsToScala._
 import scala.collection.mutable
 
 object WirelessNetwork {
-  val dimensions = mutable.Map.empty[RegistryKey[World], RTree[WirelessEndpoint]]
+  val dimensions = mutable.Map.empty[ResourceKey[Level], RTree[WirelessEndpoint]]
 
   @SubscribeEvent
   def onWorldUnload(e: WorldEvent.Unload) {
@@ -66,7 +66,7 @@ object WirelessNetwork {
     }
   }
 
-  def remove(endpoint: WirelessEndpoint, dimension: RegistryKey[World]) = {
+  def remove(endpoint: WirelessEndpoint, dimension: ResourceKey[World]) = {
     dimensions.get(dimension) match {
       case Some(set) => set.remove(endpoint)
       case _ => false

@@ -1,7 +1,7 @@
 package li.cil.oc.client.renderer.gui
 
 import com.mojang.blaze3d.vertex.PoseStack
-import com.mojang.blaze3d.vertex.BufferBuilder
+import com.mojang.blaze3d.vertex.VertexConsumer
 import li.cil.oc.api
 import li.cil.oc.client.Textures
 import li.cil.oc.util.RenderState
@@ -68,7 +68,7 @@ object BufferRenderer {
     RenderState.checkError(getClass.getName + ".drawBackground: leaving")
   }
 
-  private def drawQuad(matrix: Matrix4f, builder: BufferBuilder, x: Float, y: Float, w: Float, h: Float, u1: Float, v1: Float, u2: Float, v2: Float) = {
+  private def drawQuad(matrix: Matrix4f, builder: VertexConsumer, x: Float, y: Float, w: Float, h: Float, u1: Float, v1: Float, u2: Float, v2: Float) = {
     val u1f = u1 / 16f
     val u2f = u2 / 16f
     val v1f = v1 / 16f

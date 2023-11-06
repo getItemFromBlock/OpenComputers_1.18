@@ -12,8 +12,8 @@ import net.minecraft.client.renderer.texture.Texture
 import net.minecraft.client.renderer.texture.TextureUtil
 import net.minecraft.resources.IResourceManager
 import net.minecraft.resources.ResourceLocation
-import net.minecraft.util.math.vector.Matrix4f
-import net.minecraft.util.math.vector.Vector4f
+import com.mojang.math.Matrix4f
+import com.mojang.math.Vector4f
 import org.lwjgl.opengl.GL11
 import org.lwjgl.system.MemoryUtil
 

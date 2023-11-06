@@ -4,7 +4,7 @@ import li.cil.oc.api.network.EnvironmentHost
 import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.Blocks
 import net.minecraft.world.level.block.state.BlockState
-import net.minecraft.world.level.block.material.Material
+import net.minecraft.world.level.material.Material
 import net.minecraft.world.entity.player.Player
 import net.minecraft.world.level.block.entity.BlockEntity
 import net.minecraft.core.Direction
@@ -33,7 +33,7 @@ object ExtendedWorld {
 
     def isAirBlock(position: BlockPosition) = {
       val state = world.getBlockState(position.toBlockPos)
-      state.getBlock.isAir(state, world, position.toBlockPos)
+      state.isAir()
     }
   }
 

@@ -11,10 +11,10 @@ import li.cil.oc.common.block.Screen
 import li.cil.oc.common.tileentity
 import li.cil.oc.util.Color
 import net.minecraft.world.level.block.state.BlockState
-import net.minecraft.client.world.ClientWorld
-import net.minecraft.client.renderer.model.BakedQuad
-import net.minecraft.client.renderer.model.IBakedModel
-import net.minecraft.client.renderer.model.ItemOverrideList
+import net.minecraft.client.multiplayer.ClientLevel
+import net.minecraft.client.renderer.block.model.BakedQuad
+import net.minecraft.client.resources.model.BakedModel
+import net.minecraft.client.renderer.block.model.ItemOverrides
 import net.minecraft.world.entity.LivingEntity
 import net.minecraft.world.item.ItemStack
 import net.minecraft.core.Direction
@@ -24,7 +24,7 @@ import scala.collection.JavaConverters.seqAsJavaList
 import scala.collection.convert.ImplicitConversionsToJava._
 
 object ScreenModel extends SmartBlockModelBase {
-  override def getOverrides: ItemOverrideList = ItemOverride
+  override def getOverrides: ItemOverrides = ItemOverride
 
   override def getQuads(state: BlockState, side: Direction, rand: util.Random, data: IModelData): util.List[BakedQuad] = {
     val safeSide = if (side != null) side else Direction.SOUTH
@@ -94,8 +94,8 @@ object ScreenModel extends SmartBlockModelBase {
     }
   }
 
-  object ItemOverride extends ItemOverrideList {
-    override def resolve(originalModel: IBakedModel, stack: ItemStack, world: ClientWorld, entity: LivingEntity): IBakedModel = new ItemModel(stack)
+  object ItemOverride extends ItemOverrides {
+    override def resolve(originalModel: BakedModel, stack: ItemStack, world: ClientLevel, entity: LivingEntity): BakedModel = new ItemModel(stack)
   }
 
 }

@@ -23,7 +23,7 @@ object TextBufferRenderCache {
   // Rendering
   // ----------------------------------------------------------------------- //
 
-  def render(stack: PoseStack, buffer: TextBufferRenderData) {
+  def render(stack: PoseStack, buffer: TextBufferRenderData): Unit = {
     RenderState.checkError(getClass.getName + ".render: entering (aka: wasntme)")
 
     val cached = cache.get(buffer, () => new RenderCache)

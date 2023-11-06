@@ -10,10 +10,10 @@ import li.cil.oc.common.item.CustomModel
 import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.BlockModelShapes
-import net.minecraft.client.renderer.model.IBakedModel
-import net.minecraft.client.renderer.model.ItemOverrideList
+import net.minecraft.client.resources.model.BakedModel
+import net.minecraft.client.renderer.block.model.ItemOverrides
 import net.minecraft.client.resources.model.ModelResourceLocation
-import net.minecraft.client.world.ClientWorld
+import net.minecraft.client.multiplayer.ClientLevel
 import net.minecraft.world.entity.LivingEntity
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
@@ -114,9 +114,9 @@ object ModelInitialization {
         custom.bakeModels(e)
         val originalLocation = new ModelResourceLocation(custom.getRegistryName, "inventory")
         registry.get(originalLocation) match {
-          case original: IBakedModel => {
-            val overrides = new ItemOverrideList {
-              override def resolve(base: IBakedModel, stack: ItemStack, world: ClientWorld, holder: LivingEntity) =
+          case original: BakedModel => {
+            val overrides = new ItemOverrides {
+              override def resolve(base: BakedModel, stack: ItemStack, world: ClientLevel, holder: LivingEntity) =
                 Option(custom.getModelLocation(stack)).map(registry).getOrElse(original)
             }
             val fake = new IDynamicBakedModel {
@@ -148,7 +148,7 @@ object ModelInitialization {
     }
     meshableItems.clear()
 
-    val modelOverrides = Map[String, IBakedModel => IBakedModel](
+    val modelOverrides = Map[String, BakedModel => BakedModel](
       Constants.BlockName.ScreenTier1 -> (_ => ScreenModel),
       Constants.BlockName.ScreenTier2 -> (_ => ScreenModel),
       Constants.BlockName.ScreenTier3 -> (_ => ScreenModel),

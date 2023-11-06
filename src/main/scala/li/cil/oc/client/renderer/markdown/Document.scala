@@ -8,7 +8,7 @@ import li.cil.oc.client.renderer.markdown.segment.Segment
 import li.cil.oc.util.RenderState
 import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.Font
-import net.minecraft.util.math.vector.Vector4f
+import com.mojang.math.Vector4f
 import org.lwjgl.opengl.GL11
 
 import scala.collection.Iterable
