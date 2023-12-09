@@ -9,7 +9,7 @@ import li.cil.oc.api
 import li.cil.oc.common.item.CustomModel
 import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.client.Minecraft
-import net.minecraft.client.renderer.BlockModelShapes
+import net.minecraft.client.renderer.block.BlockModelShaper
 import net.minecraft.client.resources.model.BakedModel
 import net.minecraft.client.renderer.block.model.ItemOverrides
 import net.minecraft.client.resources.model.ModelResourceLocation
@@ -88,7 +88,7 @@ object ModelInitialization {
     if (blockLocation != null) {
       val block = descriptor.block()
       block.getStateDefinition.getPossibleStates.foreach {
-        modelRemappings += BlockModelShapes.stateToModelLocation(_) -> blockLocation
+        modelRemappings += BlockModelShaper.stateToModelLocation(_) -> blockLocation
       }
     }
   }

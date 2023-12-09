@@ -32,36 +32,36 @@ object BufferRenderer {
 
     // Top border (left corner, middle bar, right corner).
     drawQuad(stack.last.pose, r,
-      0, 0, margin, margin,
-      c0, c0, c1, c1)
+      0, 0, margin.toFloat, margin.toFloat,
+      c0.toFloat, c0.toFloat, c1.toFloat, c1.toFloat)
     drawQuad(stack.last.pose, r,
-      margin, 0, innerWidth, margin,
-      c1 + 0.25f, c0, c2 - 0.25f, c1)
+      margin.toFloat, 0, innerWidth.toFloat, margin.toFloat,
+      c1 + 0.25f, c0.toFloat, c2 - 0.25f, c1.toFloat)
     drawQuad(stack.last.pose, r,
-      margin + innerWidth, 0, margin, margin,
-      c2, c0, c3, c1)
+      margin + innerWidth.toFloat, 0, margin.toFloat, margin.toFloat,
+      c2.toFloat, c0.toFloat, c3.toFloat, c1.toFloat)
 
     // Middle area (left bar, screen background, right bar).
     drawQuad(stack.last.pose, r,
-      0, margin, margin, innerHeight,
-      c0, c1 + 0.25f, c1, c2 - 0.25f)
+      0, margin.toFloat, margin.toFloat, innerHeight.toFloat,
+      c0.toFloat, c1 + 0.25f, c1.toFloat, c2 - 0.25f)
     drawQuad(stack.last.pose, r,
-      margin, margin, innerWidth, innerHeight,
+      margin.toFloat, margin.toFloat, innerWidth.toFloat, innerHeight.toFloat,
       c1 + 0.25f, c1 + 0.25f, c2 - 0.25f, c2 - 0.25f)
     drawQuad(stack.last.pose, r,
-      margin + innerWidth, margin, margin, innerHeight,
-      c2, c1 + 0.25f, c3, c2 - 0.25f)
+      margin + innerWidth.toFloat, margin.toFloat, margin.toFloat, innerHeight.toFloat,
+      c2.toFloat, c1 + 0.25f, c3.toFloat, c2 - 0.25f)
 
     // Bottom border (left corner, middle bar, right corner).
     drawQuad(stack.last.pose, r,
-      0, margin + innerHeight, margin, margin,
-      c0, c2, c1, c3)
+      0, margin + innerHeight.toFloat, margin.toFloat, margin.toFloat,
+      c0.toFloat, c2.toFloat, c1.toFloat, c3.toFloat)
     drawQuad(stack.last.pose, r,
-      margin, margin + innerHeight, innerWidth, margin,
-      c1 + 0.25f, c2, c2 - 0.25f, c3)
+      margin.toFloat, margin + innerHeight.toFloat, innerWidth.toFloat, margin.toFloat,
+      c1 + 0.25f, c2.toFloat, c2 - 0.25f, c3.toFloat)
     drawQuad(stack.last.pose, r,
-      margin + innerWidth, margin + innerHeight, margin, margin,
-      c2, c2, c3, c3)
+      margin + innerWidth.toFloat, margin + innerHeight.toFloat, margin.toFloat, margin.toFloat,
+      c2.toFloat, c2.toFloat, c3.toFloat, c3.toFloat)
 
     t.end()
 

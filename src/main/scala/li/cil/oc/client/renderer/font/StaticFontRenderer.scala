@@ -1,7 +1,7 @@
 package li.cil.oc.client.renderer.font
 
 import com.google.common.base.Charsets
-import com.mojang.blaze3d.vertex.IVertexBuilder
+import com.mojang.blaze3d.vertex.VertexConsumer
 import li.cil.oc.OpenComputers
 import li.cil.oc.Settings
 import li.cil.oc.client.Textures
@@ -46,7 +46,7 @@ class StaticFontRenderer extends TextureFontRenderer {
 
   override protected def textureCount = 1
 
-  override protected def bindTexture(index: Int) {
+  override protected def bindTexture(index: Int): Unit = {
     if (Settings.get.textAntiAlias) {
       Textures.bind(Textures.Font.AntiAliased)
     }
@@ -70,7 +70,7 @@ class StaticFontRenderer extends TextureFontRenderer {
     }
   }
 
-  override protected def drawChar(matrix: Matrix4f, tx: Float, ty: Float, char: Int) {
+  override protected def drawChar(matrix: Matrix4f, tx: Float, ty: Float, char: Int): Unit = {
     val index = 1 + (chars.indexOf(char) match {
       case -1 => chars.indexOf('?')
       case i => i
@@ -97,7 +97,7 @@ class StaticFontRenderer extends TextureFontRenderer {
     GL11.glVertex3f(vec.x, vec.y, vec.z)
   }
 
-  protected def drawChar(builder: IVertexBuilder, matrix: Matrix4f, color: Int, tx: Float, ty: Float, char: Int) {
+  protected def drawChar(builder: VertexConsumer, matrix: Matrix4f, color: Int, tx: Float, ty: Float, char: Int): Unit = {
     val index = 1 + (chars.indexOf(char) match {
       case -1 => chars.indexOf('?')
       case i => i
@@ -115,5 +115,5 @@ class StaticFontRenderer extends TextureFontRenderer {
     builder.vertex(matrix, tx - dw, ty - dh, 0).color(r, g, b, 1f).uv(u, v).endVertex()
   }
 
-  override protected def generateChar(char: Int) {}
+  override protected def generateChar(char: Int): Unit = {}
 }

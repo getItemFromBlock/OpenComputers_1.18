@@ -33,9 +33,10 @@ trait SmartBlockModelBase extends BakedModel {
   @Deprecated
   override def getParticleIcon = Textures.getSprite(Textures.Block.GenericTop)
 
+/*
   @Deprecated
   override def getTransforms = DefaultBlockCameraTransforms
-
+  
   @Deprecated
   protected final val DefaultBlockCameraTransforms = {
     val gui = new ItemTransformVec3f(new Vector3f(30, 225, 0), new Vector3f(0, 0, 0), new Vector3f(0.625f, 0.625f, 0.625f))
@@ -63,7 +64,7 @@ trait SmartBlockModelBase extends BakedModel {
       ground,
       fixed)
   }
-
+*/
   protected def missingModel = Minecraft.getInstance.getModelManager.getMissingModel
 
   // Standard faces for a unit cube.

@@ -31,27 +31,27 @@ import li.cil.oc.util.ExtendedNBT._
 import li.cil.oc.util.ExtendedWorld._
 import li.cil.oc.util.InventoryUtils
 import net.minecraft.world.level.block.state.BlockState
-import net.minecraft.block.material.Material
+import net.minecraft.world.level.material.Material
 import net.minecraft.world.entity.Entity
-import net.minecraft.entity.EntitySize
-import net.minecraft.entity.EntityType
-import net.minecraft.entity.MoverType
-import net.minecraft.entity.Pose
-import net.minecraft.entity.item.ItemEntity
+import net.minecraft.world.entity.EntityDimensions
+import net.minecraft.world.entity.EntityType
+import net.minecraft.world.entity.MoverType
+import net.minecraft.world.entity.Pose
+import net.minecraft.world.entity.item.ItemEntity
 import net.minecraft.world.entity.player.Player
 import net.minecraft.server.level.ServerPlayer
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity
 import net.minecraft.world.item.ItemStack
 import net.minecraft.nbt.CompoundTag
-import net.minecraft.network.datasync.DataParameter
-import net.minecraft.network.datasync.DataSerializers
-import net.minecraft.network.datasync.EntityDataManager
+import net.minecraft.network.syncher.EntityDataAccessor
+import net.minecraft.network.syncher.EntityDataSerializers
+import net.minecraft.network.syncher.SynchedEntityData
 import net.minecraft.tags.FluidTags
 import net.minecraft.world.InteractionResult
 import net.minecraft.core.Direction
 import net.minecraft.world.InteractionHand
 import net.minecraft.core.BlockPos
-import com.mojang.math.Vector3d
+import net.minecraft.world.phys.Vec3
 import net.minecraft.network.chat.Component
 import net.minecraft.network.chat.TextComponent
 import net.minecraft.world.level.Level
@@ -59,22 +59,22 @@ import net.minecraft.server.level.ServerLevel
 import net.minecraftforge.api.distmarker.Dist
 import net.minecraftforge.api.distmarker.OnlyIn
 import net.minecraftforge.fluids.IFluidTank
-import net.minecraftforge.fml.network.NetworkHooks
+import net.minecraftforge.network.NetworkHooks
 
 import scala.collection.JavaConverters.asJavaIterable
 
 object Drone {
-  val DataRunning: DataParameter[lang.Boolean] = EntityDataManager.defineId(classOf[Drone], DataSerializers.BOOLEAN)
-  val DataTargetX: DataParameter[lang.Float] = EntityDataManager.defineId(classOf[Drone], DataSerializers.FLOAT)
-  val DataTargetY: DataParameter[lang.Float] = EntityDataManager.defineId(classOf[Drone], DataSerializers.FLOAT)
-  val DataTargetZ: DataParameter[lang.Float] = EntityDataManager.defineId(classOf[Drone], DataSerializers.FLOAT)
-  val DataMaxAcceleration: DataParameter[lang.Float] = EntityDataManager.defineId(classOf[Drone], DataSerializers.FLOAT)
-  val DataSelectedSlot: DataParameter[Integer] = EntityDataManager.defineId(classOf[Drone], DataSerializers.INT)
-  val DataCurrentEnergy: DataParameter[Integer] = EntityDataManager.defineId(classOf[Drone], DataSerializers.INT)
-  val DataMaxEnergy: DataParameter[Integer] = EntityDataManager.defineId(classOf[Drone], DataSerializers.INT)
-  val DataStatusText: DataParameter[String] = EntityDataManager.defineId(classOf[Drone], DataSerializers.STRING)
-  val DataInventorySize: DataParameter[Integer] = EntityDataManager.defineId(classOf[Drone], DataSerializers.INT)
-  val DataLightColor: DataParameter[Integer] = EntityDataManager.defineId(classOf[Drone], DataSerializers.INT)
+  val DataRunning: EntityDataAccessor[lang.Boolean] = SynchedEntityData.defineId(classOf[Drone], EntityDataSerializers.BOOLEAN)
+  val DataTargetX: EntityDataAccessor[lang.Float] = SynchedEntityData.defineId(classOf[Drone], EntityDataSerializers.FLOAT)
+  val DataTargetY: EntityDataAccessor[lang.Float] = SynchedEntityData.defineId(classOf[Drone], EntityDataSerializers.FLOAT)
+  val DataTargetZ: EntityDataAccessor[lang.Float] = SynchedEntityData.defineId(classOf[Drone], EntityDataSerializers.FLOAT)
+  val DataMaxAcceleration: EntityDataAccessor[lang.Float] = SynchedEntityData.defineId(classOf[Drone], EntityDataSerializers.FLOAT)
+  val DataSelectedSlot: EntityDataAccessor[Integer] = SynchedEntityData.defineId(classOf[Drone], EntityDataSerializers.INT)
+  val DataCurrentEnergy: EntityDataAccessor[Integer] = SynchedEntityData.defineId(classOf[Drone], EntityDataSerializers.INT)
+  val DataMaxEnergy: EntityDataAccessor[Integer] = SynchedEntityData.defineId(classOf[Drone], EntityDataSerializers.INT)
+  val DataStatusText: EntityDataAccessor[String] = SynchedEntityData.defineId(classOf[Drone], EntityDataSerializers.STRING)
+  val DataInventorySize: EntityDataAccessor[Integer] = SynchedEntityData.defineId(classOf[Drone], EntityDataSerializers.INT)
+  val DataLightColor: EntityDataAccessor[Integer] = SynchedEntityData.defineId(classOf[Drone], EntityDataSerializers.INT)
 }
 
 abstract class DroneInventory(val drone: Drone) extends li.cil.oc.common.inventory.Inventory
@@ -121,7 +121,7 @@ class Drone(selfType: EntityType[Drone], world: World) extends Entity(selfType, 
 
     override def canPlaceItem(slot: Int, stack: ItemStack) = true
 
-    override def stillValid(player: PlayerEntity) = true
+    override def stillValid(player: Player) = true
 
     override def node: Node = Option(machine).map(_.node).orNull
 
@@ -142,7 +142,7 @@ class Drone(selfType: EntityType[Drone], world: World) extends Entity(selfType, 
 
     override def canPlaceItem(slot: Int, stack: ItemStack) = false
 
-    override def stillValid(player: PlayerEntity) = false
+    override def stillValid(player: Player) = false
   }
   val mainInventory = new DroneInventory(this) {
     val items: Array[ItemStack] = Array.fill[ItemStack](8)(ItemStack.EMPTY)
@@ -155,7 +155,7 @@ class Drone(selfType: EntityType[Drone], world: World) extends Entity(selfType, 
 
     override def canPlaceItem(slot: Int, stack: ItemStack): Boolean = slot >= 0 && slot < getContainerSize
 
-    override def stillValid(player: PlayerEntity): Boolean = player.distanceToSqr(drone) < 64
+    override def stillValid(player: Player): Boolean = player.distanceToSqr(drone) < 64
   }
   val tank = new MultiTank {
     override def tankCount: Int = components.components.count {
@@ -173,7 +173,7 @@ class Drone(selfType: EntityType[Drone], world: World) extends Entity(selfType, 
 
   override def tier: Int = info.tier
 
-  override def player(): PlayerEntity = {
+  override def player(): Player = {
     agent.Player.updatePositionAndRotation(player_, facing, facing)
     agent.Player.setPlayerInventoryItems(player_)
     player_
@@ -217,9 +217,9 @@ class Drone(selfType: EntityType[Drone], world: World) extends Entity(selfType, 
 
   // ----------------------------------------------------------------------- //
 
-  override def getTarget = new Vector3d(targetX.floatValue(), targetY.floatValue(), targetZ.floatValue())
+  override def getTarget = new Vec3(targetX.floatValue(), targetY.floatValue(), targetZ.floatValue())
 
-  override def setTarget(value: Vector3d): Unit = {
+  override def setTarget(value: Vec3): Unit = {
     targetX = value.x.toFloat
     targetY = value.y.toFloat
     targetZ = value.z.toFloat
@@ -244,7 +244,7 @@ class Drone(selfType: EntityType[Drone], world: World) extends Entity(selfType, 
   override def markChanged() {}
 
   @OnlyIn(Dist.CLIENT)
-  override def getRopeHoldPosition(dt: Float): Vector3d =
+  override def getRopeHoldPosition(dt: Float): Vec3 =
     getPosition(dt).add(0.0, -0.056, 0.0) // Offset: height * 0.85 * 0.7 - 0.25
 
   // ----------------------------------------------------------------------- //
@@ -257,7 +257,7 @@ class Drone(selfType: EntityType[Drone], world: World) extends Entity(selfType, 
 
   // ----------------------------------------------------------------------- //
 
-  override def onAnalyze(player: PlayerEntity, side: Direction, hitX: Float, hitY: Float, hitZ: Float) = Array(machine.node)
+  override def onAnalyze(player: Player, side: Direction, hitX: Float, hitY: Float, hitZ: Float) = Array(machine.node)
 
   // ----------------------------------------------------------------------- //
 
@@ -293,7 +293,7 @@ class Drone(selfType: EntityType[Drone], world: World) extends Entity(selfType, 
     entityData.define(Drone.DataLightColor, Int.box(0x66DD55))
   }
 
-  def initializeAfterPlacement(stack: ItemStack, player: PlayerEntity, position: Vector3d) {
+  def initializeAfterPlacement(stack: ItemStack, player: Player, position: Vec3) {
     info.loadData(stack)
     control.node.changeBuffer(info.storedEnergy - control.node.localBuffer)
     wireThingsTogether()
@@ -441,7 +441,7 @@ class Drone(selfType: EntityType[Drone], world: World) extends Entity(selfType, 
     if (noPhysics) moveTowardsClosestSpace(getX, (getBoundingBox.minY + getBoundingBox.maxY) / 2, getZ)
 
     if (isRunning) {
-      val toTarget = new Vector3d(targetX - getX, targetY - getY, targetZ - getZ)
+      val toTarget = new Vec3(targetX - getX, targetY - getY, targetZ - getZ)
       val distance = toTarget.length()
       val velocity = getDeltaMovement
       if (distance > 0 && (distance > 0.005f || velocity.dot(velocity) > 0.005f)) {
@@ -449,12 +449,12 @@ class Drone(selfType: EntityType[Drone], world: World) extends Entity(selfType, 
         val velocityX = velocity.x + toTarget.x * acceleration
         val velocityY = velocity.y + toTarget.y * acceleration
         val velocityZ = velocity.z + toTarget.z * acceleration
-        setDeltaMovement(new Vector3d(math.max(-maxVelocity, math.min(maxVelocity, velocityX)),
+        setDeltaMovement(new Vec3(math.max(-maxVelocity, math.min(maxVelocity, velocityX)),
           math.max(-maxVelocity, math.min(maxVelocity, velocityY)),
           math.max(-maxVelocity, math.min(maxVelocity, velocityZ))))
       }
       else {
-        setDeltaMovement(Vector3d.ZERO)
+        setDeltaMovement(Vec3.ZERO)
         setPos(targetX.floatValue(), targetY.floatValue(), targetZ.floatValue())
       }
     }
@@ -477,7 +477,7 @@ class Drone(selfType: EntityType[Drone], world: World) extends Entity(selfType, 
 
   override def skipAttackInteraction(entity: Entity): Boolean = {
     if (isRunning) {
-      val direction = new Vector3d(entity.getX - getX, entity.getY + entity.getEyeHeight - getY, entity.getZ - getZ).normalize()
+      val direction = new Vec3(entity.getX - getX, entity.getY + entity.getEyeHeight - getY, entity.getZ - getZ).normalize()
       if (!world.isClientSide) {
         if (Settings.get.inputUsername)
           machine.signal("hit", Double.box(direction.x), Double.box(direction.z), Double.box(direction.y), entity.getName.getString)
@@ -489,15 +489,15 @@ class Drone(selfType: EntityType[Drone], world: World) extends Entity(selfType, 
     super.skipAttackInteraction(entity)
   }
 
-  // Not implemented in Drone itself because spectators would open this via vanilla PlayerEntity.openMenu (without extra data).
+  // Not implemented in Drone itself because spectators would open this via vanilla Player.openMenu (without extra data).
   val containerProvider = new BaseContainerBlockEntity {
     override def getDisplayName = TextComponent.EMPTY
 
-    override def createMenu(id: Int, playerInventory: net.minecraft.world.entity.player.Inventory, player: PlayerEntity) =
+    override def createMenu(id: Int, playerInventory: net.minecraft.world.entity.player.Inventory, player: Player) =
       new container.Drone(ContainerTypes.DRONE, id, playerInventory, mainInventory, mainInventory.getContainerSize)
   }
 
-  override def interact(player: PlayerEntity, hand: Hand): InteractionResult = {
+  override def interact(player: Player, hand: Hand): InteractionResult = {
     if (!isAlive) return InteractionResult.PASS
     if (player.isCrouching) {
       if (Wrench.isWrench(player.getItemInHand(Hand.MAIN_HAND))) {

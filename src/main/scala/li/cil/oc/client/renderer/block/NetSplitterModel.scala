@@ -13,7 +13,7 @@ import net.minecraft.client.multiplayer.ClientLevel
 import net.minecraft.client.renderer.block.model.BakedQuad
 import net.minecraft.client.resources.model.BakedModel
 import net.minecraft.client.renderer.block.model.ItemOverrides
-import net.minecraft.client.renderer.texture.AtlasTexture
+import net.minecraft.client.renderer.texture.TextureAtlas
 import net.minecraft.client.renderer.texture.TextureAtlasSprite
 import net.minecraft.world.entity.LivingEntity
 import net.minecraft.world.item.ItemStack
@@ -43,12 +43,12 @@ object NetSplitterModel extends SmartBlockModelBase {
       case _ => super.getQuads(state, side, rand)
     }
 
-  private def getSprite(location: ResourceLocation, atlas: Option[AtlasTexture]): TextureAtlasSprite = atlas match {
+  private def getSprite(location: ResourceLocation, atlas: Option[TextureAtlas]): TextureAtlasSprite = atlas match {
     case Some(atls) => atls.getSprite(location)
     case None => Textures.getSprite(location)
   }
 
-  protected def splitterTexture(atlas: Option[AtlasTexture]) = Array(
+  protected def splitterTexture(atlas: Option[TextureAtlas]) = Array(
     getSprite(Textures.Block.NetSplitterTop, atlas),
     getSprite(Textures.Block.NetSplitterTop, atlas),
     getSprite(Textures.Block.NetSplitterSide, atlas),
@@ -57,7 +57,7 @@ object NetSplitterModel extends SmartBlockModelBase {
     getSprite(Textures.Block.NetSplitterSide, atlas)
   )
 
-  protected def GenerateBaseModel(atlas: AtlasTexture) = {
+  protected def GenerateBaseModel(atlas: TextureAtlas) = {
     val faces = mutable.ArrayBuffer.empty[BakedQuad]
 
     // Bottom.
@@ -83,7 +83,7 @@ object NetSplitterModel extends SmartBlockModelBase {
 
   @SubscribeEvent
   def onTextureStitch(e: TextureStitchEvent.Post): Unit = {
-    if (e.getMap.location.equals(InventoryMenu.BLOCK_ATLAS)) BaseModel = GenerateBaseModel(e.getMap)
+    if (e.getAtlas.location.equals(InventoryMenu.BLOCK_ATLAS)) BaseModel = GenerateBaseModel(e.getAtlas)
   }
 
   protected def addSideQuads(faces: mutable.ArrayBuffer[BakedQuad], openSides: Array[Boolean]): Unit = {

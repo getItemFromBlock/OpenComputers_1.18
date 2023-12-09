@@ -2,17 +2,19 @@ package li.cil.oc.client.renderer.entity
 
 import com.mojang.blaze3d.vertex.PoseStack
 import li.cil.oc.client.Textures
+import li.cil.oc.client.render.entity.ModelQuadcopter
 import li.cil.oc.common.entity.Drone
 import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.MultiBufferSource
 import net.minecraft.client.renderer.RenderType
 import net.minecraft.client.renderer.entity.EntityRenderer
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher
+import net.minecraft.client.renderer.entity.EntityRendererProvider
+import net.minecraft.client.renderer.entity.MobRenderer
 import net.minecraft.client.renderer.texture.OverlayTexture
-import net.minecraft.util.math.MathHelper
+import net.minecraft.client.model.geom.ModelLayerLocation
+import net.minecraft.util.Mth
 
-class DroneRenderer(manager: EntityRenderDispatcher) extends EntityRenderer[Drone](manager) {
-  private val model = new ModelQuadcopter()
+class DroneRenderer(manager: EntityRendererProvider.Context) extends MobRenderer[Drone, ModelQuadcopter](manager, new ModelQuadcopter(manager.bakeLayer(new ModelLayerLocation())), 1) {
 
   override def render(entity: Drone, yaw: Float, dt: Float, stack: PoseStack, buffer: MultiBufferSource, light: Int): Unit = {
     val renderType = getRenderType(entity)
@@ -21,9 +23,9 @@ class DroneRenderer(manager: EntityRenderDispatcher) extends EntityRenderer[Dron
       stack.translate(0, 2f / 16f, 0)
       val builder = buffer.getBuffer(renderType)
       model.prepareMobModel(entity, 0, 0, dt)
-      val xRot = MathHelper.rotLerp(dt, entity.xRotO, entity.xRot)
-      val yRot = MathHelper.rotLerp(dt, entity.yRotO, entity.yRot)
-      model.setupAnim(entity, 0, 0, entity.tickCount, yRot, xRot)
+      val xRot = Mth.rotLerp(dt, entity.xRotO, entity.getXRot)
+      val yRot = Mth.rotLerp(dt, entity.yRotO, entity.getYRot)
+      model.setupAnim(entity, 0, 0, entity.tickCount.toFloat, yRot, xRot)
       model.renderToBuffer(stack, builder, light, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1)
       stack.popPose()
     }

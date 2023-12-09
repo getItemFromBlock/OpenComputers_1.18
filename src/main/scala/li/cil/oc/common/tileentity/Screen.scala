@@ -12,7 +12,7 @@ import li.cil.oc.util.ExtendedWorld._
 import net.minecraft.client.Minecraft
 import net.minecraft.world.entity.Entity
 import net.minecraft.world.entity.player.Player
-import net.minecraft.entity.projectile.ArrowEntity
+import net.minecraft.world.entity.projectile.Arrow
 import net.minecraft.nbt.CompoundTag
 import net.minecraft.world.level.block.entity.BlockEntity
 import net.minecraft.world.level.block.entity.BlockEntityType
@@ -59,7 +59,7 @@ class Screen(selfType: BlockEntityType[_ <: Screen], var tier: Int) extends Bloc
 
   var invertTouchMode = false
 
-  private val arrows = mutable.Set.empty[ArrowEntity]
+  private val arrows = mutable.Set.empty[Arrow]
 
   private val lastWalked = mutable.WeakHashMap.empty[Entity, (Int, Int)]
 
@@ -180,7 +180,7 @@ class Screen(selfType: BlockEntityType[_ <: Screen], var tier: Int) extends Bloc
     }
   }
 
-  def shot(arrow: ArrowEntity) {
+  def shot(arrow: Arrow) {
     arrows.add(arrow)
   }
 

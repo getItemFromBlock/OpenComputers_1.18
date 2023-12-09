@@ -1,7 +1,7 @@
 package li.cil.oc.client.renderer.font
 
 import com.mojang.blaze3d.systems.RenderSystem
-import com.mojang.blaze3d.vertex.IVertexBuilder
+import com.mojang.blaze3d.vertex.VertexConsumer
 import li.cil.oc.Settings
 import li.cil.oc.client.renderer.RenderTypes
 import li.cil.oc.client.renderer.font.DynamicFontRenderer.CharTexture
@@ -9,10 +9,10 @@ import li.cil.oc.util.FontUtils
 import li.cil.oc.util.RenderState
 import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.RenderType
-import net.minecraft.client.renderer.texture.TextureUtil
-import net.minecraft.resources.IReloadableResourceManager
-import net.minecraft.resources.IResourceManager
+import net.minecraft.server.packs.resources.ReloadableResourceManager
+import net.minecraft.server.packs.resources.ResourceManager
 import net.minecraft.server.packs.resources.ResourceManagerReloadListener
+import com.mojang.blaze3d.platform.TextureUtil
 import com.mojang.math.Matrix4f
 import com.mojang.math.Vector4f
 import org.lwjgl.BufferUtils
@@ -38,11 +38,11 @@ class DynamicFontRenderer extends TextureFontRenderer with ResourceManagerReload
   initialize()
 
   Minecraft.getInstance.getResourceManager match {
-    case reloadable: IReloadableResourceManager => reloadable.registerReloadListener(this)
+    case reloadable: ReloadableResourceManager => reloadable.registerReloadListener(this)
     case _ =>
   }
 
-  def initialize() {
+  def initialize(): Unit = {
     for (texture <- textures) {
       texture.delete()
     }
@@ -54,7 +54,7 @@ class DynamicFontRenderer extends TextureFontRenderer with ResourceManagerReload
     generateChars(basicChars.toCharArray)
   }
 
-  def onResourceManagerReload(manager: IResourceManager) {
+  def onResourceManagerReload(manager: ResourceManager): Unit = {
     initialize()
   }
 
@@ -64,7 +64,7 @@ class DynamicFontRenderer extends TextureFontRenderer with ResourceManagerReload
 
   override protected def textureCount = textures.length
 
-  override protected def bindTexture(index: Int) {
+  override protected def bindTexture(index: Int): Unit = {
     activeTexture = textures(index)
     activeTexture.bind()
     RenderState.checkError(getClass.getName + ".bindTexture")
@@ -75,18 +75,18 @@ class DynamicFontRenderer extends TextureFontRenderer with ResourceManagerReload
     activeTexture.getType
   }
 
-  override protected def generateChar(char: Int) {
+  override protected def generateChar(char: Int): Unit = {
     charMap.getOrElseUpdate(char, createCharIcon(char))
   }
 
-  override protected def drawChar(matrix: Matrix4f, tx: Float, ty: Float, char: Int) {
+  override protected def drawChar(matrix: Matrix4f, tx: Float, ty: Float, char: Int): Unit = {
     charMap.get(char) match {
       case Some(icon) if icon.texture == activeTexture => icon.draw(matrix, tx, ty)
       case _ =>
     }
   }
 
-  override protected def drawChar(builder: IVertexBuilder, matrix: Matrix4f, color: Int, tx: Float, ty: Float, char: Int) {
+  override protected def drawChar(builder: VertexConsumer, matrix: Matrix4f, color: Int, tx: Float, ty: Float, char: Int): Unit = {
     charMap.get(char) match {
       case Some(icon) if icon.texture == activeTexture => icon.draw(builder, matrix, color, tx, ty)
       case _ =>
@@ -139,11 +139,11 @@ object DynamicFontRenderer {
 
     private var chars = 0
 
-    def delete() {
+    def delete(): Unit = {
       RenderSystem.deleteTexture(id)
     }
 
-    def bind() {
+    def bind(): Unit = {
       RenderState.bindTexture(id)
     }
 
@@ -172,7 +172,7 @@ object DynamicFontRenderer {
   }
 
   class CharIcon(val texture: CharTexture, val w: Int, val h: Int, val u1: Float, val v1: Float, val u2: Float, val v2: Float) {
-    def draw(matrix: Matrix4f, tx: Float, ty: Float) {
+    def draw(matrix: Matrix4f, tx: Float, ty: Float): Unit = {
       GL11.glTexCoord2f(u1, v2)
       val vec = new Vector4f(tx, ty + h, 0, 1)
       vec.transform(matrix)
@@ -191,7 +191,7 @@ object DynamicFontRenderer {
       GL11.glVertex3f(vec.x, vec.y, vec.z)
     }
 
-    def draw(builder: IVertexBuilder, matrix: Matrix4f, color: Int, tx: Float, ty: Float) {
+    def draw(builder: VertexConsumer, matrix: Matrix4f, color: Int, tx: Float, ty: Float): Unit = {
       val r = ((color >> 16) & 0xFF) / 255f
       val g = ((color >> 8) & 0xFF) / 255f
       val b = (color & 0xFF) / 255f

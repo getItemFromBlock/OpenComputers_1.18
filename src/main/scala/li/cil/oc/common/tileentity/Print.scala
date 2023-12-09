@@ -19,11 +19,11 @@ import net.minecraft.world.level.block.entity.BlockEntityType
 import net.minecraft.core.Direction
 import net.minecraft.sounds.SoundSource
 import net.minecraft.core.BlockPos
-import net.minecraft.util.math.RayTraceResult
-import net.minecraft.util.math.shapes.IBooleanFunction
-import net.minecraft.util.math.shapes.VoxelShape
-import net.minecraft.util.math.shapes.VoxelShapes
-import com.mojang.math.Vector3d
+import net.minecraft.world.phys.HitResult
+import net.minecraft.world.phys.shapes.BooleanOp
+import net.minecraft.world.phys.shapes.VoxelShape
+import net.minecraft.world.phys.shapes.Shapes
+import net.minecraft.world.phys.Vec3
 import net.minecraft.server.level.ServerLevel
 import net.minecraftforge.api.distmarker.Dist
 import net.minecraftforge.api.distmarker.OnlyIn
@@ -43,8 +43,8 @@ class Print(selfType: BlockEntityType[_ <: Print], val canToggle: Option[() => B
 
   val data = new PrintData()
 
-  var shapeOff = VoxelShapes.block
-  var shapeOn = VoxelShapes.block
+  var shapeOff = Shapes.block
+  var shapeOn = Shapes.block
   var state = false
 
   def shape = if (state) shapeOn else shapeOff
@@ -89,12 +89,12 @@ class Print(selfType: BlockEntityType[_ <: Print], val canToggle: Option[() => B
   }
 
   private def convertShape(state: Iterable[PrintData.Shape]): VoxelShape = if (!state.isEmpty) {
-    state.foldLeft(VoxelShapes.empty)((curr, s) => {
-      val voxel = VoxelShapes.create(s.bounds.rotateTowards(facing))
-      VoxelShapes.joinUnoptimized(curr, voxel, IBooleanFunction.OR)
+    state.foldLeft(Shapes.empty)((curr, s) => {
+      val voxel = Shapes.create(s.bounds.rotateTowards(facing))
+      Shapes.joinUnoptimized(curr, voxel, BooleanOp.OR)
     }).optimize()
   }
-  else VoxelShapes.block
+  else Shapes.block
 
   def updateShape(): Unit = {
     shapeOff = convertShape(data.stateOff)
